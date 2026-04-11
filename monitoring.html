@@ -567,13 +567,114 @@
     }
 
     .review-body{font-size:13px; color:var(--text-soft); line-height:1.6;}
-  </style>
+  
+    /* Mobile Responsive Fixes */
+    @media (max-width: 980px) {
+      .sidebar {
+        display: none !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100vh;
+        z-index: 1000;
+        background: var(--panel) !important;
+        padding-top: 80px !important;
+        overflow-y: auto;
+      }
+      .sidebar.active {
+        display: block !important;
+      }
+      .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: white;
+        cursor: pointer;
+        order: -1; /* Place at the start */
+      }
+      .sidebar-close {
+        display: block !important;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 981px) {
+      .mobile-menu-btn, .sidebar-close { display: none !important; }
+    }
+    
+    </style>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }
+    /* Mobile Responsive Fixes */
+    @media (max-width: 980px) {
+      .sidebar {
+        display: none !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100vh;
+        z-index: 1000;
+        background: var(--panel) !important;
+        padding-top: 80px !important;
+        overflow-y: auto;
+      }
+      .sidebar.active {
+        display: block !important;
+      }
+      .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: white;
+        cursor: pointer;
+        order: -1; /* Place at the start */
+      }
+      .sidebar-close {
+        display: block !important;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 981px) {
+      .mobile-menu-btn, .sidebar-close { display: none !important; }
+    }
+    
+    </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
+      <button id="sidebarCloseBtn" class="sidebar-close"><i data-lucide="x"></i></button>
       <div class="brand-card">
         <div class="brand-title">School Development Portal</div>
         <div class="brand-subtitle">Progress governance module</div>
@@ -642,6 +743,7 @@
     <div class="main">
       <header class="topbar">
         <div class="topbar-inner">
+          <button id="mobileMenuBtn" class="mobile-menu-btn"><i data-lucide="menu"></i></button>
           <div class="top-left">
             <div class="school-pill">
               <div class="school-badge" id="schoolBadge">SP</div>
@@ -948,6 +1050,24 @@
 
     init();
   
+    
+    // Mobile Navigation Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    const sidebar = document.querySelector('.sidebar');
+
+    if(mobileMenuBtn && sidebar) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('active');
+      });
+    }
+
+    if(sidebarCloseBtn && sidebar) {
+      sidebarCloseBtn.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    }
+    
     lucide.createIcons();
   </script>
 </body>
