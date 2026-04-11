@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Preview & Print - School Development Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+      --sidebar-width:280px;
+      --topbar-height:78px;
+      --content-width:1500px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+    }
+
+    .app{ display:flex; min-height:100vh; }
+    
+    /* Reuse standard sidebar styles */
+    .sidebar{ width:var(--sidebar-width); background:var(--panel); border-right:1px solid var(--line); padding:18px 16px; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:5;}
+    .brand-card{ background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%); border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow-sm); margin-bottom:18px;}
+    .brand-title{ font-size:20px; font-weight:600; margin-bottom:6px; }
+    .brand-subtitle{ font-size:12px; color:var(--text-soft); margin-bottom:12px; }
+    .nav-item{ display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:14px; color:var(--text-soft); transition:.2s; cursor:pointer;}
+    .nav-item:hover{ background:var(--secondary-soft); color:var(--secondary); }
+    .nav-item.active{ background:var(--primary-soft); border:1px solid var(--primary-border); color:var(--primary); }
+    .nav-no{ width:34px; height:34px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); background:#fff; font-size:12px; font-weight:600; }
+
+    .main{ flex:1; min-width:0; display:flex; flex-direction:column; }
+    .topbar{ position:sticky; top:0; z-index:10; height:var(--topbar-height); background:rgba(255,255,255,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); display:flex; align-items:center; padding:0 30px; }
+    .topbar-inner{ width:100%; max-width:var(--content-width); display:flex; justify-content:space-between; align-items:center; margin:0 auto; }
+    .page-wrap{ padding:30px; width:100%; max-width:var(--content-width); margin:0 auto; }
+    
+    .window{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:24px; }
+    .window-header{ padding:18px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background:var(--panel-2); }
+    .window-title{ font-size:16px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:10px; }
+    .window-body{ padding:24px; }
+
+    .btn{ height:44px; padding:0 22px; border-radius:12px; font-size:13px; font-weight:600; border:none; cursor:pointer; transition:.2s; display:inline-flex; align-items:center; gap:8px; }
+    .btn.primary{ background:var(--primary); color:#fff; box-shadow:0 4px 12px rgba(244,124,32,.2); }
+    .btn.primary:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(244,124,32,.3); }
+    .btn.secondary{ background:var(--secondary-soft); color:var(--secondary); }
+
+    /* Selection Grid Styles */
+    .selection-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; margin-bottom:30px; }
+    .selection-card{ background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:16px; display:flex; align-items:center; gap:14px; cursor:pointer; transition:.2s; position:relative; }
+    .selection-card:hover{ border-color:var(--secondary-border); background:var(--secondary-soft); }
+    .selection-card.active{ border-color:var(--primary); background:var(--primary-soft); }
+    .selection-card input{ position:absolute; opacity:0; }
+    
+    .card-icon{ width:42px; height:42px; border-radius:12px; background:var(--panel-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--text-soft); }
+    .selection-card.active .card-icon{ background:#fff; border-color:var(--primary-border); color:var(--primary); }
+    .card-label{ font-size:13px; font-weight:600; flex:1; }
+    .card-check{ width:18px; height:18px; border-radius:50%; border:2px solid var(--line); }
+    .selection-card.active .card-check{ background:var(--primary); border-color:var(--primary); display:flex; align-items:center; justify-content:center; }
+    .selection-card.active .card-check::after{ content:'\2713'; color:#fff; font-size:10px; font-weight:bold; }
+
+    /* Report Preview Content */
+    .report-section{ margin-bottom:40px; border:1px solid var(--line); border-radius:20px; overflow:hidden; }
+    .report-section h3{ background:var(--panel-2); padding:16px 24px; font-size:18px; border-bottom:1px solid var(--line); }
+    .report-content{ padding:24px; }
+    
+    .report-table{ width:100%; border-collapse:collapse; margin-top:10px; }
+    .report-table th, .report-table td{ padding:12px; border:1px solid var(--line); text-align:left; font-size:13px; }
+    .report-table th{ background:var(--panel-2); font-weight:600; }
+
+    @media print{
+       .sidebar, .topbar, .no-print{ display:none !important; }
+       .main{ width:100% !important; border:none !important; padding:0 !important; margin:0 !important; background:#fff !important; }
+       .page-wrap{ max-width:100% !important; padding:0 !important; }
+       .window{ border:none !important; box-shadow:none !important; margin-bottom:30px !important; }
+       .report-section{ page-break-before: always; border: 1px solid #ccc !important; }
+       .report-section:first-child { page-break-before: auto; }
+       .report-table th{ background:#eee !important; color:#000 !important; }
+       body{ background:#fff !important; font-size:12pt; }
+       .page-title{ margin-top:0 !important; }
+    }
+  </style>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar no-print">
+      <div class="brand-card">
+        <div class="brand-title">School Portal</div>
+        <div class="brand-subtitle">Connected Planning System</div>
+        <div class="brand-chip"><i data-lucide="printer" size="14"></i> Report Center</div>
+      </div>
+      <div id="navContainer"></div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar no-print">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge">RP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span>Report Preview Mode</span>
+              </div>
+            </div>
+          </div>
+          <div class="top-right">
+            <button class="btn secondary" onclick="location.href='dashboard.html'"><i data-lucide="layout-dashboard"></i> Back</button>
+            <button class="btn primary" onclick="window.print()"><i data-lucide="file-down"></i> Print to PDF</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+          <div class="page-header no-print" style="margin-bottom:30px;">
+            <div class="eyebrow">Module 12: Unified Output</div>
+            <h1 class="page-title" style="font-size:32px; font-weight:700;">Global Preview & Print</h1>
+            <p class="page-subtitle" style="color:var(--text-soft); max-width:700px; margin-bottom:20px;">
+              This module aggregates data from all previously saved sections. 
+              Select the modules you want to include in the physical report and generate a unified PDF export.
+            </p>
+            <div class="window" style="max-width:500px; border-radius:12px;">
+              <div class="window-body" style="padding:15px; display:flex; gap:10px;">
+                <input type="text" id="customReportTitle" class="input" placeholder="Custom Report Title (e.g. Annual Evaluation)" style="flex:1; padding:10px; border:1px solid var(--line); border-radius:8px;" />
+                <div style="display:flex; gap:5px;">
+                  <button class="btn secondary" style="padding:0 12px;" onclick="setAll(true)">Select All</button>
+                  <button class="btn secondary" style="padding:0 12px; background:#f5f5f5;" onclick="setAll(false)">None</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <section class="no-print" style="margin-bottom:40px;">
+          <div class="selection-grid" id="selectionGrid">
+            <!-- Cards will be injected -->
+          </div>
+          <div style="display:flex; justify-content:center;">
+             <button class="btn primary" style="height:54px; padding:0 40px; font-size:15px;" onclick="generateReport()">
+               <i data-lucide="refresh-cw"></i> Update Global Preview
+             </button>
+          </div>
+        </section>
+
+        <div id="reportPreview">
+           <div class="window" style="text-align:center; padding:80px 40px;">
+              <i data-lucide="layers" size="48" style="color:var(--muted); margin-bottom:20px;"></i>
+              <h2 style="color:var(--text); margin-bottom:8px;">Ready to Generate Report</h2>
+              <p style="color:var(--text-soft);">Select modules above and click "Update Preview" to compile the school report.</p>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      identity: "school_identity_data",
+      schoolInfo: "school_information_data",
+      leadership: "school_leadership_data",
+      market: "school_market_dynamics_data",
+      diagnosis: "school_diagnosis_data",
+      swot: "school_swot_data",
+      goals: "school_goals_data",
+      actions: "school_action_plans_data",
+      monitoring: "school_monitoring_data",
+      settings: "school_portal_settings"
+    };
+
+    const sections = [
+      { id: 'identity', label: 'Institutional Identity', key: 'identity', icon: 'flag' },
+      { id: 'info', label: 'School Information', key: 'schoolInfo', icon: 'info' },
+      { id: 'teams', label: 'Teams & Committees', key: 'leadership', icon: 'users' },
+      { id: 'market', label: 'Market Dynamics', key: 'market', icon: 'zap' },
+      { id: 'diagnosis', label: 'Diagnosis', key: 'diagnosis', icon: 'search' },
+      { id: 'swot', label: 'SWOT Analysis', key: 'swot', icon: 'bar-chart-2' },
+      { id: 'goals', label: 'Strategic Goals', key: 'goals', icon: 'target' },
+      { id: 'actions', label: 'Action Plans', key: 'actions', icon: 'list-checks' },
+      { id: 'monitoring', label: 'Monitoring Log', key: 'monitoring', icon: 'activity' }
+    ];
+
+    function init(){
+      // Selection Grid
+      const grid = document.getElementById("selectionGrid");
+      grid.innerHTML = sections.map(s => `
+        <div class="selection-card active" onclick="toggleCard(this, '${s.id}')">
+          <input type="checkbox" id="chk_${s.id}" checked />
+          <div class="card-icon"><i data-lucide="${s.icon}" size="18"></i></div>
+          <div class="card-label">${s.label}</div>
+          <div class="card-check"></div>
+        </div>
+      `).join("");
+
+      // Settings
+      const settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.settings) || "{}");
+      if(settings.schoolName) document.getElementById("schoolNameTop").textContent = settings.schoolName;
+
+      lucide.createIcons();
+    }
+
+    function toggleCard(el, id){
+       const chk = document.getElementById(`chk_${id}`);
+       chk.checked = !chk.checked;
+       el.classList.toggle('active', chk.checked);
+    }
+
+    function setAll(val){
+      sections.forEach(s => {
+        const chk = document.getElementById(`chk_${s.id}`);
+        chk.checked = val;
+        const card = chk.parentElement;
+        card.classList.toggle('active', val);
+      });
+    }
+
+    function generateReport(){
+       const container = document.getElementById("reportPreview");
+       const settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.settings) || "{}");
+       const customTitle = document.getElementById("customReportTitle").value || `${settings.schoolName || 'Internal'} Development Report`;
+       
+       let reportHTML = `
+         <div class="report-header window" style="padding:40px; text-align:center; background:linear-gradient(rgba(244,124,32,0.05), #fff);">
+            <h1 style="font-size:32px; margin-bottom:10px; color:var(--primary);">${customTitle}</h1>
+            <p style="color:var(--text-soft);">Academic Year ${settings.academicYear || '2026-27'}</p>
+            <div style="margin-top:20px; font-size:12px; color:var(--muted);">Generated via School Development Portal • ${new Date().toLocaleDateString()}</div>
+         </div>
+       `;
+       
+       let foundAny = false;
+       sections.forEach(s => {
+         if(document.getElementById(`chk_${s.id}`).checked){
+           const data = JSON.parse(localStorage.getItem(STORAGE_KEYS[s.key]) || "null");
+           reportHTML += renderSection(s.id, s.label, data);
+           foundAny = true;
+         }
+       });
+
+       container.innerHTML = foundAny ? reportHTML : `
+          <div class="window" style="text-align:center; padding:40px; color:var(--danger);">
+             Please select at least one section to generate report.
+          </div>
+       `;
+       lucide.createIcons();
+    }
+
+    function renderSection(id, label, data){
+      let body = "";
+      if(!data) {
+        body = `<div style="padding:20px; text-align:center; background:#fcfdfe; border-radius:12px; border:1px dashed var(--line); color:var(--muted); font-style:italic;">No data recorded for ${label}.</div>`;
+      } else {
+        if(id === 'identity') body = renderIdentity(data);
+        else if(id === 'swot') body = renderSWOT(data);
+        else if(id === 'goals') body = renderGoals(data);
+        else if(id === 'actions') body = renderActions(data);
+        else if(id === 'info') body = renderInfo(data);
+        else if(id === 'teams') body = renderTeams(data);
+        else if(id === 'market') body = renderMarket(data);
+        else if(id === 'diagnosis') body = renderDiagnosis(data);
+        else if(id === 'monitoring') body = renderMonitoring(data);
+        else body = `<pre style="font-size:11px; color:var(--text-soft); overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`;
+      }
+
+      return `
+        <div class="report-section window">
+           <h3><i data-lucide="${sections.find(s=>s.id===id).icon}" size="18" style="vertical-align:middle; margin-right:8px;"></i> ${label}</h3>
+           <div class="report-content">${body}</div>
+        </div>
+      `;
+    }
+
+    function renderTeams(data){
+      const leaders = data.leaders || [];
+      const committees = data.committees || [];
+      return `
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:13px; margin-bottom:10px; color:var(--secondary);">School Leadership</h4>
+          <table class="report-table">
+            <thead><tr><th>Role</th><th>Personnel</th><th>Tenure</th></tr></thead>
+            <tbody>
+              ${leaders.map(l => `<tr><td>${l.role}</td><td>${l.name}</td><td>${l.tenure}</td></tr>`).join("") || '<tr><td colspan="3">None</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:20px;">
+          <h4 style="font-size:13px; margin-bottom:10px; color:var(--success);">Committees & Assemblies</h4>
+          ${committees.map(c => `
+            <div style="padding:10px; border:1px solid var(--line); border-radius:8px; margin-bottom:10px;">
+              <strong>${c.name}</strong> <span style="font-size:11px; color:#999;">(${c.type})</span>
+              <p style="font-size:12px; margin-top:4px;">Members: ${c.members}</p>
+            </div>
+          `).join("") || '<p>None</p>'}
+        </div>
+      `;
+    }
+
+    function renderMarket(data){
+      const comps = data.competitors || [];
+      const offrs = data.offerings || [];
+      return `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+           <div>
+              <h4 style="font-size:12px; margin-bottom:8px;">Competitor Landscape</h4>
+              <ul style="padding-left:18px; font-size:13px;">
+                ${comps.map(c => `<li>${c.name} - ${c.strength}</li>`).join("") || '<li>No competitors tracked.</li>'}
+              </ul>
+           </div>
+           <div>
+              <h4 style="font-size:12px; margin-bottom:8px;">Flagship Offerings</h4>
+              <ul style="padding-left:18px; font-size:13px;">
+                ${offrs.map(o => `<li>${o.name} (${o.focus})</li>`).join("") || '<li>No offerings listed.</li>'}
+              </ul>
+           </div>
+        </div>
+      `;
+    }
+
+    function renderDiagnosis(data){
+      const infra = data.infrastructure || [];
+      const acad = data.academic || [];
+      return `
+        <div style="margin-bottom:15px; padding:10px; background:var(--primary-soft); border-radius:8px; border:1px solid var(--primary-border);">
+           <strong>Composite Readiness Score:</strong> <span style="font-size:18px; color:var(--primary);">${data.readiness || '0'} / 100</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div>
+            <h4 style="font-size:12px; margin-bottom:8px;">Infrastructure Status</h4>
+            <div style="font-size:12px;">${infra.map(i => `<div>• ${i.area}: ${i.status}</div>`).join("") || 'No data'}</div>
+          </div>
+          <div>
+            <h4 style="font-size:12px; margin-bottom:8px;">Academic Maturity</h4>
+            <div style="font-size:12px;">${acad.map(a => `<div>• ${a.segment}: ${a.maturity}</div>`).join("") || 'No data'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMonitoring(data){
+      const items = data.reviews || [];
+      return `
+         <table class="report-table">
+            <thead>
+               <tr><th>Date</th><th>Action Item</th><th>Review Status</th><th>Findings</th></tr>
+            </thead>
+            <tbody>
+               ${items.map(i => `
+                 <tr>
+                    <td style="white-space:nowrap;">${i.date}</td>
+                    <td><div style="font-size:11px; color:#666;">${i.goal}</div><strong>${i.action}</strong></td>
+                    <td><span style="display:inline-block; padding:2px 8px; border-radius:4px; background:#f0f0f0; font-size:11px; font-weight:600;">${i.status}</span></td>
+                    <td style="font-size:12px;">${i.findings}</td>
+                 </tr>
+               `).join("") || '<tr><td colspan="4">No reviews recorded yet.</td></tr>'}
+            </tbody>
+         </table>
+      `;
+    }
+
+    function renderIdentity(data){
+       return `
+         <div style="margin-bottom:20px;">
+           <strong style="display:block; font-size:11px; color:var(--primary); text-transform:uppercase; margin-bottom:4px;">Vision</strong>
+           <div style="font-size:16px; font-weight:500; line-height:1.6;">${data.vision || 'Not specified'}</div>
+         </div>
+         <div style="margin-bottom:20px;">
+           <strong style="display:block; font-size:11px; color:var(--secondary); text-transform:uppercase; margin-bottom:4px;">Mission</strong>
+           <div style="font-size:14px; line-height:1.6;">${data.mission || 'Not specified'}</div>
+         </div>
+         <div style="margin-bottom:20px;">
+           <strong style="display:block; font-size:11px; color:var(--success); text-transform:uppercase; margin-bottom:4px;">Core Values</strong>
+           <div style="font-size:14px;">${data.values || 'Not specified'}</div>
+         </div>
+       `;
+    }
+
+    function renderSWOT(data){
+      const pts = data.points || [];
+      const types = ['Strength', 'Weakness', 'Opportunity', 'Threat'];
+      const colors = { Strength: '#2d9b68', Weakness: '#d95353', Opportunity: '#2d81c1', Threat: '#d58d1f' };
+      
+      return `<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+        ${types.map(t => `
+          <div style="padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--panel-2);">
+            <div style="font-weight:700; color:${colors[t]}; font-size:14px; margin-bottom:10px; border-bottom:1px solid var(--line); padding-bottom:5px;">${t}s</div>
+            <ul style="padding-left:18px; font-size:13px; color:var(--text);">
+              ${pts.filter(p => p.type === t).map(p => `<li style="margin-bottom:6px;">${p.text}</li>`).join("") || '<li>No items</li>'}
+            </ul>
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    function renderGoals(data){
+       const items = data.goals || [];
+       return `
+         <table class="report-table">
+            <thead>
+               <tr><th>Category</th><th>Strategic Goal</th><th>Timeline</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+               ${items.map(i => `
+                 <tr>
+                    <td style="font-weight:600;">${i.category}</td>
+                    <td>${i.title}</td>
+                    <td>${i.timeline}</td>
+                    <td><span style="color:var(--secondary); font-weight:600;">Active</span></td>
+                 </tr>
+               `).join("") || '<tr><td colspan="4">No goals recorded.</td></tr>'}
+            </tbody>
+         </table>
+       `;
+    }
+
+    function renderActions(data){
+       const items = data.actions || [];
+       return `
+         <table class="report-table">
+            <thead>
+               <tr><th>Goal Ref</th><th>Action Item</th><th>Owner</th><th>Due Date</th></tr>
+            </thead>
+            <tbody>
+               ${items.map(i => `
+                 <tr>
+                    <td style="font-size:11px; color:#666;">${i.goal}</td>
+                    <td>${i.title}</td>
+                    <td>${i.owner}</td>
+                    <td>${i.due}</td>
+                 </tr>
+               `).join("") || '<tr><td colspan="4">No actions recorded.</td></tr>'}
+            </tbody>
+         </table>
+       `;
+    }
+
+    function renderInfo(data){
+      return `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+           <div>
+              <strong style="font-size:11px; color:var(--muted);">Total Students</strong>
+              <div style="font-size:18px; font-weight:600;">${data.students || '0'}</div>
+           </div>
+           <div>
+              <strong style="font-size:11px; color:var(--muted);">Total Teachers</strong>
+              <div style="font-size:18px; font-weight:600;">${data.teachers || '0'}</div>
+           </div>
+        </div>
+        <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:15px;">
+           <strong style="font-size:11px; color:var(--muted);">Address / Location</strong>
+           <p style="margin-top:5px;">${data.address || 'Not specified'}</p>
+        </div>
+      `;
+    }
+
+    init();
+  </script>
+</body>
+</html>

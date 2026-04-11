@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - Complete School View</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:290px;
+      --topbar-height:78px;
+      --content-width:1580px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+      font-weight:400;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:5;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:9px 12px 7px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+      
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+      flex-wrap:wrap;
+    }
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+      
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .control{
+      height:42px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:0 12px;
+      box-shadow:var(--shadow-sm);
+      color:var(--text);
+    }
+
+    .search{min-width:280px}
+
+    .icon-btn{
+      min-width:42px;
+      height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow-sm);
+      cursor:pointer;
+      transition:.2s ease;
+      padding:0 12px;
+      font-size:13px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+    }
+
+    .icon-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:12px;
+      line-height:normal;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:980px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      gap:8px;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.secondary{background:var(--secondary);color:#fff}
+    .btn.secondary:hover{background:#266fa7}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      min-height:124px;
+    }
+
+    .stat-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+      gap:10px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:500;
+    }
+
+    .stat-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:normal;
+      
+    }
+
+    .orange{background:var(--primary-soft); color:var(--primary); border:1px solid var(--primary-border);}
+    .blue{background:var(--secondary-soft); color:var(--secondary); border:1px solid var(--secondary-border);}
+    .green{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+    .yellow{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+    .red{background:var(--danger-soft); color:var(--danger); border:1px solid #f0c7c7;}
+
+    .stat-value{
+      font-size:28px;
+      font-weight:700;
+      line-height:normal;
+      margin-bottom:6px;
+    }
+
+    .stat-meta{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .progress-shell{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      background:#edf2f8;
+      overflow:hidden;
+      border:1px solid #e2e8f0;
+      margin-top:10px;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius:999px;
+      transition:width .3s ease;
+    }
+
+    .section-switch{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:18px;
+      position:sticky;
+      top:90px;
+      z-index:4;
+      background:rgba(245,247,251,.9);
+      backdrop-filter:blur(8px);
+      padding:8px 0;
+    }
+
+    .tab-btn{
+      height:42px;
+      padding:0 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text-soft);
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+    }
+
+    .tab-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .tab-btn.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-bottom:18px;
+      scroll-margin-top:150px;
+    }
+
+    .window-header{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .window-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:2px;
+    }
+
+    .window-note{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window-body{padding:20px}
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .info-card{
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .info-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .info-text{
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.75;
+    }
+
+    .preview-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:12px;
+    }
+
+    .preview-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:var(--muted);
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    .preview-value{
+      font-size:14px;
+      line-height:1.7;
+      color:var(--text);
+    }
+
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+      margin-top:18px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead th{
+      background:#fafbfd;
+      padding:14px;
+      text-align:left;
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:600;
+      border-bottom:1px solid var(--line);
+    }
+
+    tbody td{
+      padding:14px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#fcfdff}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:7px 12px 5px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid transparent;
+      white-space:nowrap;
+      line-height:normal;
+    }
+
+    .stack{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .list-card{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+      padding:14px;
+    }
+
+    .list-card h4{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .list-card p{
+      font-size:12px;
+      color:var(--text-soft);
+      line-height:1.7;
+    }
+
+    .empty-state{
+      text-align:center;
+      padding:32px 14px;
+      color:var(--text-soft);
+      font-size:13px;
+      border:1px dashed var(--line);
+      border-radius:16px;
+      background:#fff;
+    }
+
+    .hero-summary{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:24px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .hero-title{
+      font-size:24px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:8px;
+    }
+
+    .hero-text{
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.8;
+    }
+
+    .summary-box{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      background:#fbfdff;
+    }
+
+    .summary-box h4{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .summary-box p{
+      font-size:12px;
+      line-height:1.75;
+      color:var(--text-soft);
+    }
+
+    .swot-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .swot-box{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      overflow:hidden;
+    }
+
+    .swot-box-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .swot-box-body{
+      padding:16px;
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toast{
+      min-width:260px;
+      max-width:360px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--secondary);
+      box-shadow:0 16px 30px rgba(20,30,45,.12);
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13px;
+    }
+
+    @media print{
+      body{background:#fff}
+      .sidebar,.topbar,.btn-row,.toast-wrap,.section-switch{display:none !important}
+      .page-wrap{padding:0}
+      .window,.hero-summary{box-shadow:none;border:1px solid #ddd}
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Planning, evaluation, monitoring, and school improvement in one connected front-end system.</div>
+        <div class="brand-chip">Complete School View</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item active">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+
+            <select class="control" id="viewModeSelect">
+              <option value="executive">Executive View</option>
+              <option value="detailed">Detailed View</option>
+            </select>
+          </div>
+
+          <div class="top-right">
+            <input class="control search" id="pageSearch" type="text" placeholder="Search across the complete school view..." />
+            <button class="icon-btn" id="refreshBtn" title="Refresh">Refresh</button>
+            <button class="icon-btn" id="printBtn" title="Print">Print</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 11: Complete School View</div>
+              <h1 class="page-title">Complete School View</h1>
+              <div class="page-subtitle">
+                This screen pulls together the school's identity, baseline profile, governance, external context, diagnosis, SWOT,
+                goals, action plans, monitoring, and final summary into one connected final view.
+              </div>
+            </div>
+
+            <div class="btn-row"><a href="dashboard.html" class="btn secondary">Back to Dashboard</a>
+              <button class="btn light" id="saveSnapshotBtn">Save Snapshot</button>
+              <button class="btn primary" id="printSummaryBtn">Print View</button>
+              <a href="reports-summary.html" class="btn secondary">Back to Report Summary</a>
+            </div>
+          </div>
+
+          <section class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Overall Completion</div>
+                <div class="stat-icon orange"><i data-lucide="clipboard-check"></i></div>
+              </div>
+              <div class="stat-value" id="overallCompletionCard">0%</div>
+              <div class="stat-meta">Combined completion across all major planning modules</div>
+              <div class="progress-shell"><div class="progress-fill" id="overallProgressBar"></div></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Goals & Actions</div>
+                <div class="stat-icon blue"><i data-lucide="target"></i></div>
+              </div>
+              <div class="stat-value" id="goalsActionsCard">0</div>
+              <div class="stat-meta">Goals + execution items currently visible</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Monitoring Logs</div>
+                <div class="stat-icon green"><i data-lucide="activity"></i></div>
+              </div>
+              <div class="stat-value" id="monitoringCard">0</div>
+              <div class="stat-meta">Review checkpoints recorded in the system</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">School Readiness</div>
+                <div class="stat-icon yellow"><i data-lucide="graduation-cap"></i></div>
+              </div>
+              <div class="stat-value" id="readinessCard">Low</div>
+              <div class="stat-meta">Overall planning and execution maturity signal</div>
+            </div>
+          </section>
+
+          <div class="section-switch">
+            <button class="tab-btn active" data-target="heroSection">Overview</button>
+            <button class="tab-btn" data-target="identitySection">Identity</button>
+            <button class="tab-btn" data-target="profileSection">School Profile</button>
+            <button class="tab-btn" data-target="governanceSection">Governance</button>
+            <button class="tab-btn" data-target="marketSection">Market</button>
+            <button class="tab-btn" data-target="diagnosisSection">Diagnosis</button>
+            <button class="tab-btn" data-target="swotSection">SWOT</button>
+            <button class="tab-btn" data-target="goalsSection">Goals</button>
+            <button class="tab-btn" data-target="actionsSection">Action Plans</button>
+            <button class="tab-btn" data-target="monitoringSection">Monitoring</button>
+            <button class="tab-btn" data-target="reportSection">Final Summary</button>
+          </div>
+
+          <section class="hero-summary window" id="heroSection">
+            <div class="hero-grid">
+              <div>
+                <div class="hero-title" id="heroSchoolTitle">ABC Public School — Complete Development View</div>
+                <div class="hero-text" id="heroSummaryText">
+                  This section will automatically summarize the school's overall planning maturity based on all previously saved modules.
+                </div>
+              </div>
+              <div class="summary-box">
+                <h4>Immediate Readout</h4>
+                <p id="heroReadoutText">No compiled insight available yet.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="identitySection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Institutional Identity</div>
+                <div class="window-note">Vision, mission, values, culture, and ultimate outcome.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="grid-2">
+                <div>
+                  <div class="preview-card">
+                    <div class="preview-label">Vision</div>
+                    <div class="preview-value" id="identityVision">Not available yet.</div>
+                  </div>
+                  <div class="preview-card">
+                    <div class="preview-label">Mission</div>
+                    <div class="preview-value" id="identityMission">Not available yet.</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="preview-card">
+                    <div class="preview-label">Values</div>
+                    <div class="preview-value" id="identityValues">Not available yet.</div>
+                  </div>
+                  <div class="preview-card" style="margin-bottom:0;">
+                    <div class="preview-label">Culture & Outcome</div>
+                    <div class="preview-value" id="identityCultureOutcome">Not available yet.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="profileSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">School Profile & Baseline</div>
+                <div class="window-note">Core profile, academic baseline, infrastructure, and contact snapshot.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="grid-3">
+                <div class="preview-card">
+                  <div class="preview-label">Institution Profile</div>
+                  <div class="preview-value" id="profileInstitution">Not available yet.</div>
+                </div>
+                <div class="preview-card">
+                  <div class="preview-label">Academic Baseline</div>
+                  <div class="preview-value" id="profileAcademic">Not available yet.</div>
+                </div>
+                <div class="preview-card">
+                  <div class="preview-label">Operations & Contact</div>
+                  <div class="preview-value" id="profileOperations">Not available yet.</div>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Infrastructure Area</th>
+                      <th>Status</th>
+                      <th>Remark</th>
+                    </tr>
+                  </thead>
+                  <tbody id="infrastructureTableBody">
+                    <tr><td colspan="3" class="empty-state">No infrastructure data available yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="governanceSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Leadership, Teams & Governance</div>
+                <div class="window-note">Leadership team, committees, ownership, and review rhythm.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="grid-2">
+                <div>
+                  <div class="preview-card">
+                    <div class="preview-label">Leadership Summary</div>
+                    <div class="preview-value" id="governanceLeadership">Not available yet.</div>
+                  </div>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Role</th>
+                          <th>Name</th>
+                          <th>Primary Area</th>
+                        </tr>
+                      </thead>
+                      <tbody id="leadershipTableBody">
+                        <tr><td colspan="3" class="empty-state">No leadership data available yet.</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div>
+                  <div class="preview-card">
+                    <div class="preview-label">Governance & Committees</div>
+                    <div class="preview-value" id="governanceCommittees">Not available yet.</div>
+                  </div>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Committee</th>
+                          <th>Lead</th>
+                          <th>Frequency</th>
+                        </tr>
+                      </thead>
+                      <tbody id="committeeTableBody">
+                        <tr><td colspan="3" class="empty-state">No committee data available yet.</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="marketSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Market & External Context</div>
+                <div class="window-note">Parent expectations, community needs, competitor view, and external signals.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="grid-2">
+                <div class="preview-card">
+                  <div class="preview-label">Parent & Community Context</div>
+                  <div class="preview-value" id="marketContext">Not available yet.</div>
+                </div>
+                <div class="preview-card">
+                  <div class="preview-label">Admissions & Future Demand</div>
+                  <div class="preview-value" id="marketDemand">Not available yet.</div>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="table-wrap" style="margin-top:0;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Competitor</th>
+                        <th>Type</th>
+                        <th>Pressure</th>
+                      </tr>
+                    </thead>
+                    <tbody id="competitorTableBody">
+                      <tr><td colspan="3" class="empty-state">No competitor data available yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-wrap" style="margin-top:0;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Signal Type</th>
+                        <th>Title</th>
+                        <th>Impact</th>
+                      </tr>
+                    </thead>
+                    <tbody id="signalTableBody">
+                      <tr><td colspan="3" class="empty-state">No external signal data available yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="diagnosisSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Diagnosis</div>
+                <div class="window-note">Current school condition, issue identification, and critical diagnostic findings.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="grid-2">
+                <div class="preview-card">
+                  <div class="preview-label">Overall Diagnostic View</div>
+                  <div class="preview-value" id="diagnosisSummary">Not available yet.</div>
+                </div>
+                <div class="preview-card">
+                  <div class="preview-label">Priority Area</div>
+                  <div class="preview-value" id="diagnosisPriority">Not available yet.</div>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Finding</th>
+                      <th>Severity</th>
+                      <th>Urgency</th>
+                    </tr>
+                  </thead>
+                  <tbody id="diagnosisTableBody">
+                    <tr><td colspan="4" class="empty-state">No diagnosis findings available yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="swotSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">SWOT View</div>
+                <div class="window-note">Strengths, weaknesses, opportunities, and threats in one place.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="swot-grid">
+                <div class="swot-box">
+                  <div class="swot-box-head" style="background:var(--success-soft);">Strengths</div>
+                  <div class="swot-box-body stack" id="strengthsWrap">
+                    <div class="empty-state">No strengths yet.</div>
+                  </div>
+                </div>
+                <div class="swot-box">
+                  <div class="swot-box-head" style="background:var(--danger-soft);">Weaknesses</div>
+                  <div class="swot-box-body stack" id="weaknessesWrap">
+                    <div class="empty-state">No weaknesses yet.</div>
+                  </div>
+                </div>
+                <div class="swot-box">
+                  <div class="swot-box-head" style="background:var(--secondary-soft);">Opportunities</div>
+                  <div class="swot-box-body stack" id="opportunitiesWrap">
+                    <div class="empty-state">No opportunities yet.</div>
+                  </div>
+                </div>
+                <div class="swot-box">
+                  <div class="swot-box-head" style="background:var(--warning-soft);">Threats</div>
+                  <div class="swot-box-body stack" id="threatsWrap">
+                    <div class="empty-state">No threats yet.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="goalsSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Strategic Goals</div>
+                <div class="window-note">Goal categories, owners, timelines, KPIs, and status.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="table-wrap" style="margin-top:0;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Goal</th>
+                      <th>Owner</th>
+                      <th>Timeline</th>
+                      <th>KPI</th>
+                    </tr>
+                  </thead>
+                  <tbody id="goalsTableBody">
+                    <tr><td colspan="5" class="empty-state">No goal data available yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="actionsSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Action Plans</div>
+                <div class="window-note">Task-level execution mapped against goals.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="table-wrap" style="margin-top:0;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Linked Goal</th>
+                      <th>Action Item</th>
+                      <th>Owner</th>
+                      <th>Status</th>
+                      <th>Timeline</th>
+                    </tr>
+                  </thead>
+                  <tbody id="actionsTableBody">
+                    <tr><td colspan="5" class="empty-state">No action plan data available yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="monitoringSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Monitoring & Review Logs</div>
+                <div class="window-note">Progress review entries, blockers, and next checkpoints.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="table-wrap" style="margin-top:0;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Linked Goal</th>
+                      <th>Linked Action</th>
+                      <th>Status</th>
+                      <th>Review Date</th>
+                      <th>Blocker / Risk</th>
+                    </tr>
+                  </thead>
+                  <tbody id="monitoringTableBody">
+                    <tr><td colspan="5" class="empty-state">No monitoring data available yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="window" id="reportSection">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Final Summary & Reporting View</div>
+                <div class="window-note">A final connected interpretation of the whole school portal.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="grid-2">
+                <div>
+                  <div class="preview-card">
+                    <div class="preview-label">Overall Strategic Commentary</div>
+                    <div class="preview-value" id="finalCommentary">Not available yet.</div>
+                  </div>
+                  <div class="preview-card">
+                    <div class="preview-label">Major Highlights</div>
+                    <div class="preview-value" id="finalHighlights">Not available yet.</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="preview-card">
+                    <div class="preview-label">Concern Areas</div>
+                    <div class="preview-value" id="finalConcerns">Not available yet.</div>
+                  </div>
+                  <div class="preview-card">
+                    <div class="preview-label">Recommended Next Step</div>
+                    <div class="preview-value" id="finalNextStep">Not available yet.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      identity: "school_identity_data",
+      schoolInfo: "school_information_data",
+      teams: "school_teams_committees_data",
+      market: "school_market_dynamics_data",
+      diagnosis: "school_diagnosis_data",
+      swot: "school_swot_data",
+      goals: "school_goals_data",
+      actions: "school_action_plans_data",
+      monitoring: "school_monitoring_data",
+      reports: "school_reports_summary_data",
+      settings: "school_portal_settings"
+    };
+
+    function readStorage(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch(err){
+        return fallback;
+      }
+    }
+
+    function saveStorage(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function showToast(message, type = "success"){
+      const wrap = document.getElementById("toastWrap");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      wrap.appendChild(toast);
+      setTimeout(() => toast.remove(), 2800);
+    }
+
+    function escapeHtml(value){
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getOverallCompletion(){
+      const keys = ["identity","schoolInfo","teams","market","diagnosis","swot","goals","actions","monitoring"];
+      // Simplified completion check for the compiled view
+      let total = 0;
+      keys.forEach(k => {
+        const data = readStorage(STORAGE_KEYS[k], null);
+        if(data) total++;
+      });
+      return Math.round((total / keys.length) * 100);
+    }
+
+    function applySettings(){
+      const settings = readStorage(STORAGE_KEYS.settings, { schoolName: "ABC Public School", academicYear: "2026–27" });
+      document.getElementById("schoolNameTop").textContent = settings.schoolName;
+      document.getElementById("schoolYearTop").textContent = "Academic Year " + settings.academicYear;
+      document.getElementById("heroSchoolTitle").textContent = settings.schoolName + " — Complete Development View";
+    }
+
+    function renderAll(){
+      const overall = getOverallCompletion();
+      document.getElementById("overallCompletionCard").textContent = overall + "%";
+      document.getElementById("overallProgressBar").style.width = overall + "%";
+      
+      const goalsData = readStorage(STORAGE_KEYS.goals, { goals: [] }).goals;
+      const actionsData = readStorage(STORAGE_KEYS.actions, { actions: [] }).actions;
+      document.getElementById("goalsActionsCard").textContent = goalsData.length + actionsData.length;
+      
+      const monitorData = readStorage(STORAGE_KEYS.monitoring, { reviews: [] }).reviews;
+      document.getElementById("monitoringCard").textContent = monitorData.length;
+
+      document.getElementById("readinessCard").textContent = overall >= 80 ? "High" : overall >= 40 ? "Medium" : "Low";
+
+      // 1. Identity
+      const identity = readStorage(STORAGE_KEYS.identity, {});
+      document.getElementById("identityVision").textContent = identity.vision || "Not available.";
+      document.getElementById("identityMission").textContent = identity.mission || "Not available.";
+      document.getElementById("identityValues").textContent = identity.values || "Not available.";
+      document.getElementById("identityCultureOutcome").textContent = identity.cultureOutcome || "Not available.";
+
+      // 2. Profile & Baseline
+      const profile = readStorage(STORAGE_KEYS.schoolInfo, {});
+      if(profile.institution){
+        const inst = profile.institution;
+        document.getElementById("profileInstitution").innerHTML = `
+          <strong>${inst.type}</strong><br/>
+          Board: ${inst.board}<br/>
+          Level: ${inst.level}
+        `;
+      }
+      if(profile.baseline){
+        const base = profile.baseline;
+        document.getElementById("profileAcademic").innerHTML = `
+          Students: ${base.students}<br/>
+          Teachers: ${base.teachers}<br/>
+          Classrooms: ${base.classrooms}
+        `;
+      }
+      if(profile.contact){
+        const con = profile.contact;
+        document.getElementById("profileOperations").innerHTML = `
+          Email: ${con.email}<br/>
+          Phone: ${con.phone}
+        `;
+      }
+
+      // 3. Infrastructure Table
+      const infraTbody = document.getElementById("infrastructureTableBody");
+      const infraData = profile.infrastructure || [];
+      if(infraData.length === 0) infraTbody.innerHTML = `<tr><td colspan="3" class="empty-state">No infrastructure data available yet.</td></tr>`;
+      else infraTbody.innerHTML = infraData.map(i => `<tr><td>${i.area}</td><td>${i.status}</td><td>${i.remark}</td></tr>`).join("");
+
+      // 4. Leadership & Committees
+      const teams = readStorage(STORAGE_KEYS.teams, { leadership: [], committees: [] });
+      const liderTbody = document.getElementById("leadershipTableBody");
+      if(teams.leadership.length === 0) liderTbody.innerHTML = `<tr><td colspan="3" class="empty-state">No leadership data available yet.</td></tr>`;
+      else liderTbody.innerHTML = teams.leadership.map(l => `<tr><td>${l.role}</td><td>${l.name}</td><td>${l.area}</td></tr>`).join("");
+
+      const commTbody = document.getElementById("committeeTableBody");
+      if(teams.committees.length === 0) commTbody.innerHTML = `<tr><td colspan="3" class="empty-state">No committee data available yet.</td></tr>`;
+      else commTbody.innerHTML = teams.committees.map(c => `<tr><td>${c.name}</td><td>${c.lead}</td><td>${c.frequency}</td></tr>`).join("");
+
+      // 5. Market context
+      const market = readStorage(STORAGE_KEYS.market, { context: {}, competitors: [], signals: [] });
+      document.getElementById("marketContext").textContent = market.context.parentsCommunity || "Not available.";
+      document.getElementById("marketDemand").textContent = market.context.admissionsFuture || "Not available.";
+      
+      const compTbody = document.getElementById("competitorTableBody");
+      if(market.competitors.length === 0) compTbody.innerHTML = `<tr><td colspan="3" class="empty-state">No competitor data.</td></tr>`;
+      else compTbody.innerHTML = market.competitors.map(c => `<tr><td>${c.name}</td><td>${c.type}</td><td>${c.pressure}</td></tr>`).join("");
+
+      const sigTbody = document.getElementById("signalTableBody");
+      if(market.signals.length === 0) sigTbody.innerHTML = `<tr><td colspan="3" class="empty-state">No external signals.</td></tr>`;
+      else sigTbody.innerHTML = market.signals.map(s => `<tr><td>${s.type}</td><td>${s.title}</td><td>${s.impact}</td></tr>`).join("");
+
+      // 6. Diagnosis
+      const diagnosis = readStorage(STORAGE_KEYS.diagnosis, { summary: "", findings: [] });
+      document.getElementById("diagnosisSummary").textContent = diagnosis.summary || "No diagnostic summary yet.";
+      const diagTbody = document.getElementById("diagnosisTableBody");
+      if(diagnosis.findings.length === 0) diagTbody.innerHTML = `<tr><td colspan="4" class="empty-state">No findings recorded.</td></tr>`;
+      else diagTbody.innerHTML = diagnosis.findings.map(f => `<tr><td>${f.category}</td><td>${f.description}</td><td>${f.severity}</td><td>${f.urgency}</td></tr>`).join("");
+
+      // 7. SWOT
+      const swot = readStorage(STORAGE_KEYS.swot, { strengths: [], weaknesses: [], opportunities: [], threats: [] });
+      ["strengths", "weaknesses", "opportunities", "threats"].forEach(k => {
+        const wrap = document.getElementById(`${k}Wrap`);
+        if(swot[k].length === 0) wrap.innerHTML = `<div class="empty-state">No items.</div>`;
+        else wrap.innerHTML = swot[k].map(item => `
+          <div class="list-card">
+            <h4>${item.title}</h4>
+            <p>${item.description}</p>
+          </div>
+        `).join("");
+      });
+
+      // 8. Goals
+      const goalTbody = document.getElementById("goalsTableBody");
+      if(goalsData.length === 0) goalTbody.innerHTML = `<tr><td colspan="5" class="empty-state">No goals found.</td></tr>`;
+      else goalTbody.innerHTML = goalsData.map(g => `<tr><td>${g.category}</td><td>${g.title}</td><td>${g.owner}</td><td>${g.timeline}</td><td>${g.kpi}</td></tr>`).join("");
+
+      // 9. Action Plans
+      const actionTbody = document.getElementById("actionsTableBody");
+      if(actionsData.length === 0) actionTbody.innerHTML = `<tr><td colspan="5" class="empty-state">No action items found.</td></tr>`;
+      else actionTbody.innerHTML = actionsData.map(a => `<tr><td>${a.goal}</td><td>${a.title}</td><td>${a.owner}</td><td>${a.status}</td><td>${a.endDate}</td></tr>`).join("");
+
+      // 10. Monitoring
+      const reviewTbody = document.getElementById("monitoringTableBody");
+      if(monitorData.length === 0) reviewTbody.innerHTML = `<tr><td colspan="5" class="empty-state">No reviews yet.</td></tr>`;
+      else reviewTbody.innerHTML = monitorData.map(r => `<tr><td>${r.goal}</td><td>${r.action}</td><td>${r.status}</td><td>${r.date}</td><td>${r.blocker}</td></tr>`).join("");
+
+      // 11. Final Summary
+      const summaryData = readStorage(STORAGE_KEYS.reports, { highlights: "", concerns: "", commentary: "", recommendations: "" });
+      document.getElementById("finalCommentary").textContent = summaryData.commentary || "Not yet written.";
+      document.getElementById("finalHighlights").textContent = summaryData.highlights || "No highlights recorded.";
+      document.getElementById("finalConcerns").textContent = summaryData.concerns || "No major concerns noted.";
+      document.getElementById("finalNextStep").textContent = summaryData.recommendations || "No next steps defined.";
+    }
+
+    applySettings();
+    renderAll();
+
+    document.getElementById("refreshBtn").addEventListener("click", () => {
+      renderAll();
+      showToast("Complete view refreshed.");
+    });
+
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("printSummaryBtn").addEventListener("click", () => window.print());
+
+    // Tab Logic
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const sections = document.querySelectorAll("section.window, section.hero-summary");
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+        
+        // Update Buttons
+        tabBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        // Show/Hide Sections
+        sections.forEach(s => {
+          if(s.id === targetId) s.style.display = "block";
+          else s.style.display = "none";
+        });
+
+        showToast(`Viewing ${btn.textContent} section`);
+      });
+    });
+
+    // Initialize display states
+    sections.forEach(s => {
+      if(s.id === "heroSection") s.style.display = "block";
+      else s.style.display = "none";
+    });
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

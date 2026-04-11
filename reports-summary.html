@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - Reports & Summary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:290px;
+      --topbar-height:78px;
+      --content-width:1580px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:10;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{display:flex;align-items:center;gap:12px}
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:12px;
+      line-height:normal;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:780px;
+    }
+
+    .btn-row{display:flex;gap:10px}
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      gap:8px;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:24px;
+      margin-bottom:24px;
+    }
+
+    .maturity-card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      padding:24px;
+      box-shadow:var(--shadow-md);
+      position:sticky;
+      top:100px;
+      height:fit-content;
+    }
+
+    .maturity-head{
+      text-align:center;
+      margin-bottom:24px;
+    }
+
+    .maturity-label{
+      font-size:12px;
+      font-weight:600;
+      color:var(--text-soft);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      margin-bottom:8px;
+    }
+
+    .maturity-value{
+      font-size:48px;
+      font-weight:700;
+      color:var(--secondary);
+      line-height:normal;
+    }
+
+    .readiness-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      margin-top:12px;
+      line-height:normal;
+    }
+
+    .readiness-pill.low{background:var(--danger-soft); color:var(--danger); border:1px solid #f0c7c7;}
+    .readiness-pill.med{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+    .readiness-pill.high{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+
+    .module-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .module-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .module-name{font-size:12px; font-weight:500;}
+    .module-perc{font-size:12px; font-weight:600; color:var(--text-soft);}
+
+    .report-window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+    }
+
+    .report-header{
+      padding:24px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .report-title{font-size:18px; font-weight:600;}
+
+    .report-body{padding:24px}
+
+    .report-section{margin-bottom:32px}
+    .report-section:last-child{margin-bottom:0}
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:16px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .section-title::after{
+      content:'';
+      flex:1;
+      height:1px;
+      background:var(--line);
+    }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .report-card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      background:var(--panel-2);
+    }
+
+    .report-card.alert{background:rgba(217,83,83,.03); border-color:#f0c7c7;}
+    .report-card.success{background:rgba(45,155,104,.03); border-color:#cfe8dc;}
+
+    .report-card h4{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .report-card p{
+      font-size:12px;
+      color:var(--text-soft);
+      line-height:1.6;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:6px;
+      font-size:10px;
+      font-weight:600;
+      border:1px solid transparent;
+      margin-top:8px;
+      line-height:normal;
+    }
+
+    .empty-state{
+      padding:30px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      border:2px dashed var(--line);
+      border-radius:18px;
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Executive analytics layer</div>
+        <div class="brand-chip">Module 11: Reports</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item active">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+          </div>
+          <div class="top-right">
+            <button class="btn light" onclick="window.print()">Print Report</button>
+            <a href="complete-school-view.html" class="btn primary">Full School View</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 10: Reports & Summary</div>
+              <h1 class="page-title">Reports & School Status</h1>
+              <div class="page-subtitle">
+                Automated aggregation of all portal data to provide a high-level view of school readiness, 
+                strategic clarity, and execution efficiency.
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <aside class="maturity-card">
+              <div class="maturity-head">
+                <div class="maturity-label">School Maturity Score</div>
+                <div class="maturity-value" id="overallMaturity">0%</div>
+                <div class="readiness-pill low" id="readinessStatus">Under Development</div>
+              </div>
+
+              <div class="module-list" id="moduleMaturityList">
+                <div class="module-item"><span class="module-name">Identity</span><span class="module-perc">0%</span></div>
+                <div class="module-item"><span class="module-name">Diagnosis</span><span class="module-perc">0%</span></div>
+                <div class="module-item"><span class="module-name">Goals</span><span class="module-perc">0%</span></div>
+                <div class="module-item"><span class="module-name">Execution</span><span class="module-perc">0%</span></div>
+                <div class="module-item"><span class="module-name">Monitoring</span><span class="module-perc">0%</span></div>
+              </div>
+            </aside>
+
+            <div class="report-window">
+              <div class="report-header">
+                <div class="report-title">Academic Year Strategy Report</div>
+                <div class="btn-row"><a href="dashboard.html" class="btn secondary">Back to Dashboard</a>
+                  <span style="font-size:12px; color:var(--muted); font-weight:500;">Last Compiled: Just Now</span>
+                </div>
+              </div>
+              <div class="report-body">
+                
+                <div class="report-section">
+                  <div class="section-title">Strategic Clarity</div>
+                  <div class="card-grid">
+                    <div class="report-card" id="identityReport">
+                      <h4>📌 Identity Check</h4>
+                      <p id="identityText">Portal data missing.</p>
+                    </div>
+                    <div class="report-card" id="goalsReport">
+                      <h4>🎯 Strategic Goals</h4>
+                      <p id="goalsText">No goals defined yet.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="report-section">
+                  <div class="section-title">Execution Readiness</div>
+                  <div class="card-grid">
+                    <div class="report-card" id="actionsReport">
+                      <h4>📋 Action Items</h4>
+                      <p id="actionsText">Operational tasks not defined.</p>
+                    </div>
+                    <div class="report-card" id="monitoringReport">
+                      <h4>Ã°Å¸â€œÂ Monitoring Discipline</h4>
+                      <p id="monitoringText">No review logs found.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="report-section">
+                  <div class="section-title">Critical Attention Areas</div>
+                  <div id="concernsArea">
+                    <div class="empty-state">No critical concerns identified currently.</div>
+                  </div>
+                </div>
+
+                <div class="report-section">
+                  <div class="section-title">Institutional Readiness Interpretation</div>
+                  <div class="report-card success" style="width:100%;">
+                    <h4 id="interpretationTitle">Early Stage Drafting</h4>
+                    <p id="interpretationBody">The school development portal is in the initial drafting phase. Focus on completing the Identity and Diagnosis modules to build a strong foundation for strategy.</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      identity: "school_identity_data",
+      diagnosis: "school_diagnosis_data",
+      goals: "school_goals_data",
+      actions: "school_action_plans_data",
+      monitoring: "school_monitoring_data",
+      settings: "school_portal_settings"
+    };
+
+    function readStorage(key, fallback){
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    }
+
+    function calculateModuleCompletion(moduleKey){
+      const data = readStorage(STORAGE_KEYS[moduleKey], null);
+      if(!data) return 0;
+
+      // Simple logic based on presence of key fields
+      switch(moduleKey){
+        case "identity":
+          let score = 0;
+          if(data.vision) score += 25;
+          if(data.mission) score += 25;
+          if(data.values?.length) score += 25;
+          if(data.cultureStatement) score += 25;
+          return score;
+        case "diagnosis":
+          return (data.findings?.length > 0) ? 100 : 0;
+        case "goals":
+          return (data.goals?.length > 0) ? 100 : 0;
+        case "actions":
+          return (data.actions?.length > 0) ? 100 : 0;
+        case "monitoring":
+          return (data.reviews?.length > 0) ? 100 : 0;
+        default: return 0;
+      }
+    }
+
+    function init(){
+      const settings = readStorage(STORAGE_KEYS.settings, {});
+      if(settings.schoolName) document.getElementById("schoolNameTop").textContent = settings.schoolName;
+      if(settings.academicYear) document.getElementById("schoolYearTop").textContent = "Academic Year " + settings.academicYear;
+
+      renderMaturity();
+      renderDetails();
+    }
+
+    function renderMaturity(){
+      const idScore = calculateModuleCompletion("identity");
+      const diagScore = calculateModuleCompletion("diagnosis");
+      const goalScore = calculateModuleCompletion("goals");
+      const actionScore = calculateModuleCompletion("actions");
+      const monitorScore = calculateModuleCompletion("monitoring");
+
+      const avg = Math.round((idScore + diagScore + goalScore + actionScore + monitorScore) / 5);
+      
+      document.getElementById("overallMaturity").textContent = avg + "%";
+      
+      const statusPill = document.getElementById("readinessStatus");
+      if(avg >= 80) { statusPill.className = "readiness-pill high"; statusPill.textContent = "Strategy Mature"; }
+      else if(avg >= 40) { statusPill.className = "readiness-pill med"; statusPill.textContent = "In Execution"; }
+      else { statusPill.className = "readiness-pill low"; statusPill.textContent = "Drafting Stage"; }
+
+      document.getElementById("moduleMaturityList").innerHTML = `
+        <div class="module-item"><span class="module-name">Identity</span><span class="module-perc">${idScore}%</span></div>
+        <div class="module-item"><span class="module-name">Diagnosis</span><span class="module-perc">${diagScore}%</span></div>
+        <div class="module-item"><span class="module-name">Goals</span><span class="module-perc">${goalScore}%</span></div>
+        <div class="module-item"><span class="module-name">Execution</span><span class="module-perc">${actionScore}%</span></div>
+        <div class="module-item"><span class="module-name">Monitoring</span><span class="module-perc">${monitorScore}%</span></div>
+      `;
+    }
+
+    function renderDetails(){
+      // Identity
+      const identity = readStorage(STORAGE_KEYS.identity, {});
+      if(identity.vision){
+        document.getElementById("identityText").textContent = `Identity foundation is set. Core vision: "${identity.vision.slice(0, 60)}..."`;
+      }
+
+      // Goals
+      const goals = readStorage(STORAGE_KEYS.goals, { goals: [] }).goals;
+      if(goals.length > 0){
+        document.getElementById("goalsText").textContent = `${goals.length} strategic targets defined. Focus areas include ${[...new Set(goals.map(g => g.category))].join(", ")}.`;
+      }
+
+      // Actions
+      const actions = readStorage(STORAGE_KEYS.actions, { actions: [] }).actions;
+      if(actions.length > 0){
+        document.getElementById("actionsText").textContent = `${actions.length} action items mapped to goals. ${actions.filter(a => a.status === "In Progress").length} items are currently in progress.`;
+      }
+
+      // Monitoring
+      const reviews = readStorage(STORAGE_KEYS.monitoring, { reviews: [] }).reviews;
+      if(reviews.length > 0){
+        document.getElementById("monitoringText").textContent = `${reviews.length} progress checkpoints recorded. Last review conducted on ${reviews[0].reviewDate}.`;
+      }
+
+      // Concerns
+      const blockers = reviews.filter(r => r.blocker && r.blocker.trim() !== "");
+      if(blockers.length > 0){
+        document.getElementById("concernsArea").innerHTML = blockers.map(b => `
+          <div class="report-card alert" style="margin-bottom:12px;">
+            <h4>🛑 Active Blocker</h4>
+            <p><strong>Action:</strong> ${b.action}</p>
+            <p><strong>Issue:</strong> ${b.blocker}</p>
+            <span class="tag" style="background:var(--danger-soft); color:var(--danger); border-color:#f0c7c7;">Reported on ${b.reviewDate}</span>
+          </div>
+        `).join("");
+      }
+
+      // Interpretation
+      const avg = parseInt(document.getElementById("overallMaturity").textContent);
+      const title = document.getElementById("interpretationTitle");
+      const body = document.getElementById("interpretationBody");
+      
+      if(avg >= 80){
+        title.textContent = "High Strategic Readiness";
+        body.textContent = "The school has a comprehensive development plan with strong governance discipline. Focus should now be on ensuring that monitoring translates into tangible outcomes and adjusting KPIs based on performance data.";
+      } else if(avg >= 40){
+        title.textContent = "Standard Operational Mode";
+        body.textContent = "Strategy is being implemented, and core processes are functional. Ensure that the 'Diagnosis' and 'Action Plan' layers are tightly linked to avoid activity traps that don't serve the strategic goals.";
+      }
+    }
+
+    init();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

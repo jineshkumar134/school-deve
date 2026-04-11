@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - Institutional Identity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:280px;
+      --topbar-height:78px;
+      --content-width:1500px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+      font-weight:400;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:5;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+      
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+      
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .control{
+      height:42px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:0 12px;
+      box-shadow:var(--shadow-sm);
+      color:var(--text);
+    }
+
+    .search{min-width:280px}
+
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow-sm);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .icon-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+      margin-bottom:12px;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:900px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      gap:8px;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.secondary{background:var(--secondary);color:#fff}
+    .btn.secondary:hover{background:#266fa7}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+    .btn.danger{
+      background:var(--danger-soft);
+      color:var(--danger);
+      border:1px solid #f0c7c7;
+    }
+    .btn.danger:hover{
+      background:#ffe8e8;
+    }
+
+    .window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-bottom:18px;
+    }
+
+    .window-header{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .window-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:2px;
+    }
+
+    .window-note{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window-body{padding:20px}
+
+    .grid-main{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      min-height:124px;
+    }
+
+    .stat-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+      gap:10px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:500;
+    }
+
+    .stat-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:normal;
+      
+    }
+
+    .orange{background:var(--primary-soft); color:var(--primary); border:1px solid var(--primary-border);}
+    .blue{background:var(--secondary-soft); color:var(--secondary); border:1px solid var(--secondary-border);}
+    .green{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+    .yellow{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+    .red{background:var(--danger-soft); color:var(--danger); border:1px solid #f0c7c7;}
+
+    .stat-value{
+      font-size:28px;
+      font-weight:700;
+      line-height:normal;
+      margin-bottom:6px;
+    }
+
+    .stat-meta{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .progress-shell{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      background:#edf2f8;
+      overflow:hidden;
+      border:1px solid #e2e8f0;
+      margin-top:10px;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius:999px;
+      transition:width .3s ease;
+    }
+
+    .section-switch{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:18px;
+    }
+
+    .tab-btn{
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text-soft);
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .tab-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .tab-btn.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .field.full{grid-column:1/-1}
+
+    .field label{
+      font-size:13px;
+      font-weight:600;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+      color:var(--text);
+      outline:none;
+      transition:.2s ease;
+    }
+
+    .field textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:var(--secondary-border);
+      box-shadow:0 0 0 4px rgba(45,129,193,.07);
+    }
+
+    .field-help{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .help{
+      position:relative;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:700;
+      cursor:help;
+      flex-shrink:0;
+      line-height:normal;
+      
+    }
+
+    .help-box{
+      position:absolute;
+      left:0;
+      top:calc(100% + 8px);
+      width:270px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      box-shadow:0 18px 34px rgba(18,30,47,.10);
+      padding:12px;
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(6px);
+      transition:.2s ease;
+      z-index:20;
+      pointer-events:none;
+    }
+
+    .help:hover .help-box{
+      opacity:1;
+      visibility:visible;
+      transform:translateY(0);
+    }
+
+    .help-box strong{
+      display:block;
+      font-size:12px;
+      color:var(--text);
+      margin-bottom:5px;
+      font-weight:600;
+    }
+
+    .help-box p{
+      font-size:12px;
+      color:var(--text-soft);
+      line-height:1.6;
+      margin-bottom:8px;
+    }
+
+    .help-example{
+      font-size:11px;
+      color:var(--secondary);
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      border-radius:10px;
+      padding:8px 10px;
+      line-height:1.5;
+    }
+
+    .info-card{
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .info-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .info-text{
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.7;
+    }
+
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+      margin-top:18px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead th{
+      background:#fafbfd;
+      padding:14px;
+      text-align:left;
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:600;
+      border-bottom:1px solid var(--line);
+    }
+
+    tbody td{
+      padding:14px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#fcfdff}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid transparent;
+      white-space:nowrap;
+      line-height:normal;
+    }
+
+    .preview-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:12px;
+    }
+
+    .preview-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:var(--muted);
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    .preview-value{
+      font-size:14px;
+      line-height:1.7;
+      color:var(--text);
+    }
+
+    .empty-state{
+      text-align:center;
+      padding:22px 14px;
+      color:var(--text-soft);
+      font-size:13px;
+    }
+
+    .action-cell{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      min-height:34px;
+      padding:0 10px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .mini-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .mini-btn.delete:hover{
+      background:#ffeaea;
+      border-color:#f0c7c7;
+      color:var(--danger);
+    }
+
+    .status-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel-2);
+    }
+
+    .status-text{
+      font-size:13px;
+      color:var(--text-soft);
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toast{
+      min-width:260px;
+      max-width:360px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--secondary);
+      box-shadow:0 16px 30px rgba(20,30,45,.12);
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13px;
+    }
+
+    .toast.success{border-left-color:var(--success)}
+    .toast.warn{border-left-color:var(--primary)}
+    .toast.error{border-left-color:var(--danger)}
+
+    @media (max-width:1200px){
+      .grid-main,.grid-2,.stats-grid,.form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:980px){
+      .sidebar{display:none}
+      .topbar{height:auto;padding:14px 18px}
+      .topbar-inner{flex-direction:column;align-items:stretch}
+      .top-left,.top-right{flex-wrap:wrap}
+      .search{min-width:unset;flex:1}
+      .page-header{flex-direction:column}
+    }
+
+    @media (max-width:640px){
+      .page-wrap{padding:16px}
+      .page-title{font-size:24px}
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Planning, evaluation, monitoring, and school improvement in one connected front-end system.</div>
+        <div class="brand-chip">Institutional Identity Module</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item active">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+
+            <select class="control" id="versionQuickSelect">
+              <option value="Current Active Version">Current Active Version</option>
+              <option value="Draft Version">Draft Version</option>
+              <option value="Revised Version">Revised Version</option>
+            </select>
+          </div>
+
+          <div class="top-right">
+            <input class="control search" id="identitySearch" type="text" placeholder="Search values, culture themes, or history..." />
+            <button class="icon-btn" id="fillSampleBtn" title="Fill example content">✨</button>
+            <button class="icon-btn" id="clearModuleBtn" title="Clear this module">⌫</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 1: Institutional Identity</div>
+              <h1 class="page-title">Vision, Mission, Values, Culture & Direction</h1>
+              <div class="page-subtitle">
+                This module defines the school's direction before deeper planning begins. Whatever you add here should later connect with
+                school information, diagnosis, SWOT, goals, and action planning.
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn light" id="saveDraftTopBtn">Save Draft</button>
+              <button class="btn primary" id="saveIdentityTopBtn">Save Module</button>
+              <a href="dashboard.html" class="btn secondary">Back to Dashboard</a>
+            </div>
+          </div>
+
+          <section class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Module Completion</div>
+                <div class="stat-icon orange"><i data-lucide="clipboard-list"></i></div>
+              </div>
+              <div class="stat-value" id="completionPercent">0%</div>
+              <div class="stat-meta">Based on required identity fields and entries</div>
+              <div class="progress-shell"><div class="progress-fill" id="completionBar"></div></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Values Added</div>
+                <div class="stat-icon blue"><i data-lucide="lightbulb"></i></div>
+              </div>
+              <div class="stat-value" id="valuesCountCard">0</div>
+              <div class="stat-meta">Core values currently saved in this module</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Culture Themes</div>
+                <div class="stat-icon green"><i data-lucide="school"></i></div>
+              </div>
+              <div class="stat-value" id="cultureThemesCard">0</div>
+              <div class="stat-meta">Culture focus areas currently added</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Revision Entries</div>
+                <div class="stat-icon yellow"><i data-lucide="history"></i></div>
+              </div>
+              <div class="stat-value" id="historyCountCard">0</div>
+              <div class="stat-meta">Saved updates for this identity module</div>
+            </div>
+          </section>
+
+          <div class="section-switch">
+            <button class="tab-btn active" data-tab="identityTab">Vision & Mission</button>
+            <button class="tab-btn" data-tab="valuesTab">Values</button>
+            <button class="tab-btn" data-tab="cultureTab">Culture</button>
+            <button class="tab-btn" data-tab="outcomeTab">Ultimate Outcome</button>
+            <button class="tab-btn" data-tab="historyTab">Revision History</button>
+            <button class="tab-btn" data-tab="previewTab">Live Preview</button>
+          </div>
+
+          <!-- TAB 1 -->
+          <section class="tab-panel active" id="identityTab">
+            <div class="grid-main">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Identity Entry Window</div>
+                    <div class="window-note">Add the school's long-term direction and way of working.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="saveDraftBtn">Save Draft</button>
+                    <button class="btn primary" id="saveIdentityBtn">Save Vision & Mission</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field full">
+                      <label>
+                        Vision
+                        <span class="help">?
+                          <span class="help-box">
+                            <strong>What belongs here</strong>
+                            <p>Vision explains what the school ultimately wants to become or create in the long run.</p>
+                            <div class="help-example">Example: To nurture future-ready, values-driven, confident, and capable learners through meaningful education.</div>
+                          </span>
+                        </span>
+                      </label>
+                      <textarea id="visionInput" placeholder="Write the school's Vision here..."></textarea>
+                      <div class="field-help">Keep it aspirational, simple, and long-term.</div>
+                    </div>
+
+                    <div class="field full">
+                      <label>
+                        Mission
+                        <span class="help">?
+                          <span class="help-box">
+                            <strong>What belongs here</strong>
+                            <p>Mission explains how the school will work daily and strategically to achieve the vision.</p>
+                            <div class="help-example">Example: We deliver meaningful teaching, build strong systems, support teachers, and engage stakeholders to improve student outcomes.</div>
+                          </span>
+                        </span>
+                      </label>
+                      <textarea id="missionInput" placeholder="Write the school's Mission here..."></textarea>
+                      <div class="field-help">Mission should explain the practical path, not just ambition.</div>
+                    </div>
+
+                    <div class="field">
+                      <label>
+                        Supporting Line for Vision
+                        <span class="help">?
+                          <span class="help-box">
+                            <strong>How to use this</strong>
+                            <p>Add one optional supporting line if the school wants to clarify the vision further.</p>
+                            <div class="help-example">Example: We aim to develop students who are academically capable, emotionally balanced, and socially responsible.</div>
+                          </span>
+                        </span>
+                      </label>
+                      <input id="supportingLineInput" type="text" placeholder="Add a supporting line if required..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Version Type</label>
+                      <select id="versionTypeInput">
+                        <option value="Current Active Version">Current Active Version</option>
+                        <option value="Draft Version">Draft Version</option>
+                        <option value="Revised Version">Revised Version</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="status-bar">
+                    <div class="status-text" id="identityStatusText">Nothing saved yet in this section.</div>
+                    <div class="btn-row">
+                      <button class="btn light" id="resetIdentityFieldsBtn">Reset Fields</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <aside class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Quick Understanding</div>
+                    <div class="window-note">Simple logic behind this module.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="info-card">
+                    <div class="info-title">Vision and Mission should come first</div>
+                    <div class="info-text">This module should be completed before moving into deeper planning because all later modules should align with it.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Vision = Final Direction</div>
+                    <div class="info-text">Vision explains what the school wants to become or create over time.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Mission = Way of Working</div>
+                    <div class="info-text">Mission explains how the school will work daily and strategically to move toward that vision.</div>
+                  </div>
+
+                  <div class="info-card" style="margin-bottom:0;">
+                    <div class="info-title">Connected next step</div>
+                    <div class="info-text">After identity is clear, the school can define values, culture, and then take those into diagnosis and strategic planning.</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <!-- TAB 2 -->
+          <section class="tab-panel" id="valuesTab">
+            <section class="window">
+              <div class="window-header">
+                <div>
+                  <div class="window-title">Values</div>
+                  <div class="window-note">Add core values and short meaning lines for each.</div>
+                </div>
+                <div class="btn-row">
+                  <button class="btn light" id="resetValueBtn">Reset Input</button>
+                  <button class="btn primary" id="addValueBtn">Add Value</button>
+                </div>
+              </div>
+
+              <div class="window-body">
+                <div class="form-grid">
+                  <div class="field">
+                    <label>Value Name</label>
+                    <input id="valueNameInput" type="text" placeholder="Enter value name..." />
+                  </div>
+
+                  <div class="field">
+                    <label>Short Descriptor</label>
+                    <input id="valueDescInput" type="text" placeholder="Write short descriptor..." />
+                  </div>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Value</th>
+                        <th>Descriptor</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="valuesTableBody">
+                      <tr>
+                        <td colspan="4" class="empty-state">No values added yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- TAB 3 -->
+          <section class="tab-panel" id="cultureTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Culture Statement</div>
+                    <div class="window-note">Define how the school should behave and work daily.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="resetCultureBtn">Reset</button>
+                    <button class="btn primary" id="saveCultureBtn">Save Culture</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field full">
+                      <label>Culture Statement</label>
+                      <textarea id="cultureStatementInput" placeholder="Write the school's culture statement here..."></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label>Culture Theme 1</label>
+                      <input id="cultureTheme1Input" type="text" placeholder="Enter culture theme..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Culture Theme 2</label>
+                      <input id="cultureTheme2Input" type="text" placeholder="Enter another culture theme..." />
+                    </div>
+
+                    <div class="field full">
+                      <label>Culture Theme 3</label>
+                      <input id="cultureTheme3Input" type="text" placeholder="Enter one more culture theme if needed..." />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Culture Snapshot</div>
+                    <div class="window-note">Shows current saved culture direction.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">Saved Culture Statement</div>
+                    <div class="preview-value" id="culturePreviewText">Nothing saved yet.</div>
+                  </div>
+
+                  <div class="table-wrap" style="margin-top:0;">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Culture Theme</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="cultureThemesTableBody">
+                        <tr>
+                          <td colspan="2" class="empty-state">No culture themes saved yet.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <!-- TAB 4 -->
+          <section class="tab-panel" id="outcomeTab">
+            <section class="window">
+              <div class="window-header">
+                <div>
+                  <div class="window-title">Ultimate Outcome</div>
+                  <div class="window-note">Capture what the school ultimately wants to create for students and the institution.</div>
+                </div>
+                <div class="btn-row">
+                  <button class="btn light" id="resetOutcomeBtn">Reset</button>
+                  <button class="btn primary" id="saveOutcomeBtn">Save Outcome</button>
+                </div>
+              </div>
+
+              <div class="window-body">
+                <div class="form-grid">
+                  <div class="field full">
+                    <label>Ultimate Outcome Statement</label>
+                    <textarea id="ultimateOutcomeInput" placeholder="Write the school's ultimate outcome here..."></textarea>
+                  </div>
+
+                  <div class="field">
+                    <label>Student Outcome Focus</label>
+                    <input id="studentOutcomeInput" type="text" placeholder="Example: Future-ready, ethical, resilient learners" />
+                  </div>
+
+                  <div class="field">
+                    <label>Institutional Outcome Focus</label>
+                    <input id="institutionOutcomeInput" type="text" placeholder="Example: Trusted, high-performing, future-focused school" />
+                  </div>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Outcome Area</th>
+                        <th>Saved Value</th>
+                      </tr>
+                    </thead>
+                    <tbody id="outcomeTableBody">
+                      <tr>
+                        <td colspan="2" class="empty-state">No ultimate outcome saved yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- TAB 5 -->
+          <section class="tab-panel" id="historyTab">
+            <section class="window">
+              <div class="window-header">
+                <div>
+                  <div class="window-title">Revision History</div>
+                  <div class="window-note">Log important changes made in this module.</div>
+                </div>
+                <div class="btn-row">
+                  <button class="btn light" id="resetHistoryBtn">Reset Input</button>
+                  <button class="btn primary" id="addHistoryBtn">Add Entry</button>
+                </div>
+              </div>
+
+              <div class="window-body">
+                <div class="form-grid">
+                  <div class="field">
+                    <label>Revision Date</label>
+                    <input id="historyDateInput" type="date" />
+                  </div>
+
+                  <div class="field">
+                    <label>Edited By</label>
+                    <input id="historyByInput" type="text" placeholder="Enter person name..." />
+                  </div>
+
+                  <div class="field full">
+                    <label>What Changed</label>
+                    <textarea id="historyChangeInput" placeholder="Describe what was updated..."></textarea>
+                  </div>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Edited By</th>
+                        <th>Change</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                      <tr>
+                        <td colspan="4" class="empty-state">No revision entries yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- TAB 6 -->
+          <section class="tab-panel" id="previewTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Live Identity Preview</div>
+                    <div class="window-note">This is how current saved content is appearing right now.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">Vision</div>
+                    <div class="preview-value" id="liveVisionPreview">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Mission</div>
+                    <div class="preview-value" id="liveMissionPreview">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Supporting Line</div>
+                    <div class="preview-value" id="liveSupportingPreview">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card" style="margin-bottom:0;">
+                    <div class="preview-label">Version Type</div>
+                    <div class="preview-value" id="liveVersionPreview">Current Active Version</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Connected Readiness</div>
+                    <div class="window-note">How ready this module is for later planning modules.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="info-card">
+                    <div class="info-title">Identity completeness</div>
+                    <div class="info-text" id="previewCompletionNote">This module is still incomplete.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Why it matters</div>
+                    <div class="info-text">A clear identity makes diagnosis sharper, goals more relevant, and action plans easier to justify.</div>
+                  </div>
+
+                  <div class="info-card" style="margin-bottom:0;">
+                    <div class="info-title">Next connected page</div>
+                    <div class="info-text">Once this is reasonably filled, move to School Information for the factual school baseline.</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      identity: "school_identity_data",
+      schoolInfo: "school_information_data",
+      settings: "school_portal_settings",
+      activity: "school_portal_activity_log"
+    };
+
+    let identityData = {
+      vision: "",
+      mission: "",
+      supportingLine: "",
+      versionType: "Current Active Version",
+      values: [],
+      cultureStatement: "",
+      cultureThemes: [],
+      ultimateOutcome: "",
+      studentOutcome: "",
+      institutionalOutcome: "",
+      revisionHistory: []
+    };
+
+    let editingValueIndex = null;
+    let editingHistoryIndex = null;
+
+    function readStorage(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch(err){
+        return fallback;
+      }
+    }
+
+    function saveStorage(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function showToast(message, type = "success"){
+      const wrap = document.getElementById("toastWrap");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      wrap.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(8px)";
+      }, 2200);
+
+      setTimeout(() => toast.remove(), 2800);
+    }
+
+    function addActivity(module, action, status = "Saved", statusClass = "green"){
+      const activity = readStorage(STORAGE_KEYS.activity, []);
+      activity.push({
+        time: new Date().toLocaleString(),
+        module,
+        action,
+        status,
+        statusClass
+      });
+      saveStorage(STORAGE_KEYS.activity, activity);
+    }
+
+    function applySettings(){
+      const settings = readStorage(STORAGE_KEYS.settings, {
+        schoolName: "ABC Public School",
+        academicYear: "2026–27"
+      });
+
+      document.getElementById("schoolNameTop").textContent = settings.schoolName || "ABC Public School";
+      document.getElementById("schoolYearTop").textContent = `Academic Year ${settings.academicYear || "2026–27"}`;
+
+      const initials = (settings.schoolName || "ABC Public School")
+        .split(" ")
+        .map(word => word[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+      document.getElementById("schoolBadge").textContent = initials || "SP";
+    }
+
+    function loadData(){
+      const stored = readStorage(STORAGE_KEYS.identity, null);
+      if(stored){
+        identityData = {
+          ...identityData,
+          ...stored,
+          values: Array.isArray(stored.values) ? stored.values : [],
+          cultureThemes: Array.isArray(stored.cultureThemes) ? stored.cultureThemes : [],
+          revisionHistory: Array.isArray(stored.revisionHistory) ? stored.revisionHistory : []
+        };
+      }
+      hydrateForm();
+      renderAll();
+    }
+
+    function hydrateForm(){
+      document.getElementById("visionInput").value = identityData.vision || "";
+      document.getElementById("missionInput").value = identityData.mission || "";
+      document.getElementById("supportingLineInput").value = identityData.supportingLine || "";
+      document.getElementById("versionTypeInput").value = identityData.versionType || "Current Active Version";
+      document.getElementById("versionQuickSelect").value = identityData.versionType || "Current Active Version";
+
+      document.getElementById("cultureStatementInput").value = identityData.cultureStatement || "";
+      document.getElementById("cultureTheme1Input").value = identityData.cultureThemes?.[0] || "";
+      document.getElementById("cultureTheme2Input").value = identityData.cultureThemes?.[1] || "";
+      document.getElementById("cultureTheme3Input").value = identityData.cultureThemes?.[2] || "";
+
+      document.getElementById("ultimateOutcomeInput").value = identityData.ultimateOutcome || "";
+      document.getElementById("studentOutcomeInput").value = identityData.studentOutcome || "";
+      document.getElementById("institutionOutcomeInput").value = identityData.institutionalOutcome || "";
+    }
+
+    function collectIdentityFields(){
+      identityData.vision = document.getElementById("visionInput").value.trim();
+      identityData.mission = document.getElementById("missionInput").value.trim();
+      identityData.supportingLine = document.getElementById("supportingLineInput").value.trim();
+      identityData.versionType = document.getElementById("versionTypeInput").value;
+      document.getElementById("versionQuickSelect").value = identityData.versionType;
+    }
+
+    function collectCultureFields(){
+      identityData.cultureStatement = document.getElementById("cultureStatementInput").value.trim();
+      identityData.cultureThemes = [
+        document.getElementById("cultureTheme1Input").value.trim(),
+        document.getElementById("cultureTheme2Input").value.trim(),
+        document.getElementById("cultureTheme3Input").value.trim()
+      ].filter(Boolean);
+    }
+
+    function collectOutcomeFields(){
+      identityData.ultimateOutcome = document.getElementById("ultimateOutcomeInput").value.trim();
+      identityData.studentOutcome = document.getElementById("studentOutcomeInput").value.trim();
+      identityData.institutionalOutcome = document.getElementById("institutionOutcomeInput").value.trim();
+    }
+
+    function saveModule(actionLabel = "Module saved"){
+      saveStorage(STORAGE_KEYS.identity, identityData);
+      addActivity("Institutional Identity", actionLabel, "Saved", "green");
+      renderAll();
+    }
+
+    function calculateCompletion(){
+      const fields = [
+        identityData.vision,
+        identityData.mission,
+        identityData.supportingLine,
+        identityData.versionType,
+        identityData.cultureStatement,
+        identityData.ultimateOutcome
+      ];
+
+      let filled = fields.filter(Boolean).length;
+      if(identityData.values.length > 0) filled += 1;
+      if(identityData.cultureThemes.length > 0) filled += 1;
+      if(identityData.revisionHistory.length > 0) filled += 1;
+      if(identityData.studentOutcome) filled += 1;
+      if(identityData.institutionalOutcome) filled += 1;
+
+      const total = 10;
+      return Math.round((filled / total) * 100);
+    }
+
+    function renderStats(){
+      const completion = calculateCompletion();
+      document.getElementById("completionPercent").textContent = `${completion}%`;
+      document.getElementById("completionBar").style.width = `${completion}%`;
+      document.getElementById("valuesCountCard").textContent = identityData.values.length;
+      document.getElementById("cultureThemesCard").textContent = identityData.cultureThemes.length;
+      document.getElementById("historyCountCard").textContent = identityData.revisionHistory.length;
+
+      let statusText = "Nothing saved yet in this section.";
+      if(completion >= 90) statusText = "This identity module is strongly filled and ready for the next planning stages.";
+      else if(completion >= 60) statusText = "This identity module is partially ready. A few more details will strengthen continuity.";
+      else if(completion > 0) statusText = "Some identity data is saved, but the module still needs more clarity.";
+      document.getElementById("identityStatusText").textContent = statusText;
+
+      document.getElementById("previewCompletionNote").textContent =
+        completion >= 90
+          ? "This module is strongly connected and ready to support later strategic pages."
+          : completion >= 60
+          ? "This module has a decent base, but a few more fields will make later planning stronger."
+          : "This module is still incomplete. Add more substance before deeper strategic planning.";
+    }
+
+    function renderValues(){
+      const tbody = document.getElementById("valuesTableBody");
+      if(!identityData.values.length){
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No values added yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      identityData.values.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.name)}</td>
+          <td>${escapeHtml(item.description)}</td>
+          <td><span class="tag ${index % 2 === 0 ? 'blue' : 'orange'}">${item.status || "Active"}</span></td>
+          <td>
+            <div class="action-cell">
+              <button class="mini-btn" onclick="editValue(${index})">Edit</button>
+              <button class="mini-btn delete" onclick="deleteValue(${index})">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCulture(){
+      document.getElementById("culturePreviewText").textContent = identityData.cultureStatement || "Nothing saved yet.";
+      const tbody = document.getElementById("cultureThemesTableBody");
+
+      if(!identityData.cultureThemes.length){
+        tbody.innerHTML = `<tr><td colspan="2" class="empty-state">No culture themes saved yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      identityData.cultureThemes.forEach((theme, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(theme)}</td>
+          <td><span class="tag ${index % 2 === 0 ? 'green' : 'blue'}">Saved</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderOutcome(){
+      const tbody = document.getElementById("outcomeTableBody");
+      const rows = [
+        {label: "Ultimate Outcome Statement", value: identityData.ultimateOutcome},
+        {label: "Student Outcome Focus", value: identityData.studentOutcome},
+        {label: "Institutional Outcome Focus", value: identityData.institutionalOutcome}
+      ].filter(item => item.value);
+
+      if(!rows.length){
+        tbody.innerHTML = `<tr><td colspan="2" class="empty-state">No ultimate outcome saved yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      rows.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.label)}</td>
+          <td>${escapeHtml(item.value)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderHistory(){
+      const tbody = document.getElementById("historyTableBody");
+      if(!identityData.revisionHistory.length){
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No revision entries yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      identityData.revisionHistory.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.date)}</td>
+          <td>${escapeHtml(item.by)}</td>
+          <td>${escapeHtml(item.change)}</td>
+          <td>
+            <div class="action-cell">
+              <button class="mini-btn" onclick="editHistory(${index})">Edit</button>
+              <button class="mini-btn delete" onclick="deleteHistory(${index})">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderPreview(){
+      document.getElementById("liveVisionPreview").textContent = identityData.vision || "Not added yet.";
+      document.getElementById("liveMissionPreview").textContent = identityData.mission || "Not added yet.";
+      document.getElementById("liveSupportingPreview").textContent = identityData.supportingLine || "Not added yet.";
+      document.getElementById("liveVersionPreview").textContent = identityData.versionType || "Current Active Version";
+    }
+
+    function renderAll(){
+      renderStats();
+      renderValues();
+      renderCulture();
+      renderOutcome();
+      renderHistory();
+      renderPreview();
+    }
+
+    function resetIdentityFields(){
+      document.getElementById("visionInput").value = "";
+      document.getElementById("missionInput").value = "";
+      document.getElementById("supportingLineInput").value = "";
+      document.getElementById("versionTypeInput").value = "Current Active Version";
+    }
+
+    function resetValueInputs(){
+      document.getElementById("valueNameInput").value = "";
+      document.getElementById("valueDescInput").value = "";
+      editingValueIndex = null;
+      document.getElementById("addValueBtn").textContent = "Add Value";
+    }
+
+    function resetCultureFields(){
+      document.getElementById("cultureStatementInput").value = "";
+      document.getElementById("cultureTheme1Input").value = "";
+      document.getElementById("cultureTheme2Input").value = "";
+      document.getElementById("cultureTheme3Input").value = "";
+    }
+
+    function resetOutcomeFields(){
+      document.getElementById("ultimateOutcomeInput").value = "";
+      document.getElementById("studentOutcomeInput").value = "";
+      document.getElementById("institutionOutcomeInput").value = "";
+    }
+
+    function resetHistoryInputs(){
+      document.getElementById("historyDateInput").value = "";
+      document.getElementById("historyByInput").value = "";
+      document.getElementById("historyChangeInput").value = "";
+      editingHistoryIndex = null;
+      document.getElementById("addHistoryBtn").textContent = "Add Entry";
+    }
+
+    function saveIdentitySection(isDraft = false){
+      collectIdentityFields();
+
+      if(!identityData.vision || !identityData.mission){
+        showToast("Vision and Mission are required to save this section.", "error");
+        return;
+      }
+
+      saveModule(isDraft ? "Identity draft saved" : "Vision and mission saved");
+      showToast(isDraft ? "Identity draft saved." : "Vision and mission saved.", "success");
+    }
+
+    function addOrUpdateValue(){
+      const name = document.getElementById("valueNameInput").value.trim();
+      const description = document.getElementById("valueDescInput").value.trim();
+
+      if(!name || !description){
+        showToast("Both Value Name and Short Descriptor are required.", "error");
+        return;
+      }
+
+      const payload = { name, description, status: "Active" };
+
+      if(editingValueIndex !== null){
+        identityData.values[editingValueIndex] = payload;
+        saveModule("Value updated");
+        showToast("Value updated successfully.", "success");
+      } else {
+        identityData.values.push(payload);
+        saveModule("Value added");
+        showToast("Value added successfully.", "success");
+      }
+
+      resetValueInputs();
+    }
+
+    function saveCultureSection(){
+      collectCultureFields();
+
+      if(!identityData.cultureStatement){
+        showToast("Culture statement is required.", "error");
+        return;
+      }
+
+      saveModule("Culture saved");
+      showToast("Culture details saved.", "success");
+    }
+
+    function saveOutcomeSection(){
+      collectOutcomeFields();
+
+      if(!identityData.ultimateOutcome){
+        showToast("Ultimate Outcome Statement is required.", "error");
+        return;
+      }
+
+      saveModule("Ultimate outcome saved");
+      showToast("Ultimate outcome saved.", "success");
+    }
+
+    function addOrUpdateHistory(){
+      const date = document.getElementById("historyDateInput").value;
+      const by = document.getElementById("historyByInput").value.trim();
+      const change = document.getElementById("historyChangeInput").value.trim();
+
+      if(!date || !by || !change){
+        showToast("Please fill date, edited by, and what changed.", "error");
+        return;
+      }
+
+      const payload = { date, by, change };
+
+      if(editingHistoryIndex !== null){
+        identityData.revisionHistory[editingHistoryIndex] = payload;
+        saveModule("Revision history updated");
+        showToast("Revision entry updated.", "success");
+      } else {
+        identityData.revisionHistory.push(payload);
+        saveModule("Revision history added");
+        showToast("Revision entry added.", "success");
+      }
+
+      resetHistoryInputs();
+    }
+
+    function fillSampleData(){
+      identityData = {
+        vision: "To nurture future-ready, values-driven, confident, and capable learners through meaningful and holistic education.",
+        mission: "We build a strong learning culture by strengthening teaching quality, school systems, student support, and stakeholder engagement for continuous improvement.",
+        supportingLine: "We aim to develop students who are academically capable, emotionally balanced, socially responsible, and prepared for the future.",
+        versionType: "Current Active Version",
+        values: [
+          { name: "Integrity", description: "Acting honestly and responsibly in learning and conduct.", status: "Active" },
+          { name: "Empathy", description: "Understanding and respecting others in daily interaction.", status: "Active" },
+          { name: "Responsibility", description: "Owning actions, work, and contribution to school culture.", status: "Active" }
+        ],
+        cultureStatement: "We promote a culture of responsibility, collaboration, reflection, and continuous improvement across the school community.",
+        cultureThemes: [
+          "Teacher collaboration and reflective practice",
+          "Student responsibility and discipline",
+          "Open communication between school and parents"
+        ],
+        ultimateOutcome: "To build a trusted, future-focused school that develops capable learners and creates meaningful long-term impact in the community.",
+        studentOutcome: "Future-ready, ethical, resilient, and capable learners",
+        institutionalOutcome: "Trusted, high-performing, future-focused school",
+        revisionHistory: [
+          { date: "2026-04-01", by: "Principal", change: "Updated mission to better reflect teacher development and stakeholder engagement." },
+          { date: "2026-04-04", by: "Academic Coordinator", change: "Added culture themes and revised supporting line for stronger clarity." }
+        ]
+      };
+
+      hydrateForm();
+      saveModule("Sample identity data loaded");
+      showToast("Sample content filled for this module.", "success");
+    }
+
+    function clearModuleData(){
+      const ok = confirm("This will clear all saved data in Institutional Identity. Continue?");
+      if(!ok) return;
+
+      identityData = {
+        vision: "",
+        mission: "",
+        supportingLine: "",
+        versionType: "Current Active Version",
+        values: [],
+        cultureStatement: "",
+        cultureThemes: [],
+        ultimateOutcome: "",
+        studentOutcome: "",
+        institutionalOutcome: "",
+        revisionHistory: []
+      };
+
+      resetValueInputs();
+      resetHistoryInputs();
+      hydrateForm();
+      saveStorage(STORAGE_KEYS.identity, identityData);
+      addActivity("Institutional Identity", "Module cleared", "Cleared", "red");
+      renderAll();
+      showToast("Institutional Identity module cleared.", "warn");
+    }
+
+    function setupTabs(){
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const tabPanels = document.querySelectorAll(".tab-panel");
+
+      tabButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.tab;
+
+          tabButtons.forEach(btn => btn.classList.remove("active"));
+          tabPanels.forEach(panel => panel.classList.remove("active"));
+
+          button.classList.add("active");
+          document.getElementById(target).classList.add("active");
+        });
+      });
+    }
+
+    function setupLiveSync(){
+      document.getElementById("versionQuickSelect").addEventListener("change", (e) => {
+        document.getElementById("versionTypeInput").value = e.target.value;
+        identityData.versionType = e.target.value;
+        saveModule("Version type updated");
+        showToast("Version type updated.", "success");
+      });
+
+      ["visionInput","missionInput","supportingLineInput","versionTypeInput"].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectIdentityFields();
+          renderPreview();
+          renderStats();
+        });
+      });
+
+      ["cultureStatementInput","cultureTheme1Input","cultureTheme2Input","cultureTheme3Input"].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectCultureFields();
+          renderCulture();
+          renderStats();
+        });
+      });
+
+      ["ultimateOutcomeInput","studentOutcomeInput","institutionOutcomeInput"].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectOutcomeFields();
+          renderOutcome();
+          renderStats();
+        });
+      });
+    }
+
+    function setupSearch(){
+      document.getElementById("identitySearch").addEventListener("input", (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        const rows = [
+          ...document.querySelectorAll("#valuesTableBody tr"),
+          ...document.querySelectorAll("#historyTableBody tr"),
+          ...document.querySelectorAll("#cultureThemesTableBody tr")
+        ];
+
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = !q || text.includes(q) ? "" : "none";
+        });
+      });
+    }
+
+    function escapeHtml(value){
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function editValue(index){
+      const item = identityData.values[index];
+      document.getElementById("valueNameInput").value = item.name;
+      document.getElementById("valueDescInput").value = item.description;
+      editingValueIndex = index;
+      document.getElementById("addValueBtn").textContent = "Update Value";
+      showToast("Value loaded for editing.", "success");
+    }
+
+    function deleteValue(index){
+      const ok = confirm("Delete this value?");
+      if(!ok) return;
+      identityData.values.splice(index, 1);
+      saveModule("Value deleted");
+      resetValueInputs();
+      showToast("Value deleted.", "warn");
+    }
+
+    function editHistory(index){
+      const item = identityData.revisionHistory[index];
+      document.getElementById("historyDateInput").value = item.date;
+      document.getElementById("historyByInput").value = item.by;
+      document.getElementById("historyChangeInput").value = item.change;
+      editingHistoryIndex = index;
+      document.getElementById("addHistoryBtn").textContent = "Update Entry";
+      showToast("Revision entry loaded for editing.", "success");
+    }
+
+    function deleteHistory(index){
+      const ok = confirm("Delete this revision entry?");
+      if(!ok) return;
+      identityData.revisionHistory.splice(index, 1);
+      saveModule("Revision entry deleted");
+      resetHistoryInputs();
+      showToast("Revision entry deleted.", "warn");
+    }
+
+    // expose for inline action buttons
+    window.editValue = editValue;
+    window.deleteValue = deleteValue;
+    window.editHistory = editHistory;
+    window.deleteHistory = deleteHistory;
+
+    // buttons
+    document.getElementById("saveIdentityBtn").addEventListener("click", () => saveIdentitySection(false));
+    document.getElementById("saveDraftBtn").addEventListener("click", () => saveIdentitySection(true));
+    document.getElementById("saveIdentityTopBtn").addEventListener("click", () => saveIdentitySection(false));
+    document.getElementById("saveDraftTopBtn").addEventListener("click", () => saveIdentitySection(true));
+
+    document.getElementById("resetIdentityFieldsBtn").addEventListener("click", () => {
+      resetIdentityFields();
+      showToast("Identity input fields reset.", "warn");
+    });
+
+    document.getElementById("addValueBtn").addEventListener("click", addOrUpdateValue);
+    document.getElementById("resetValueBtn").addEventListener("click", () => {
+      resetValueInputs();
+      showToast("Value input reset.", "warn");
+    });
+
+    document.getElementById("saveCultureBtn").addEventListener("click", saveCultureSection);
+    document.getElementById("resetCultureBtn").addEventListener("click", () => {
+      resetCultureFields();
+      showToast("Culture fields reset.", "warn");
+    });
+
+    document.getElementById("saveOutcomeBtn").addEventListener("click", saveOutcomeSection);
+    document.getElementById("resetOutcomeBtn").addEventListener("click", () => {
+      resetOutcomeFields();
+      showToast("Outcome fields reset.", "warn");
+    });
+
+    document.getElementById("addHistoryBtn").addEventListener("click", addOrUpdateHistory);
+    document.getElementById("resetHistoryBtn").addEventListener("click", () => {
+      resetHistoryInputs();
+      showToast("History input reset.", "warn");
+    });
+
+    document.getElementById("fillSampleBtn").addEventListener("click", fillSampleData);
+    document.getElementById("clearModuleBtn").addEventListener("click", clearModuleData);
+
+    applySettings();
+    setupTabs();
+    setupLiveSync();
+    setupSearch();
+    loadData();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

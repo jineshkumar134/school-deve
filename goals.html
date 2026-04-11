@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - Goals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:290px;
+      --topbar-height:78px;
+      --content-width:1580px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:10;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{display:flex;align-items:center;gap:12px}
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .control{
+      height:42px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:0 12px;
+      box-shadow:var(--shadow-sm);
+      color:var(--text);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:12px;
+      line-height:normal;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:780px;
+    }
+
+    .btn-row{display:flex;gap:10px}
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      gap:8px;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .stat-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:500;
+    }
+
+    .stat-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:normal;
+    }
+
+    .orange{background:var(--primary-soft); color:var(--primary); border:1px solid var(--primary-border);}
+    .blue{background:var(--secondary-soft); color:var(--secondary); border:1px solid var(--secondary-border);}
+    .green{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+    .yellow{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+
+    .stat-value{
+      font-size:28px;
+      font-weight:700;
+      line-height:normal;
+      margin-bottom:6px;
+    }
+
+    .stat-meta{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-bottom:24px;
+    }
+
+    .window-header{
+      padding:24px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .window-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+
+    .window-note{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window-body{padding:24px}
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .field{display:flex;flex-direction:column;gap:8px}
+    .label{font-size:12px;font-weight:600;color:var(--text-soft)}
+
+    .input, .select, .textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+      background:var(--panel-2);
+      color:var(--text);
+      transition:.2s ease;
+    }
+
+    .input:focus, .select:focus, .textarea:focus{
+      outline:none;
+      border-color:var(--secondary);
+      background:#fff;
+      box-shadow:0 0 0 3px var(--secondary-soft);
+    }
+
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead th{
+      background:#fafbfd;
+      padding:14px;
+      text-align:left;
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:600;
+      border-bottom:1px solid var(--line);
+    }
+
+    tbody td{
+      padding:14px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#fcfdff}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid transparent;
+      line-height:normal;
+    }
+
+    .tag.priority-high{background:var(--danger-soft); color:var(--danger); border-color:#f0c7c7;}
+    .tag.priority-med{background:var(--warning-soft); color:var(--warning); border-color:#f4deab;}
+    .tag.priority-low{background:var(--secondary-soft); color:var(--secondary); border-color:var(--secondary-border);}
+
+    .actions-cell{display:flex;gap:8px}
+    .action-btn{
+      width:32px;
+      height:32px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:.2s;
+      font-size:14px;
+      line-height:normal;
+    }
+
+    .action-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .action-btn.del:hover{
+      background:var(--danger-soft);
+      border-color:#f0c7c7;
+      color:var(--danger);
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:9999;
+    }
+
+    .toast{
+      min-width:280px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--success);
+      padding:12px 16px;
+      border-radius:14px;
+      box-shadow:var(--shadow-md);
+      font-size:13px;
+      animation:toast-in .3s ease forwards;
+    }
+
+    @keyframes toast-in{
+      from{transform:translateX(20px);opacity:0}
+      to{transform:translateX(0);opacity:1}
+    }
+
+    .empty-state{
+      padding:40px;
+      text-align:center;
+      color:var(--muted);
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Strategic management system</div>
+        <div class="brand-chip">Module 08: Goals</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item active">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+          </div>
+          <div class="top-right">
+            <button class="btn light" onclick="window.print()">Print Page</button>
+            <button class="btn primary" id="saveGlobalBtn">Save Module</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 7: Strategic Goals</div>
+              <h1 class="page-title">Strategic Goals</h1>
+              <div class="page-subtitle">
+                Define the core objectives for the academic year based on the diagnosis and SWOT. These goals 
+                will drive the action plans and monitoring cycles.
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Total Goals</div>
+                <div class="stat-icon blue"><i data-lucide="target"></i></div>
+              </div>
+              <div class="stat-value" id="countTotal">0</div>
+              <div class="stat-meta">Active defined goals</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">High Priority</div>
+                <div class="stat-icon orange"><i data-lucide="flame"></i></div>
+              </div>
+              <div class="stat-value" id="countHigh">0</div>
+              <div class="stat-meta">Critical strategic items</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">KPIs Set</div>
+                <div class="stat-icon green"><i data-lucide="trending-up"></i></div>
+              </div>
+              <div class="stat-value" id="countKpis">0</div>
+              <div class="stat-meta">Measurable outcomes</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Timeline Coverage</div>
+                <div class="stat-icon yellow"><i data-lucide="calendar"></i></div>
+              </div>
+              <div class="stat-value" id="timelineCoverage">0%</div>
+              <div class="stat-meta">Goals with clear schedule</div>
+            </div>
+          </div>
+
+          <div class="window">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Add New Strategic Goal</div>
+                <div class="window-note">Connect findings to specific, measurable outcomes.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <form id="goalForm">
+                <div class="form-grid">
+                  <div class="field">
+                    <label class="label">Goal Category</label>
+                    <select class="select" id="goalCategory" required>
+                      <option value="">Select Category</option>
+                      <option value="Academic Excellence">Academic Excellence</option>
+                      <option value="Infrastructure & Facilities">Infrastructure & Facilities</option>
+                      <option value="Staff Development">Staff Development</option>
+                      <option value="Student Wellbeing">Student Wellbeing</option>
+                      <option value="Community & Stakeholders">Community & Stakeholders</option>
+                      <option value="Operations & Finance">Operations & Finance</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label class="label">Priority Level</label>
+                    <select class="select" id="goalPriority" required>
+                      <option value="High">High Priority</option>
+                      <option value="Medium">Medium Priority</option>
+                      <option value="Low">Low Priority</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field" style="margin-bottom:18px;">
+                  <label class="label">Goal Title / Statement</label>
+                  <input type="text" class="input" id="goalTitle" placeholder="e.g., Increase Grade 10 Math proficiency by 15%." required />
+                </div>
+
+                <div class="field" style="margin-bottom:18px;">
+                  <label class="label">Context / Description</label>
+                  <textarea class="textarea" id="goalDesc" rows="2" placeholder="Describe the background and intent..."></textarea>
+                </div>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <label class="label">Key Performance Indicator (KPI)</label>
+                    <input type="text" class="input" id="goalKpi" placeholder="Metric to track success" required />
+                  </div>
+                  <div class="field">
+                    <label class="label">Target Timeline</label>
+                    <input type="text" class="input" id="goalTimeline" placeholder="e.g., Q3 2026 or Dec 2026" required />
+                  </div>
+                </div>
+
+                <div class="form-grid" style="margin-top:18px;">
+                  <div class="field">
+                    <label class="label">Strategic Owner</label>
+                    <input type="text" class="input" id="goalOwner" placeholder="Lead responsible for this goal" required />
+                  </div>
+                  <div class="field" style="justify-content:flex-end; padding-top:24px;">
+                    <button type="submit" class="btn primary">Add Goal</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="window">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Goal Registry</div>
+                <div class="window-note">List of all strategic objectives for the current cycle.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:160px;">Category</th>
+                      <th>Goal & KPI</th>
+                      <th style="width:140px;">Timeline</th>
+                      <th style="width:150px;">Owner</th>
+                      <th style="width:100px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="goalsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEY = "school_goals_data";
+    const SETTINGS_KEY = "school_portal_settings";
+    
+    let goals = [];
+
+    function init(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        goals = parsed.goals || [];
+      }
+      
+      const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+      if(settings.schoolName) document.getElementById("schoolNameTop").textContent = settings.schoolName;
+      if(settings.academicYear) document.getElementById("schoolYearTop").textContent = "Academic Year " + settings.academicYear;
+      
+      renderAll();
+    }
+
+    function save(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ goals }));
+      showToast("Strategic goals updated successfully.");
+      renderAll();
+    }
+
+    function renderAll(){
+      const tbody = document.getElementById("goalsTableBody");
+      if(goals.length === 0){
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No goals defined yet. Use the form above to add your first goal.</td></tr>`;
+      } else {
+        tbody.innerHTML = goals.map((g, idx) => `
+          <tr>
+            <td>
+              <div style="font-weight:600; font-size:12px;">${g.category}</div>
+              <div class="tag priority-${g.priority.toLowerCase().slice(0,3)}" style="margin-top:6px;">${g.priority}</div>
+            </td>
+            <td>
+              <div style="font-weight:600; margin-bottom:4px;">${g.title}</div>
+              <div style="font-size:12px; color:var(--text-soft); line-height:1.4;">${g.description || "-"}</div>
+              <div style="margin-top:8px; font-size:11px; background:var(--secondary-soft); display:inline-block; padding:4px 8px; border-radius:6px; color:var(--secondary);">
+                <strong>KPI:</strong> ${g.kpi}
+              </div>
+            </td>
+            <td><div class="tag" style="background:var(--panel-2); border-color:var(--line); color:var(--text);">${g.timeline}</div></td>
+            <td><div style="font-weight:500;">${g.owner}</div></td>
+            <td>
+              <div class="actions-cell">
+                <button class="action-btn del" onclick="deleteGoal(${idx})" title="Delete Goal">✖</button>
+              </div>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      // Stats
+      document.getElementById("countTotal").textContent = goals.length;
+      document.getElementById("countHigh").textContent = goals.filter(g => g.priority === "High").length;
+      document.getElementById("countKpis").textContent = goals.filter(g => g.kpi).length;
+      
+      const withTimeline = goals.filter(g => g.timeline).length;
+      const coverage = goals.length > 0 ? Math.round((withTimeline / goals.length) * 100) : 0;
+      document.getElementById("timelineCoverage").textContent = coverage + "%";
+    }
+
+    document.getElementById("goalForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newGoal = {
+        category: document.getElementById("goalCategory").value,
+        priority: document.getElementById("goalPriority").value,
+        title: document.getElementById("goalTitle").value,
+        description: document.getElementById("goalDesc").value,
+        kpi: document.getElementById("goalKpi").value,
+        timeline: document.getElementById("goalTimeline").value,
+        owner: document.getElementById("goalOwner").value,
+        timestamp: new Date().toISOString()
+      };
+      
+      goals.push(newGoal);
+      e.target.reset();
+      save();
+    });
+
+    function deleteGoal(idx){
+      if(confirm("Are you sure you want to remove this goal? Actions and monitoring linked to this goal may become orphaned.")){
+        goals.splice(idx, 1);
+        save();
+      }
+    }
+
+    function showToast(msg){
+      const wrap = document.getElementById("toastWrap");
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = msg;
+      wrap.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = "0";
+        t.style.transform = "translateY(10px)";
+        setTimeout(() => t.remove(), 400);
+      }, 3000);
+    }
+
+    document.getElementById("saveGlobalBtn").addEventListener("click", save);
+
+    init();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

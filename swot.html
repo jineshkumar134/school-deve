@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - SWOT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:290px;
+      --topbar-height:78px;
+      --content-width:1580px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:10;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{display:flex;align-items:center;gap:12px}
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      gap:8px;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:12px;
+      line-height:normal;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:780px;
+    }
+
+    .swot-matrix{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      margin-bottom:24px;
+    }
+
+    .swot-box{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      box-shadow:var(--shadow-md);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .swot-header{
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid var(--line);
+    }
+
+    .swot-header h3{
+      font-size:16px;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .swot-body{
+      padding:20px;
+      flex:1;
+      min-height:220px;
+      background:var(--panel-2);
+    }
+
+    .swot-input-area{
+      padding:16px 20px;
+      border-top:1px solid var(--line);
+      background:#fff;
+    }
+
+    .swot-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .swot-item{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      transition:.2s;
+    }
+
+    .swot-item:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-sm);
+    }
+
+    .swot-item-content{flex:1}
+    .swot-item-title{font-size:13px; font-weight:600; margin-bottom:2px;}
+    .swot-item-desc{font-size:12px; color:var(--text-soft); line-height:1.4;}
+
+    .swot-item-actions{
+      display:flex;
+      gap:6px;
+    }
+
+    .del-btn{
+      width:28px;
+      height:28px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      color:var(--text-soft);
+      transition:.2s;
+      line-height:normal;
+    }
+
+    .del-btn:hover{
+      background:var(--danger-soft);
+      color:var(--danger);
+      border-color:#f0c7c7;
+    }
+
+    .strength .swot-header{background:var(--success-soft); color:var(--success); border-bottom-color:#cfe8dc;}
+    .weakness .swot-header{background:var(--danger-soft); color:var(--danger); border-bottom-color:#f0c7c7;}
+    .opportunity .swot-header{background:var(--secondary-soft); color:var(--secondary); border-bottom-color:var(--secondary-border);}
+    .threat .swot-header{background:var(--warning-soft); color:var(--warning); border-bottom-color:#f4deab;}
+
+    .add-row{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .input-sm{
+      flex:1;
+      height:38px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:0 12px;
+      font-size:12px;
+      background:var(--panel-2);
+    }
+
+    .input-sm:focus{
+      outline:none;
+      border-color:var(--secondary);
+      background:#fff;
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toast{
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--success);
+      padding:12px 18px;
+      border-radius:12px;
+      box-shadow:var(--shadow-md);
+      font-size:13px;
+    }
+
+    .empty-state{
+      text-align:center;
+      padding:40px 20px;
+      color:var(--muted);
+      font-size:12px;
+      border:1px dashed var(--line);
+      border-radius:14px;
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Strategic planning suite</div>
+        <div class="brand-chip">Module 07: SWOT</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item active">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+          </div>
+          <div class="top-right">
+            <button class="btn light" onclick="window.print()">Print Analysis</button>
+            <button class="btn primary" id="saveBtn">Save SWOT</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 6: SWOT Analysis</div>
+              <h1 class="page-title">SWOT Analysis</h1>
+              <div class="page-subtitle">
+                Identify internal Strengths and Weaknesses, and external Opportunities and Threats. 
+                Use these insights to define your strategic goals for the academic year.
+              </div>
+            </div>
+          </div>
+
+          <div class="swot-matrix">
+            <!-- Strengths -->
+            <div class="swot-box strength">
+              <div class="swot-header">
+                <h3><i data-lucide="trending-up" size="20"></i> Strengths <span>(Internal)</span></h3>
+                <span id="countStrength" style="font-size:11px; font-weight:600;">0 items</span>
+              </div>
+              <div class="swot-body">
+                <div class="swot-list" id="listStrength"></div>
+              </div>
+              <div class="swot-input-area">
+                <input type="text" class="input-sm" id="inputStrength" placeholder="Add a strength..." />
+                <div class="add-row">
+                  <input type="text" class="input-sm" id="descStrength" placeholder="Brief description (optional)" />
+                  <button class="btn primary" style="height:38px; padding:0 12px; font-size:12px;" onclick="addItem('Strength')">Add</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weaknesses -->
+            <div class="swot-box weakness">
+              <div class="swot-header">
+                <h3><i data-lucide="trending-down" size="20"></i> Weaknesses <span>(Internal)</span></h3>
+                <span id="countWeakness" style="font-size:11px; font-weight:600;">0 items</span>
+              </div>
+              <div class="swot-body">
+                <div class="swot-list" id="listWeakness"></div>
+              </div>
+              <div class="swot-input-area">
+                <input type="text" class="input-sm" id="inputWeakness" placeholder="Add a weakness..." />
+                <div class="add-row">
+                  <input type="text" class="input-sm" id="descWeakness" placeholder="Brief description (optional)" />
+                  <button class="btn primary" style="height:38px; padding:0 12px; font-size:12px;" onclick="addItem('Weakness')">Add</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Opportunities -->
+            <div class="swot-box opportunity">
+              <div class="swot-header">
+                <h3><i data-lucide="zap" size="20"></i> Opportunities <span>(External)</span></h3>
+                <span id="countOpportunity" style="font-size:11px; font-weight:600;">0 items</span>
+              </div>
+              <div class="swot-body">
+                <div class="swot-list" id="listOpportunity"></div>
+              </div>
+              <div class="swot-input-area">
+                <input type="text" class="input-sm" id="inputOpportunity" placeholder="Add an opportunity..." />
+                <div class="add-row">
+                  <input type="text" class="input-sm" id="descOpportunity" placeholder="Brief description (optional)" />
+                  <button class="btn primary" style="height:38px; padding:0 12px; font-size:12px;" onclick="addItem('Opportunity')">Add</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Threats -->
+            <div class="swot-box threat">
+              <div class="swot-header">
+                <h3><i data-lucide="shield-alert" size="20"></i> Threats <span>(External)</span></h3>
+                <span id="countThreat" style="font-size:11px; font-weight:600;">0 items</span>
+              </div>
+              <div class="swot-body">
+                <div class="swot-list" id="listThreat"></div>
+              </div>
+              <div class="swot-input-area">
+                <input type="text" class="input-sm" id="inputThreat" placeholder="Add a threat..." />
+                <div class="add-row">
+                  <input type="text" class="input-sm" id="descThreat" placeholder="Brief description (optional)" />
+                  <button class="btn primary" style="height:38px; padding:0 12px; font-size:12px;" onclick="addItem('Threat')">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEY = "school_swot_data";
+    const SETTINGS_KEY = "school_portal_settings";
+    let swotData = { points: [] };
+
+    function init(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw) swotData = JSON.parse(raw);
+      
+      const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+      if(settings.schoolName) document.getElementById("schoolNameTop").textContent = settings.schoolName;
+      if(settings.academicYear) document.getElementById("schoolYearTop").textContent = "Academic Year " + settings.academicYear;
+
+      renderAll();
+    }
+
+    function renderAll(){
+      const quadrants = ['Strength', 'Weakness', 'Opportunity', 'Threat'];
+      quadrants.forEach(q => {
+        const list = document.getElementById(`list${q}`);
+        const count = document.getElementById(`count${q}`);
+        const items = swotData.points.filter(p => p.quadrant == q);
+        
+        count.textContent = `${items.length} item${items.length === 1 ? '' : 's'}`;
+        
+        if(items.length === 0){
+          list.innerHTML = `<div class="empty-state">No ${q.toLowerCase()}s added yet.</div>`;
+        } else {
+          list.innerHTML = items.map((item, idx) => `
+            <div class="swot-item">
+              <div class="swot-item-content">
+                <div class="swot-item-title">${item.title}</div>
+                ${item.description ? `<div class="swot-item-desc">${item.description}</div>` : ''}
+              </div>
+              <div class="swot-item-actions">
+                <button class="del-btn" onclick="deleteItem('${q}', ${idx})">✖</button>
+              </div>
+            </div>
+          `).join("");
+        }
+      });
+    }
+
+    function addItem(quadrant){
+      const titleInput = document.getElementById(`input${quadrant}`);
+      const descInput = document.getElementById(`desc${quadrant}`);
+      
+      if(!titleInput.value.trim()) return;
+
+      swotData.points.push({
+        quadrant: quadrant,
+        title: titleInput.value.trim(),
+        description: descInput.value.trim()
+      });
+
+      titleInput.value = "";
+      descInput.value = "";
+      save();
+    }
+
+    function deleteItem(quadrant, localIdx){
+      const filtered = swotData.points.filter(p => p.quadrant === quadrant);
+      const itemToDelete = filtered[localIdx];
+      const actualIdx = swotData.points.indexOf(itemToDelete);
+      
+      if(actualIdx > -1){
+        swotData.points.splice(actualIdx, 1);
+        save();
+      }
+    }
+
+    function save(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(swotData));
+      renderAll();
+      showToast("SWOT data saved.");
+    }
+
+    function showToast(msg){
+      const wrap = document.getElementById("toastWrap");
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = msg;
+      wrap.appendChild(t);
+      setTimeout(() => t.remove(), 2500);
+    }
+
+    document.getElementById("saveBtn").addEventListener("click", save);
+
+    init();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - Action Plans</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:290px;
+      --topbar-height:78px;
+      --content-width:1580px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:10;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{display:flex;align-items:center;gap:12px}
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .control{
+      height:42px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:0 12px;
+      box-shadow:var(--shadow-sm);
+      color:var(--text);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:12px;
+      line-height:normal;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:780px;
+    }
+
+    .btn-row{display:flex;gap:10px}
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      gap:8px;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:24px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .stat-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:500;
+    }
+
+    .stat-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:normal;
+    }
+
+    .orange{background:var(--primary-soft); color:var(--primary); border:1px solid var(--primary-border);}
+    .blue{background:var(--secondary-soft); color:var(--secondary); border:1px solid var(--secondary-border);}
+    .green{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+    .yellow{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+
+    .stat-value{
+      font-size:28px;
+      font-weight:700;
+      line-height:normal;
+      margin-bottom:6px;
+    }
+
+    .stat-meta{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-bottom:24px;
+    }
+
+    .window-header{
+      padding:24px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .window-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+
+    .window-note{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window-body{padding:24px}
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .field{display:flex;flex-direction:column;gap:8px}
+    .label{font-size:12px;font-weight:600;color:var(--text-soft)}
+
+    .input, .select, .textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+      background:var(--panel-2);
+      color:var(--text);
+      transition:.2s ease;
+    }
+
+    .input:focus, .select:focus, .textarea:focus{
+      outline:none;
+      border-color:var(--secondary);
+      background:#fff;
+      box-shadow:0 0 0 3px var(--secondary-soft);
+    }
+
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead th{
+      background:#fafbfd;
+      padding:14px;
+      text-align:left;
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:600;
+      border-bottom:1px solid var(--line);
+    }
+
+    tbody td{
+      padding:14px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#fcfdff}
+
+    .actions-cell{display:flex;gap:8px}
+    .action-btn{
+      width:32px;
+      height:32px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:.2s;
+      font-size:14px;
+      line-height:normal;
+    }
+
+    .action-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .action-btn.del:hover{
+      background:var(--danger-soft);
+      border-color:#f0c7c7;
+      color:var(--danger);
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid transparent;
+      line-height:normal;
+    }
+
+    .tag.status-done{background:var(--success-soft); color:var(--success); border-color:#cfe8dc;}
+    .tag.status-prog{background:var(--secondary-soft); color:var(--secondary); border-color:var(--secondary-border);}
+    .tag.status-pend{background:var(--warning-soft); color:var(--warning); border-color:#f4deab;}
+    .tag.status-delay{background:var(--danger-soft); color:var(--danger); border-color:#f0c7c7;}
+
+    .toast-wrap{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:9999;
+    }
+
+    .toast{
+      min-width:280px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--success);
+      padding:12px 16px;
+      border-radius:14px;
+      box-shadow:var(--shadow-md);
+      font-size:13px;
+      animation:toast-in .3s ease forwards;
+    }
+
+    @keyframes toast-in{
+      from{transform:translateX(20px);opacity:0}
+      to{transform:translateX(0);opacity:1}
+    }
+
+    .empty-state{
+      padding:40px;
+      text-align:center;
+      color:var(--muted);
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Execution management layer</div>
+        <div class="brand-chip">Module 09: Action Plans</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item active">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+          </div>
+          <div class="top-right">
+            <button class="btn light" onclick="window.print()">Print Page</button>
+            <button class="btn primary" id="saveGlobalBtn">Save Module</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 8: Action Plans</div>
+              <h1 class="page-title">Action Plans</h1>
+              <div class="page-subtitle">
+                Break down strategic goals into tactical tasks. Assign owners, set timelines, and define clear 
+                dependencies to ensure successful implementation.
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Total Actions</div>
+                <div class="stat-icon blue"><i data-lucide="clipboard-check"></i></div>
+              </div>
+              <div class="stat-value" id="countTotal">0</div>
+              <div class="stat-meta">Defined task items</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-icon orange"><i data-lucide="zap"></i></div>
+              </div>
+              <div class="stat-value" id="countProgress">0</div>
+              <div class="stat-meta">Active execution status</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Completed</div>
+                <div class="stat-icon green"><i data-lucide="check-circle"></i></div>
+              </div>
+              <div class="stat-value" id="countCompleted">0</div>
+              <div class="stat-meta">Closed task items</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Task Coverage</div>
+                <div class="stat-icon yellow"><i data-lucide="target"></i></div>
+              </div>
+              <div class="stat-value" id="goalCoverage">0/0</div>
+              <div class="stat-meta">Goals with assigned actions</div>
+            </div>
+          </div>
+
+          <div class="window">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Create New Action Item</div>
+                <div class="window-note">Link specific tasks to one of your strategic goals.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <form id="actionForm">
+                <div class="field" style="margin-bottom:18px;">
+                  <label class="label">Link to Strategic Goal</label>
+                  <select class="select" id="actionGoal" required>
+                    <option value="">Select a Goal...</option>
+                  </select>
+                </div>
+
+                <div class="field" style="margin-bottom:18px;">
+                  <label class="label">Action Item Title</label>
+                  <input type="text" class="input" id="actionTitle" placeholder="e.g., Conduct weekly remedial classes for Grade 10 Math." required />
+                </div>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <label class="label">Primary Owner</label>
+                    <input type="text" class="input" id="actionOwner" placeholder="Name of person responsible" required />
+                  </div>
+                  <div class="field">
+                    <label class="label">Task Status</label>
+                    <select class="select" id="actionStatus" required>
+                      <option value="Not Started">Not Started</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Delayed">Delayed</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-grid" style="margin-top:18px;">
+                  <div class="field">
+                    <label class="label">Start Date</label>
+                    <input type="date" class="input" id="actionStart" required />
+                  </div>
+                  <div class="field">
+                    <label class="label">End Date (Target)</label>
+                    <input type="date" class="input" id="actionEnd" required />
+                  </div>
+                </div>
+
+                <div class="field" style="margin-top:18px;">
+                  <label class="label">Dependencies / Resources Needed</label>
+                  <textarea class="textarea" id="actionDeps" rows="2" placeholder="e.g., Budget approval, Teacher training, Lab access..."></textarea>
+                </div>
+
+                <div class="field" style="margin-top:24px; align-items:flex-end;">
+                  <button type="submit" class="btn primary">Add Action Item</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="window">
+            <div class="window-header">
+              <div>
+                <div class="window-title">Task Registry</div>
+                <div class="window-note">Overview of all operational tasks in the development cycle.</div>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:180px;">Goal Mapping</th>
+                      <th>Action Item</th>
+                      <th style="width:140px;">Timeline</th>
+                      <th style="width:140px;">Status & Owner</th>
+                      <th style="width:80px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="actionsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEY = "school_action_plans_data";
+    const GOALS_KEY = "school_goals_data";
+    const SETTINGS_KEY = "school_portal_settings";
+    
+    let actions = [];
+    let goals = [];
+
+    function init(){
+      const rawActions = localStorage.getItem(STORAGE_KEY);
+      if(rawActions){
+        const parsed = JSON.parse(rawActions);
+        actions = parsed.actions || [];
+      }
+
+      const rawGoals = localStorage.getItem(GOALS_KEY);
+      if(rawGoals){
+        const parsed = JSON.parse(rawGoals);
+        goals = parsed.goals || [];
+      }
+      
+      const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+      if(settings.schoolName) document.getElementById("schoolNameTop").textContent = settings.schoolName;
+      if(settings.academicYear) document.getElementById("schoolYearTop").textContent = "Academic Year " + settings.academicYear;
+      
+      populateGoalDropdown();
+      renderAll();
+    }
+
+    function populateGoalDropdown(){
+      const select = document.getElementById("actionGoal");
+      select.innerHTML = '<option value="">Select a Goal...</option>' + 
+        goals.map(g => `<option value="${g.title}">${g.category}: ${g.title}</option>`).join("");
+    }
+
+    function save(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ actions }));
+      showToast("Action plans updated successfully.");
+      renderAll();
+    }
+
+    function renderAll(){
+      const tbody = document.getElementById("actionsTableBody");
+      if(actions.length === 0){
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No action items defined. Start by mapping tasks to your goals.</td></tr>`;
+      } else {
+        tbody.innerHTML = actions.map((a, idx) => {
+          let statusClass = "status-pend";
+          if(a.status === "Completed") statusClass = "status-done";
+          if(a.status === "In Progress") statusClass = "status-prog";
+          if(a.status === "Delayed") statusClass = "status-delay";
+
+          return `
+            <tr>
+              <td>
+                <div style="font-weight:600; font-size:11px; color:var(--muted); text-transform:uppercase;">Mapped Goal</div>
+                <div style="font-size:12px; font-weight:500; margin-top:4px;">${a.goal}</div>
+              </td>
+              <td>
+                <div style="font-weight:600; margin-bottom:4px;">${a.title}</div>
+                <div style="font-size:12px; color:var(--text-soft); line-height:1.4;">
+                  <strong>Deps:</strong> ${a.dependencies || "None"}
+                </div>
+              </td>
+              <td>
+                <div style="font-size:12px; margin-bottom:4px;">Start: ${a.startDate}</div>
+                <div style="font-size:12px; font-weight:600;">End: ${a.endDate}</div>
+              </td>
+              <td>
+                <div class="tag ${statusClass}">${a.status}</div>
+                <div style="font-size:12px; margin-top:6px; font-weight:500;">By: ${a.owner}</div>
+              </td>
+              <td>
+                <div class="actions-cell">
+                  <button class="action-btn del" onclick="deleteAction(${idx})" title="Delete Action">✖</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // Stats
+      document.getElementById("countTotal").textContent = actions.length;
+      document.getElementById("countProgress").textContent = actions.filter(a => a.status === "In Progress").length;
+      document.getElementById("countCompleted").textContent = actions.filter(a => a.status === "Completed").length;
+      
+      const goalsWithActions = new Set(actions.map(a => a.goal)).size;
+      document.getElementById("goalCoverage").textContent = `${goalsWithActions}/${goals.length}`;
+    }
+
+    document.getElementById("actionForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newItem = {
+        goal: document.getElementById("actionGoal").value,
+        title: document.getElementById("actionTitle").value,
+        owner: document.getElementById("actionOwner").value,
+        status: document.getElementById("actionStatus").value,
+        startDate: document.getElementById("actionStart").value,
+        endDate: document.getElementById("actionEnd").value,
+        dependencies: document.getElementById("actionDeps").value,
+        timestamp: new Date().toISOString()
+      };
+      
+      actions.push(newItem);
+      e.target.reset();
+      save();
+    });
+
+    function deleteAction(idx){
+      if(confirm("Are you sure you want to remove this action item?")){
+        actions.splice(idx, 1);
+        save();
+      }
+    }
+
+    function showToast(msg){
+      const wrap = document.getElementById("toastWrap");
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = msg;
+      wrap.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = "0";
+        t.style.transform = "translateY(10px)";
+        setTimeout(() => t.remove(), 400);
+      }, 3000);
+    }
+
+    document.getElementById("saveGlobalBtn").addEventListener("click", save);
+
+    init();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

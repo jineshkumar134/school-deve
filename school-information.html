@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - School Information</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:280px;
+      --topbar-height:78px;
+      --content-width:1500px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+      font-weight:400;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:5;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .control{
+      height:42px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:0 12px;
+      box-shadow:var(--shadow-sm);
+      color:var(--text);
+    }
+
+    .search{min-width:280px}
+
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow-sm);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .icon-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+      margin-bottom:12px;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:900px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.secondary{background:var(--secondary);color:#fff}
+    .btn.secondary:hover{background:#266fa7}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+    .btn.danger{
+      background:var(--danger-soft);
+      color:var(--danger);
+      border:1px solid #f0c7c7;
+    }
+
+    .window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-bottom:18px;
+    }
+
+    .window-header{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .window-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:2px;
+    }
+
+    .window-note{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window-body{padding:20px}
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      min-height:124px;
+    }
+
+    .stat-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+      gap:10px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:500;
+    }
+
+    .stat-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:normal;
+    }
+
+    .orange{background:var(--primary-soft); color:var(--primary); border:1px solid var(--primary-border);}
+    .blue{background:var(--secondary-soft); color:var(--secondary); border:1px solid var(--secondary-border);}
+    .green{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+    .yellow{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+    .red{background:var(--danger-soft); color:var(--danger); border:1px solid #f0c7c7;}
+
+    .stat-value{
+      font-size:28px;
+      font-weight:700;
+      line-height:normal;
+      margin-bottom:6px;
+    }
+
+    .stat-meta{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .progress-shell{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      background:#edf2f8;
+      overflow:hidden;
+      border:1px solid #e2e8f0;
+      margin-top:10px;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius:999px;
+      transition:width .3s ease;
+    }
+
+    .section-switch{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:18px;
+    }
+
+    .tab-btn{
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text-soft);
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .tab-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .tab-btn.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    .grid-main{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .field.full{grid-column:1/-1}
+
+    .field label{
+      font-size:13px;
+      font-weight:600;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+      color:var(--text);
+      outline:none;
+      transition:.2s ease;
+    }
+
+    .field textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:var(--secondary-border);
+      box-shadow:0 0 0 4px rgba(45,129,193,.07);
+    }
+
+    .field-help{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .status-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel-2);
+    }
+
+    .status-text{
+      font-size:13px;
+      color:var(--text-soft);
+    }
+
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+      margin-top:18px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead th{
+      background:#fafbfd;
+      padding:14px;
+      text-align:left;
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:600;
+      border-bottom:1px solid var(--line);
+    }
+
+    tbody td{
+      padding:14px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#fcfdff}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid transparent;
+      white-space:nowrap;
+      line-height:normal;
+    }
+
+    .action-cell{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      min-height:34px;
+      padding:0 10px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .mini-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .mini-btn.delete:hover{
+      background:#ffeaea;
+      border-color:#f0c7c7;
+      color:var(--danger);
+    }
+
+    .preview-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:12px;
+    }
+
+    .preview-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:var(--muted);
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    .preview-value{
+      font-size:14px;
+      line-height:1.7;
+      color:var(--text);
+    }
+
+    .info-card{
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .info-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .info-text{
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.7;
+    }
+
+    .empty-state{
+      text-align:center;
+      padding:22px 14px;
+      color:var(--text-soft);
+      font-size:13px;
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toast{
+      min-width:260px;
+      max-width:360px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--secondary);
+      box-shadow:0 16px 30px rgba(20,30,45,.12);
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13px;
+    }
+
+    .toast.success{border-left-color:var(--success)}
+    .toast.warn{border-left-color:var(--primary)}
+    .toast.error{border-left-color:var(--danger)}
+
+    @media (max-width:1200px){
+      .grid-main,.grid-2,.stats-grid,.form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:980px){
+      .sidebar{display:none}
+      .topbar{height:auto;padding:14px 18px}
+      .topbar-inner{flex-direction:column;align-items:stretch}
+      .top-left,.top-right{flex-wrap:wrap}
+      .search{min-width:unset;flex:1}
+      .page-header{flex-direction:column}
+    }
+
+    @media (max-width:640px){
+      .page-wrap{padding:16px}
+      .page-title{font-size:24px}
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Planning, evaluation, monitoring, and school improvement in one connected front-end system.</div>
+        <div class="brand-chip">School Information Module</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item active">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+
+            <select class="control" id="quickSchoolType">
+              <option value="Private Unaided">Private Unaided</option>
+              <option value="Government">Government</option>
+              <option value="Aided">Aided</option>
+              <option value="International">International</option>
+            </select>
+          </div>
+
+          <div class="top-right">
+            <input class="control search" id="moduleSearch" type="text" placeholder="Search infrastructure, offerings, or notes..." />
+            <button class="icon-btn" id="fillSampleBtn" title="Fill example content">✨</button>
+            <button class="icon-btn" id="clearModuleBtn" title="Clear this module">⌫</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 2: School Information</div>
+              <h1 class="page-title">School Profile, Capacity & Baseline Information</h1>
+              <div class="page-subtitle">
+                This page captures the factual school baseline. It should help the later diagnosis and planning pages understand
+                where the school stands today in terms of structure, people, academic reach, and operational profile.
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn light" id="saveDraftTopBtn">Save Draft</button>
+              <button class="btn primary" id="saveModuleTopBtn">Save Module</button>
+              <a href="dashboard.html" class="btn secondary">Back to Dashboard</a>
+            </div>
+          </div>
+
+          <section class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Module Completion</div>
+                <div class="stat-icon orange"><i data-lucide="clipboard-list"></i></div>
+              </div>
+              <div class="stat-value" id="completionPercent">0%</div>
+              <div class="stat-meta">Based on school profile and baseline data</div>
+              <div class="progress-shell"><div class="progress-fill" id="completionBar"></div></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Infrastructure Rows</div>
+                <div class="stat-icon blue"><i data-lucide="building"></i></div>
+              </div>
+              <div class="stat-value" id="infraCountCard">0</div>
+              <div class="stat-meta">Facilities and infrastructure items added</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Academic Offerings</div>
+                <div class="stat-icon green"><i data-lucide="book-open"></i></div>
+              </div>
+              <div class="stat-value" id="offeringCountCard">0</div>
+              <div class="stat-meta">Programs or offerings currently captured</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Campus Readiness</div>
+                <div class="stat-icon yellow"><i data-lucide="settings"></i></div>
+              </div>
+              <div class="stat-value" id="readinessCard">Low</div>
+              <div class="stat-meta">Quick qualitative reading of the saved baseline</div>
+            </div>
+          </section>
+
+          <div class="section-switch">
+            <button class="tab-btn active" data-tab="profileTab">School Profile</button>
+            <button class="tab-btn" data-tab="academicTab">Academic Snapshot</button>
+            <button class="tab-btn" data-tab="infrastructureTab">Infrastructure</button>
+            <button class="tab-btn" data-tab="contactTab">Contact & Location</button>
+            <button class="tab-btn" data-tab="previewTab">Live Preview</button>
+          </div>
+
+          <!-- PROFILE TAB -->
+          <section class="tab-panel active" id="profileTab">
+            <div class="grid-main">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Basic School Profile</div>
+                    <div class="window-note">Capture the core details that define the school institutionally.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="saveDraftBtn">Save Draft</button>
+                    <button class="btn primary" id="saveProfileBtn">Save Profile</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field">
+                      <label>School Name</label>
+                      <input id="schoolNameInput" type="text" placeholder="Enter school name..." />
+                    </div>
+
+                    <div class="field">
+                      <label>School Code / ID</label>
+                      <input id="schoolCodeInput" type="text" placeholder="Enter school code..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Board / Affiliation</label>
+                      <select id="boardInput">
+                        <option value="">Select board</option>
+                        <option>CBSE</option>
+                        <option>ICSE</option>
+                        <option>State Board</option>
+                        <option>International Board</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+
+                    <div class="field">
+                      <label>School Type</label>
+                      <select id="schoolTypeInput">
+                        <option value="">Select type</option>
+                        <option>Private Unaided</option>
+                        <option>Government</option>
+                        <option>Aided</option>
+                        <option>International</option>
+                      </select>
+                    </div>
+
+                    <div class="field">
+                      <label>Academic Year</label>
+                      <input id="academicYearInput" type="text" placeholder="Example: 2026–27" />
+                    </div>
+
+                    <div class="field">
+                      <label>Principal Name</label>
+                      <input id="principalNameInput" type="text" placeholder="Enter principal name..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Classes Offered</label>
+                      <input id="classesOfferedInput" type="text" placeholder="Example: Nursery to Grade 12" />
+                    </div>
+
+                    <div class="field">
+                      <label>Medium of Instruction</label>
+                      <input id="mediumInput" type="text" placeholder="Example: English" />
+                    </div>
+
+                    <div class="field">
+                      <label>Student Strength</label>
+                      <input id="studentStrengthInput" type="number" placeholder="Enter student count..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Staff Strength</label>
+                      <input id="staffStrengthInput" type="number" placeholder="Enter staff count..." />
+                    </div>
+
+                    <div class="field full">
+                      <label>School Background Note</label>
+                      <textarea id="backgroundNoteInput" placeholder="Briefly describe the school's context, history, and current positioning..."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="status-bar">
+                    <div class="status-text" id="profileStatusText">No school profile has been saved yet.</div>
+                    <div class="btn-row">
+                      <button class="btn light" id="resetProfileBtn">Reset Fields</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <aside class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Why this matters</div>
+                    <div class="window-note">How this page supports later planning.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="info-card">
+                    <div class="info-title">Creates the factual baseline</div>
+                    <div class="info-text">This page gives the basic reference for what kind of school is being planned for.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Supports diagnosis</div>
+                    <div class="info-text">Without school size, board, class range, and staff strength, later diagnosis becomes too vague.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Makes goals more realistic</div>
+                    <div class="info-text">A school serving 350 students and a school serving 2500 students will need very different growth expectations.</div>
+                  </div>
+
+                  <div class="info-card" style="margin-bottom:0;">
+                    <div class="info-title">Feeds the final compiled view</div>
+                    <div class="info-text">Everything saved here will appear later inside Reports and Complete School View.</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <!-- ACADEMIC TAB -->
+          <section class="tab-panel" id="academicTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Academic Snapshot</div>
+                    <div class="window-note">Core teaching and learning structure at a glance.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="resetAcademicBtn">Reset</button>
+                    <button class="btn primary" id="saveAcademicBtn">Save Academic Snapshot</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field">
+                      <label>Average Class Size</label>
+                      <input id="avgClassSizeInput" type="number" placeholder="Example: 32" />
+                    </div>
+
+                    <div class="field">
+                      <label>Student-Teacher Ratio</label>
+                      <input id="ratioInput" type="text" placeholder="Example: 18:1" />
+                    </div>
+
+                    <div class="field">
+                      <label>Key Academic Strength</label>
+                      <input id="academicStrengthInput" type="text" placeholder="Example: Strong board exam performance" />
+                    </div>
+
+                    <div class="field">
+                      <label>Key Academic Gap</label>
+                      <input id="academicGapInput" type="text" placeholder="Example: Weak project-based learning culture" />
+                    </div>
+
+                    <div class="field full">
+                      <label>Academic Offerings / Special Programs</label>
+                      <textarea id="offeringInput" placeholder="Add one offering at a time, separated by commas if needed... Example: STEM lab, remedial classes, Olympiad support, robotics, art integration"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Saved Academic Snapshot</div>
+                    <div class="window-note">Quick view of the currently saved academic data.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">Average Class Size</div>
+                    <div class="preview-value" id="previewAvgClass">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Student-Teacher Ratio</div>
+                    <div class="preview-value" id="previewRatio">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Key Strength / Gap</div>
+                    <div class="preview-value" id="previewAcademicNote">Not added yet.</div>
+                  </div>
+
+                  <div class="table-wrap" style="margin-top:0;">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Academic Offering</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="offeringTableBody">
+                        <tr>
+                          <td colspan="2" class="empty-state">No academic offerings saved yet.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <!-- INFRA TAB -->
+          <section class="tab-panel" id="infrastructureTab">
+            <section class="window">
+              <div class="window-header">
+                <div>
+                  <div class="window-title">Infrastructure Snapshot</div>
+                  <div class="window-note">Add important campus facilities and readiness areas.</div>
+                </div>
+                <div class="btn-row">
+                  <button class="btn light" id="resetInfraBtn">Reset Input</button>
+                  <button class="btn primary" id="addInfraBtn">Add Infrastructure Item</button>
+                </div>
+              </div>
+
+              <div class="window-body">
+                <div class="form-grid">
+                  <div class="field">
+                    <label>Infrastructure Area</label>
+                    <input id="infraNameInput" type="text" placeholder="Example: Science Lab" />
+                  </div>
+
+                  <div class="field">
+                    <label>Status</label>
+                    <select id="infraStatusInput">
+                      <option value="">Select status</option>
+                      <option>Available</option>
+                      <option>Partially Available</option>
+                      <option>Needs Upgrade</option>
+                      <option>Not Available</option>
+                    </select>
+                  </div>
+
+                  <div class="field full">
+                    <label>Remark / Context</label>
+                    <textarea id="infraRemarkInput" placeholder="Add a short note about this infrastructure area..."></textarea>
+                  </div>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Area</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="infraTableBody">
+                      <tr>
+                        <td colspan="4" class="empty-state">No infrastructure items added yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- CONTACT TAB -->
+          <section class="tab-panel" id="contactTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Contact & Location</div>
+                    <div class="window-note">Save the operating location and communication details.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="resetContactBtn">Reset</button>
+                    <button class="btn primary" id="saveContactBtn">Save Contact Details</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field full">
+                      <label>Full Address</label>
+                      <textarea id="addressInput" placeholder="Enter complete school address..."></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label>City</label>
+                      <input id="cityInput" type="text" placeholder="Enter city..." />
+                    </div>
+
+                    <div class="field">
+                      <label>State</label>
+                      <input id="stateInput" type="text" placeholder="Enter state..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Phone Number</label>
+                      <input id="phoneInput" type="text" placeholder="Enter contact number..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Email</label>
+                      <input id="emailInput" type="email" placeholder="Enter email..." />
+                    </div>
+
+                    <div class="field full">
+                      <label>Website / Portal Link</label>
+                      <input id="websiteInput" type="text" placeholder="Enter website or portal link..." />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Saved Contact Preview</div>
+                    <div class="window-note">Simple compiled contact view.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">Address</div>
+                    <div class="preview-value" id="previewAddress">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">City / State</div>
+                    <div class="preview-value" id="previewCityState">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Phone / Email</div>
+                    <div class="preview-value" id="previewPhoneEmail">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card" style="margin-bottom:0;">
+                    <div class="preview-label">Website</div>
+                    <div class="preview-value" id="previewWebsite">Not added yet.</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <!-- PREVIEW TAB -->
+          <section class="tab-panel" id="previewTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Live School Summary</div>
+                    <div class="window-note">Current saved school information at a glance.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">School</div>
+                    <div class="preview-value" id="finalSchoolPreview">No school profile saved yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Institutional Snapshot</div>
+                    <div class="preview-value" id="finalInstitutionPreview">No saved data yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Operational Snapshot</div>
+                    <div class="preview-value" id="finalOperationalPreview">No saved data yet.</div>
+                  </div>
+
+                  <div class="preview-card" style="margin-bottom:0;">
+                    <div class="preview-label">Academic Snapshot</div>
+                    <div class="preview-value" id="finalAcademicPreview">No saved data yet.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Readiness Interpretation</div>
+                    <div class="window-note">What this page currently tells us.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="info-card">
+                    <div class="info-title">School baseline clarity</div>
+                    <div class="info-text" id="baselineNote">The baseline is still weak because important school information is missing.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Why this matters next</div>
+                    <div class="info-text">This page should make diagnosis and SWOT more grounded by clarifying who the school is, what it serves, and how it is set up operationally.</div>
+                  </div>
+
+                  <div class="info-card" style="margin-bottom:0;">
+                    <div class="info-title">Next connected page</div>
+                    <div class="info-text">After this, move to Teams & Committees so accountability structure becomes visible before strategic planning deepens.</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      schoolInfo: "school_information_data",
+      settings: "school_portal_settings",
+      activity: "school_portal_activity_log"
+    };
+
+    let schoolInfoData = {
+      schoolName: "",
+      schoolCode: "",
+      board: "",
+      schoolType: "",
+      academicYear: "",
+      principalName: "",
+      classesOffered: "",
+      medium: "",
+      studentStrength: "",
+      staffStrength: "",
+      backgroundNote: "",
+      avgClassSize: "",
+      studentTeacherRatio: "",
+      academicStrength: "",
+      academicGap: "",
+      academicOfferings: [],
+      infrastructure: [],
+      address: "",
+      city: "",
+      state: "",
+      phone: "",
+      email: "",
+      website: ""
+    };
+
+    let editingInfraIndex = null;
+
+    function readStorage(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch(err){
+        return fallback;
+      }
+    }
+
+    function saveStorage(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function showToast(message, type = "success"){
+      const wrap = document.getElementById("toastWrap");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      wrap.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(8px)";
+      }, 2200);
+
+      setTimeout(() => toast.remove(), 2800);
+    }
+
+    function addActivity(module, action, status = "Saved", statusClass = "green"){
+      const activity = readStorage(STORAGE_KEYS.activity, []);
+      activity.push({
+        time: new Date().toLocaleString(),
+        module,
+        action,
+        status,
+        statusClass
+      });
+      saveStorage(STORAGE_KEYS.activity, activity);
+    }
+
+    function applySettings(){
+      const settings = readStorage(STORAGE_KEYS.settings, {
+        schoolName: "ABC Public School",
+        academicYear: "2026–27"
+      });
+
+      document.getElementById("schoolNameTop").textContent = settings.schoolName || "ABC Public School";
+      document.getElementById("schoolYearTop").textContent = `Academic Year ${settings.academicYear || "2026–27"}`;
+
+      const initials = (settings.schoolName || "ABC Public School")
+        .split(" ")
+        .map(word => word[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+      document.getElementById("schoolBadge").textContent = initials || "SP";
+    }
+
+    function loadData(){
+      const stored = readStorage(STORAGE_KEYS.schoolInfo, null);
+      if(stored){
+        schoolInfoData = {
+          ...schoolInfoData,
+          ...stored,
+          academicOfferings: Array.isArray(stored.academicOfferings) ? stored.academicOfferings : [],
+          infrastructure: Array.isArray(stored.infrastructure) ? stored.infrastructure : []
+        };
+      }
+      hydrateForm();
+      renderAll();
+    }
+
+    function hydrateForm(){
+      document.getElementById("schoolNameInput").value = schoolInfoData.schoolName || "";
+      document.getElementById("schoolCodeInput").value = schoolInfoData.schoolCode || "";
+      document.getElementById("boardInput").value = schoolInfoData.board || "";
+      document.getElementById("schoolTypeInput").value = schoolInfoData.schoolType || "";
+      document.getElementById("quickSchoolType").value = schoolInfoData.schoolType || "Private Unaided";
+      document.getElementById("academicYearInput").value = schoolInfoData.academicYear || "";
+      document.getElementById("principalNameInput").value = schoolInfoData.principalName || "";
+      document.getElementById("classesOfferedInput").value = schoolInfoData.classesOffered || "";
+      document.getElementById("mediumInput").value = schoolInfoData.medium || "";
+      document.getElementById("studentStrengthInput").value = schoolInfoData.studentStrength || "";
+      document.getElementById("staffStrengthInput").value = schoolInfoData.staffStrength || "";
+      document.getElementById("backgroundNoteInput").value = schoolInfoData.backgroundNote || "";
+
+      document.getElementById("avgClassSizeInput").value = schoolInfoData.avgClassSize || "";
+      document.getElementById("ratioInput").value = schoolInfoData.studentTeacherRatio || "";
+      document.getElementById("academicStrengthInput").value = schoolInfoData.academicStrength || "";
+      document.getElementById("academicGapInput").value = schoolInfoData.academicGap || "";
+      document.getElementById("offeringInput").value = schoolInfoData.academicOfferings.join(", ");
+
+      document.getElementById("addressInput").value = schoolInfoData.address || "";
+      document.getElementById("cityInput").value = schoolInfoData.city || "";
+      document.getElementById("stateInput").value = schoolInfoData.state || "";
+      document.getElementById("phoneInput").value = schoolInfoData.phone || "";
+      document.getElementById("emailInput").value = schoolInfoData.email || "";
+      document.getElementById("websiteInput").value = schoolInfoData.website || "";
+    }
+
+    function collectProfileFields(){
+      schoolInfoData.schoolName = document.getElementById("schoolNameInput").value.trim();
+      schoolInfoData.schoolCode = document.getElementById("schoolCodeInput").value.trim();
+      schoolInfoData.board = document.getElementById("boardInput").value;
+      schoolInfoData.schoolType = document.getElementById("schoolTypeInput").value;
+      schoolInfoData.academicYear = document.getElementById("academicYearInput").value.trim();
+      schoolInfoData.principalName = document.getElementById("principalNameInput").value.trim();
+      schoolInfoData.classesOffered = document.getElementById("classesOfferedInput").value.trim();
+      schoolInfoData.medium = document.getElementById("mediumInput").value.trim();
+      schoolInfoData.studentStrength = document.getElementById("studentStrengthInput").value.trim();
+      schoolInfoData.staffStrength = document.getElementById("staffStrengthInput").value.trim();
+      schoolInfoData.backgroundNote = document.getElementById("backgroundNoteInput").value.trim();
+      document.getElementById("quickSchoolType").value = schoolInfoData.schoolType || "Private Unaided";
+    }
+
+    function collectAcademicFields(){
+      schoolInfoData.avgClassSize = document.getElementById("avgClassSizeInput").value.trim();
+      schoolInfoData.studentTeacherRatio = document.getElementById("ratioInput").value.trim();
+      schoolInfoData.academicStrength = document.getElementById("academicStrengthInput").value.trim();
+      schoolInfoData.academicGap = document.getElementById("academicGapInput").value.trim();
+      schoolInfoData.academicOfferings = document.getElementById("offeringInput").value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function collectContactFields(){
+      schoolInfoData.address = document.getElementById("addressInput").value.trim();
+      schoolInfoData.city = document.getElementById("cityInput").value.trim();
+      schoolInfoData.state = document.getElementById("stateInput").value.trim();
+      schoolInfoData.phone = document.getElementById("phoneInput").value.trim();
+      schoolInfoData.email = document.getElementById("emailInput").value.trim();
+      schoolInfoData.website = document.getElementById("websiteInput").value.trim();
+    }
+
+    function saveModule(actionLabel = "School information saved"){
+      saveStorage(STORAGE_KEYS.schoolInfo, schoolInfoData);
+      addActivity("School Information", actionLabel, "Saved", "green");
+      renderAll();
+    }
+
+    function calculateCompletion(){
+      const requiredFields = [
+        schoolInfoData.schoolName,
+        schoolInfoData.schoolCode,
+        schoolInfoData.board,
+        schoolInfoData.schoolType,
+        schoolInfoData.academicYear,
+        schoolInfoData.principalName,
+        schoolInfoData.classesOffered,
+        schoolInfoData.studentStrength,
+        schoolInfoData.staffStrength,
+        schoolInfoData.address,
+        schoolInfoData.city,
+        schoolInfoData.phone
+      ];
+
+      let filled = requiredFields.filter(Boolean).length;
+      if(schoolInfoData.academicOfferings.length > 0) filled += 1;
+      if(schoolInfoData.infrastructure.length > 0) filled += 1;
+      if(schoolInfoData.avgClassSize) filled += 1;
+      if(schoolInfoData.studentTeacherRatio) filled += 1;
+
+      const total = 16;
+      return Math.round((filled / total) * 100);
+    }
+
+    function renderStats(){
+      const completion = calculateCompletion();
+      document.getElementById("completionPercent").textContent = `${completion}%`;
+      document.getElementById("completionBar").style.width = `${completion}%`;
+      document.getElementById("infraCountCard").textContent = schoolInfoData.infrastructure.length;
+      document.getElementById("offeringCountCard").textContent = schoolInfoData.academicOfferings.length;
+
+      let readiness = "Low";
+      if(completion >= 85) readiness = "High";
+      else if(completion >= 55) readiness = "Medium";
+      document.getElementById("readinessCard").textContent = readiness;
+
+      let profileText = "No school profile has been saved yet.";
+      if(completion >= 80) profileText = "This module now offers a strong baseline for diagnosis and planning.";
+      else if(completion >= 50) profileText = "A good amount of school baseline is saved, but some gaps still remain.";
+      else if(completion > 0) profileText = "Basic school data has started coming in, but the profile is still incomplete.";
+      document.getElementById("profileStatusText").textContent = profileText;
+
+      document.getElementById("baselineNote").textContent =
+        completion >= 85
+          ? "The school baseline is quite clear. Diagnosis and later strategy pages can now be built more realistically."
+          : completion >= 55
+          ? "The baseline has a useful structure, but some key details should still be strengthened."
+          : "The baseline is still weak because important school information is missing.";
+    }
+
+    function renderAcademicPreview(){
+      document.getElementById("previewAvgClass").textContent = schoolInfoData.avgClassSize || "Not added yet.";
+      document.getElementById("previewRatio").textContent = schoolInfoData.studentTeacherRatio || "Not added yet.";
+
+      const academicNote = [schoolInfoData.academicStrength, schoolInfoData.academicGap]
+        .filter(Boolean)
+        .join(" | ");
+      document.getElementById("previewAcademicNote").textContent = academicNote || "Not added yet.";
+
+      const tbody = document.getElementById("offeringTableBody");
+      if(!schoolInfoData.academicOfferings.length){
+        tbody.innerHTML = `<tr><td colspan="2" class="empty-state">No academic offerings saved yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      schoolInfoData.academicOfferings.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item)}</td>
+          <td><span class="tag ${index % 2 === 0 ? 'blue' : 'green'}">Saved</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderInfraTable(){
+      const tbody = document.getElementById("infraTableBody");
+      if(!schoolInfoData.infrastructure.length){
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No infrastructure items added yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      schoolInfoData.infrastructure.forEach((item, index) => {
+        const statusClass =
+          item.status === "Available" ? "green" :
+          item.status === "Partially Available" ? "blue" :
+          item.status === "Needs Upgrade" ? "orange" : "red";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.name)}</td>
+          <td><span class="tag ${statusClass}">${escapeHtml(item.status)}</span></td>
+          <td>${escapeHtml(item.remark)}</td>
+          <td>
+            <div class="action-cell">
+              <button class="mini-btn" onclick="editInfra(${index})">Edit</button>
+              <button class="mini-btn delete" onclick="deleteInfra(${index})">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderContactPreview(){
+      document.getElementById("previewAddress").textContent = schoolInfoData.address || "Not added yet.";
+      document.getElementById("previewCityState").textContent =
+        [schoolInfoData.city, schoolInfoData.state].filter(Boolean).join(", ") || "Not added yet.";
+
+      document.getElementById("previewPhoneEmail").textContent =
+        [schoolInfoData.phone, schoolInfoData.email].filter(Boolean).join(" | ") || "Not added yet.";
+
+      document.getElementById("previewWebsite").textContent = schoolInfoData.website || "Not added yet.";
+    }
+
+    function renderFinalPreview(){
+      const schoolLine = [
+        schoolInfoData.schoolName,
+        schoolInfoData.board,
+        schoolInfoData.schoolType
+      ].filter(Boolean).join(" | ");
+
+      document.getElementById("finalSchoolPreview").textContent = schoolLine || "No school profile saved yet.";
+
+      const institutional = [
+        schoolInfoData.principalName ? `Principal: ${schoolInfoData.principalName}` : "",
+        schoolInfoData.classesOffered ? `Classes: ${schoolInfoData.classesOffered}` : "",
+        schoolInfoData.medium ? `Medium: ${schoolInfoData.medium}` : ""
+      ].filter(Boolean).join(" | ");
+
+      document.getElementById("finalInstitutionPreview").textContent = institutional || "No saved data yet.";
+
+      const operational = [
+        schoolInfoData.studentStrength ? `Students: ${schoolInfoData.studentStrength}` : "",
+        schoolInfoData.staffStrength ? `Staff: ${schoolInfoData.staffStrength}` : "",
+        schoolInfoData.infrastructure.length ? `Infrastructure Items: ${schoolInfoData.infrastructure.length}` : ""
+      ].filter(Boolean).join(" | ");
+
+      document.getElementById("finalOperationalPreview").textContent = operational || "No saved data yet.";
+
+      const academic = [
+        schoolInfoData.avgClassSize ? `Avg. Class Size: ${schoolInfoData.avgClassSize}` : "",
+        schoolInfoData.studentTeacherRatio ? `Ratio: ${schoolInfoData.studentTeacherRatio}` : "",
+        schoolInfoData.academicOfferings.length ? `Offerings: ${schoolInfoData.academicOfferings.length}` : ""
+      ].filter(Boolean).join(" | ");
+
+      document.getElementById("finalAcademicPreview").textContent = academic || "No saved data yet.";
+    }
+
+    function renderAll(){
+      renderStats();
+      renderAcademicPreview();
+      renderInfraTable();
+      renderContactPreview();
+      renderFinalPreview();
+    }
+
+    function resetProfileFields(){
+      [
+        "schoolNameInput","schoolCodeInput","academicYearInput","principalNameInput","classesOfferedInput",
+        "mediumInput","studentStrengthInput","staffStrengthInput","backgroundNoteInput"
+      ].forEach(id => document.getElementById(id).value = "");
+
+      document.getElementById("boardInput").value = "";
+      document.getElementById("schoolTypeInput").value = "";
+    }
+
+    function resetAcademicFields(){
+      ["avgClassSizeInput","ratioInput","academicStrengthInput","academicGapInput","offeringInput"]
+        .forEach(id => document.getElementById(id).value = "");
+    }
+
+    function resetInfraFields(){
+      document.getElementById("infraNameInput").value = "";
+      document.getElementById("infraStatusInput").value = "";
+      document.getElementById("infraRemarkInput").value = "";
+      editingInfraIndex = null;
+      document.getElementById("addInfraBtn").textContent = "Add Infrastructure Item";
+    }
+
+    function resetContactFields(){
+      ["addressInput","cityInput","stateInput","phoneInput","emailInput","websiteInput"]
+        .forEach(id => document.getElementById(id).value = "");
+    }
+
+    function saveProfileSection(isDraft = false){
+      collectProfileFields();
+
+      if(!schoolInfoData.schoolName || !schoolInfoData.schoolCode || !schoolInfoData.board){
+        showToast("School Name, School Code, and Board are required.", "error");
+        return;
+      }
+
+      saveModule(isDraft ? "School profile draft saved" : "School profile saved");
+      showToast(isDraft ? "School profile draft saved." : "School profile saved.", "success");
+    }
+
+    function saveAcademicSection(){
+      collectAcademicFields();
+
+      if(!schoolInfoData.avgClassSize && !schoolInfoData.studentTeacherRatio && !schoolInfoData.academicOfferings.length){
+        showToast("Add at least one academic detail before saving.", "error");
+        return;
+      }
+
+      saveModule("Academic snapshot saved");
+      showToast("Academic snapshot saved.", "success");
+    }
+
+    function addOrUpdateInfra(){
+      const name = document.getElementById("infraNameInput").value.trim();
+      const status = document.getElementById("infraStatusInput").value;
+      const remark = document.getElementById("infraRemarkInput").value.trim();
+
+      if(!name || !status){
+        showToast("Infrastructure Area and Status are required.", "error");
+        return;
+      }
+
+      const payload = { name, status, remark };
+
+      if(editingInfraIndex !== null){
+        schoolInfoData.infrastructure[editingInfraIndex] = payload;
+        saveModule("Infrastructure item updated");
+        showToast("Infrastructure item updated.", "success");
+      } else {
+        schoolInfoData.infrastructure.push(payload);
+        saveModule("Infrastructure item added");
+        showToast("Infrastructure item added.", "success");
+      }
+
+      resetInfraFields();
+    }
+
+    function saveContactSection(){
+      collectContactFields();
+
+      if(!schoolInfoData.address || !schoolInfoData.city || !schoolInfoData.phone){
+        showToast("Address, City, and Phone are required.", "error");
+        return;
+      }
+
+      saveModule("Contact details saved");
+      showToast("Contact details saved.", "success");
+    }
+
+    function fillSampleData(){
+      schoolInfoData = {
+        schoolName: "ABC Public School",
+        schoolCode: "APS-0147",
+        board: "CBSE",
+        schoolType: "Private Unaided",
+        academicYear: "2026–27",
+        principalName: "Dr. Meera Sharma",
+        classesOffered: "Nursery to Grade 12",
+        medium: "English",
+        studentStrength: "1850",
+        staffStrength: "112",
+        backgroundNote: "ABC Public School is a mid-to-large urban school focused on academic excellence, discipline, and gradually improving future-readiness and experiential learning systems.",
+        avgClassSize: "34",
+        studentTeacherRatio: "17:1",
+        academicStrength: "Strong board examination outcomes and disciplined classroom systems",
+        academicGap: "Limited interdisciplinary and project-based learning exposure",
+        academicOfferings: ["STEM Lab", "Olympiad Support", "Remedial Classes", "Robotics Club", "Art Integration"],
+        infrastructure: [
+          { name: "Science Lab", status: "Available", remark: "Fully functional for middle and senior grades." },
+          { name: "Computer Lab", status: "Needs Upgrade", remark: "Hardware exists but systems need modernization." },
+          { name: "Library", status: "Available", remark: "Well-stocked but underutilized in daily academic planning." }
+        ],
+        address: "Sector 9, Civil Lines Extension, Jaipur, Rajasthan",
+        city: "Jaipur",
+        state: "Rajasthan",
+        phone: "+91 98765 43210",
+        email: "info@abcpublicschool.edu",
+        website: "https://www.abcpublicschool.edu"
+      };
+
+      hydrateForm();
+      saveModule("Sample school information loaded");
+      showToast("Sample school information loaded.", "success");
+    }
+
+    function clearModuleData(){
+      const ok = confirm("This will clear all saved data in School Information. Continue?");
+      if(!ok) return;
+
+      schoolInfoData = {
+        schoolName: "",
+        schoolCode: "",
+        board: "",
+        schoolType: "",
+        academicYear: "",
+        principalName: "",
+        classesOffered: "",
+        medium: "",
+        studentStrength: "",
+        staffStrength: "",
+        backgroundNote: "",
+        avgClassSize: "",
+        studentTeacherRatio: "",
+        academicStrength: "",
+        academicGap: "",
+        academicOfferings: [],
+        infrastructure: [],
+        address: "",
+        city: "",
+        state: "",
+        phone: "",
+        email: "",
+        website: ""
+      };
+
+      resetInfraFields();
+      hydrateForm();
+      saveStorage(STORAGE_KEYS.schoolInfo, schoolInfoData);
+      addActivity("School Information", "Module cleared", "Cleared", "red");
+      renderAll();
+      showToast("School Information module cleared.", "warn");
+    }
+
+    function setupTabs(){
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const tabPanels = document.querySelectorAll(".tab-panel");
+
+      tabButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.tab;
+
+          tabButtons.forEach(btn => btn.classList.remove("active"));
+          tabPanels.forEach(panel => panel.classList.remove("active"));
+
+          button.classList.add("active");
+          document.getElementById(target).classList.add("active");
+        });
+      });
+    }
+
+    function setupQuickActions(){
+      document.getElementById("quickSchoolType").addEventListener("change", (e) => {
+        document.getElementById("schoolTypeInput").value = e.target.value;
+        schoolInfoData.schoolType = e.target.value;
+        saveModule("School type updated");
+        showToast("School type updated.", "success");
+      });
+
+      document.getElementById("moduleSearch").addEventListener("input", (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        const rows = [
+          ...document.querySelectorAll("#infraTableBody tr"),
+          ...document.querySelectorAll("#offeringTableBody tr")
+        ];
+
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = !q || text.includes(q) ? "" : "none";
+        });
+      });
+    }
+
+    function setupLivePreview(){
+      [
+        "schoolNameInput","schoolCodeInput","academicYearInput","principalNameInput","classesOfferedInput",
+        "mediumInput","studentStrengthInput","staffStrengthInput","backgroundNoteInput","boardInput","schoolTypeInput"
+      ].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectProfileFields();
+          renderAll();
+        });
+        document.getElementById(id).addEventListener("change", () => {
+          collectProfileFields();
+          renderAll();
+        });
+      });
+
+      ["avgClassSizeInput","ratioInput","academicStrengthInput","academicGapInput","offeringInput"].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectAcademicFields();
+          renderAll();
+        });
+      });
+
+      ["addressInput","cityInput","stateInput","phoneInput","emailInput","websiteInput"].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectContactFields();
+          renderAll();
+        });
+      });
+    }
+
+    function escapeHtml(value){
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function editInfra(index){
+      const item = schoolInfoData.infrastructure[index];
+      document.getElementById("infraNameInput").value = item.name;
+      document.getElementById("infraStatusInput").value = item.status;
+      document.getElementById("infraRemarkInput").value = item.remark;
+      editingInfraIndex = index;
+      document.getElementById("addInfraBtn").textContent = "Update Infrastructure Item";
+      showToast("Infrastructure item loaded for editing.", "success");
+    }
+
+    function deleteInfra(index){
+      const ok = confirm("Delete this infrastructure item?");
+      if(!ok) return;
+      schoolInfoData.infrastructure.splice(index, 1);
+      saveModule("Infrastructure item deleted");
+      resetInfraFields();
+      showToast("Infrastructure item deleted.", "warn");
+    }
+
+    window.editInfra = editInfra;
+    window.deleteInfra = deleteInfra;
+
+    document.getElementById("saveProfileBtn").addEventListener("click", () => saveProfileSection(false));
+    document.getElementById("saveDraftBtn").addEventListener("click", () => saveProfileSection(true));
+    document.getElementById("saveModuleTopBtn").addEventListener("click", () => saveProfileSection(false));
+    document.getElementById("saveDraftTopBtn").addEventListener("click", () => saveProfileSection(true));
+
+    document.getElementById("resetProfileBtn").addEventListener("click", () => {
+      resetProfileFields();
+      showToast("Profile fields reset.", "warn");
+    });
+
+    document.getElementById("saveAcademicBtn").addEventListener("click", saveAcademicSection);
+    document.getElementById("resetAcademicBtn").addEventListener("click", () => {
+      resetAcademicFields();
+      showToast("Academic fields reset.", "warn");
+    });
+
+    document.getElementById("addInfraBtn").addEventListener("click", addOrUpdateInfra);
+    document.getElementById("resetInfraBtn").addEventListener("click", () => {
+      resetInfraFields();
+      showToast("Infrastructure input reset.", "warn");
+    });
+
+    document.getElementById("saveContactBtn").addEventListener("click", saveContactSection);
+    document.getElementById("resetContactBtn").addEventListener("click", () => {
+      resetContactFields();
+      showToast("Contact fields reset.", "warn");
+    });
+
+    document.getElementById("fillSampleBtn").addEventListener("click", fillSampleData);
+    document.getElementById("clearModuleBtn").addEventListener("click", clearModuleData);
+
+    applySettings();
+    setupTabs();
+    setupQuickActions();
+    setupLivePreview();
+    loadData();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

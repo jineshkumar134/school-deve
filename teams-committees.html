@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Development Portal - Teams & Committees</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --sidebar-width:280px;
+      --topbar-height:78px;
+      --content-width:1500px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+      font-weight:400;
+    }
+
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+
+    .app{min-height:100vh;display:flex}
+
+    .sidebar{
+      width:var(--sidebar-width);
+      background:var(--panel);
+      border-right:1px solid var(--line);
+      padding:18px 16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      z-index:5;
+    }
+
+    .brand-card{
+      background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:18px;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      line-height:1.3;
+      margin-bottom:6px;
+    }
+
+    .brand-subtitle{
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:12px;
+    }
+
+    .brand-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      border:1px solid var(--primary-border);
+      color:var(--primary);
+      font-size:11px;
+      font-weight:600;
+      line-height:normal;
+    }
+
+    .nav-group{margin-bottom:18px}
+    .nav-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin:0 10px 8px;
+      font-weight:600;
+    }
+
+    .nav-list{display:flex;flex-direction:column;gap:6px}
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      color:var(--text-soft);
+      transition:.2s ease;
+      cursor:pointer;
+    }
+
+    .nav-item:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+      transform:translateX(2px);
+    }
+
+    .nav-item.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-no{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:600;
+      flex-shrink:0;
+      line-height:normal;
+    }
+
+    .nav-item.active .nav-no{
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .nav-label{
+      font-size:13px;
+      font-weight:500;
+      line-height:1.4;
+    }
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:8;
+      height:var(--topbar-height);
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:0 24px;
+    }
+
+    .topbar-inner{
+      width:100%;
+      max-width:var(--content-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .top-left,.top-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .school-pill{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .school-badge{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--secondary);
+      font-size:13px;
+      font-weight:700;
+      line-height:normal;
+    }
+
+    .school-pill strong{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      font-weight:600;
+    }
+
+    .school-pill span{
+      display:block;
+      font-size:11px;
+      color:var(--text-soft);
+      margin-top:2px;
+    }
+
+    .control{
+      height:42px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:0 12px;
+      box-shadow:var(--shadow-sm);
+      color:var(--text);
+    }
+
+    .search{min-width:280px}
+
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow-sm);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .icon-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+    }
+
+    .page-wrap{
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .page{
+      width:100%;
+      max-width:var(--content-width);
+    }
+
+    .page-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:var(--secondary-soft);
+      border:1px solid var(--secondary-border);
+      color:var(--secondary);
+      font-size:11px;
+      font-weight:600;
+      margin-bottom:12px;
+      line-height:normal;
+    }
+
+    .page-title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:13px;
+      color:var(--text-soft);
+      max-width:900px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .btn{
+      height:44px;
+      padding:0 24px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      line-height:normal;
+      text-align:center;
+    }
+
+    .btn.primary{background:var(--primary);color:#fff}
+    .btn.primary:hover{background:#e46c13}
+    .btn.secondary{background:var(--secondary);color:#fff}
+    .btn.secondary:hover{background:#266fa7}
+    .btn.light{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn.light:hover{
+      background:var(--secondary-soft);
+      color:var(--secondary);
+      border-color:var(--secondary-border);
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      min-height:124px;
+    }
+
+    .stat-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+      gap:10px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:500;
+    }
+
+    .stat-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:normal;
+    }
+
+    .orange{background:var(--primary-soft); color:var(--primary); border:1px solid var(--primary-border);}
+    .blue{background:var(--secondary-soft); color:var(--secondary); border:1px solid var(--secondary-border);}
+    .green{background:var(--success-soft); color:var(--success); border:1px solid #cfe8dc;}
+    .yellow{background:var(--warning-soft); color:var(--warning); border:1px solid #f4deab;}
+    .red{background:var(--danger-soft); color:var(--danger); border:1px solid #f0c7c7;}
+
+    .stat-value{
+      font-size:28px;
+      font-weight:700;
+      line-height:normal;
+      margin-bottom:6px;
+    }
+
+    .stat-meta{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .progress-shell{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      background:#edf2f8;
+      overflow:hidden;
+      border:1px solid #e2e8f0;
+      margin-top:10px;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius:999px;
+      transition:width .3s ease;
+    }
+
+    .section-switch{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:18px;
+    }
+
+    .tab-btn{
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text-soft);
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .tab-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .tab-btn.active{
+      background:var(--primary-soft);
+      border-color:var(--primary-border);
+      color:var(--primary);
+    }
+
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    .grid-main{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .window{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-bottom:18px;
+    }
+
+    .window-header{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .window-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:2px;
+    }
+
+    .window-note{
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    .window-body{padding:20px}
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .field.full{grid-column:1/-1}
+
+    .field label{
+      font-size:13px;
+      font-weight:600;
+      color:var(--text);
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+      color:var(--text);
+      outline:none;
+      transition:.2s ease;
+    }
+
+    .field textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:var(--secondary-border);
+      box-shadow:0 0 0 4px rgba(45,129,193,.07);
+    }
+
+    .field-help{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .status-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel-2);
+    }
+
+    .status-text{
+      font-size:13px;
+      color:var(--text-soft);
+    }
+
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+      margin-top:18px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead th{
+      background:#fafbfd;
+      padding:14px;
+      text-align:left;
+      font-size:12px;
+      color:var(--text-soft);
+      font-weight:600;
+      border-bottom:1px solid var(--line);
+    }
+
+    tbody td{
+      padding:14px;
+      font-size:13px;
+      border-bottom:1px solid #eef2f7;
+      vertical-align:top;
+    }
+
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#fcfdff}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:600;
+      border:1px solid transparent;
+      white-space:nowrap;
+      line-height:normal;
+    }
+
+    .action-cell{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      min-height:34px;
+      padding:0 10px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .mini-btn:hover{
+      background:var(--secondary-soft);
+      border-color:var(--secondary-border);
+      color:var(--secondary);
+    }
+
+    .mini-btn.delete:hover{
+      background:#ffeaea;
+      border-color:#f0c7c7;
+      color:var(--danger);
+    }
+
+    .preview-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:12px;
+    }
+
+    .preview-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:var(--muted);
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    .preview-value{
+      font-size:14px;
+      line-height:1.7;
+      color:var(--text);
+    }
+
+    .info-card{
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .info-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .info-text{
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.7;
+    }
+
+    .empty-state{
+      text-align:center;
+      padding:22px 14px;
+      color:var(--text-soft);
+      font-size:13px;
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toast{
+      min-width:260px;
+      max-width:360px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-left:4px solid var(--secondary);
+      box-shadow:0 16px 30px rgba(20,30,45,.12);
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13px;
+    }
+
+    .toast.success{border-left-color:var(--success)}
+    .toast.warn{border-left-color:var(--primary)}
+    .toast.error{border-left-color:var(--danger)}
+
+    @media (max-width:1200px){
+      .grid-main,.grid-2,.stats-grid,.form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:980px){
+      .sidebar{display:none}
+      .topbar{height:auto;padding:14px 18px}
+      .topbar-inner{flex-direction:column;align-items:stretch}
+      .top-left,.top-right{flex-wrap:wrap}
+      .search{min-width:unset;flex:1}
+      .page-header{flex-direction:column}
+    }
+
+    @media (max-width:640px){
+      .page-wrap{padding:16px}
+      .page-title{font-size:24px}
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <div class="brand-title">School Development Portal</div>
+        <div class="brand-subtitle">Planning, evaluation, monitoring, and school improvement in one connected front-end system.</div>
+        <div class="brand-chip">Teams & Committees Module</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item active">
+            <div class="nav-no">04</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="top-left">
+            <div class="school-pill">
+              <div class="school-badge" id="schoolBadge">SP</div>
+              <div>
+                <strong id="schoolNameTop">ABC Public School</strong>
+                <span id="schoolYearTop">Academic Year 2026–27</span>
+              </div>
+            </div>
+
+            <select class="control" id="quickFrequency">
+              <option value="Monthly">Monthly Review</option>
+              <option value="Quarterly">Quarterly Review</option>
+              <option value="Half-Yearly">Half-Yearly Review</option>
+            </select>
+          </div>
+
+          <div class="top-right">
+            <input class="control search" id="moduleSearch" type="text" placeholder="Search leadership, committees, or roles..." />
+            <button class="icon-btn" id="fillSampleBtn" title="Fill example content">✨</button>
+            <button class="icon-btn" id="clearModuleBtn" title="Clear this module">⌫</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <main class="page">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Module 3: Teams & Committees</div>
+              <h1 class="page-title">Leadership Structure, Committees & Ownership</h1>
+              <div class="page-subtitle">
+                This page defines who is responsible for what inside the school. It should clearly show leadership roles,
+                committees, ownership areas, and how reviews happen so that later goals and action plans have real accountability.
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn light" id="saveDraftTopBtn">Save Draft</button>
+              <button class="btn primary" id="saveModuleTopBtn">Save Module</button>
+              <a href="dashboard.html" class="btn secondary">Back to Dashboard</a>
+            </div>
+          </div>
+
+          <section class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Module Completion</div>
+                <div class="stat-icon orange"><i data-lucide="clipboard-list"></i></div>
+              </div>
+              <div class="stat-value" id="completionPercent">0%</div>
+              <div class="stat-meta">Based on leadership and committee coverage</div>
+              <div class="progress-shell"><div class="progress-fill" id="completionBar"></div></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Leadership Roles</div>
+                <div class="stat-icon blue"><i data-lucide="user-check"></i></div>
+              </div>
+              <div class="stat-value" id="leadersCountCard">0</div>
+              <div class="stat-meta">Core school leadership positions saved</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Committees</div>
+                <div class="stat-icon green"><i data-lucide="users"></i></div>
+              </div>
+              <div class="stat-value" id="committeesCountCard">0</div>
+              <div class="stat-meta">Committees or groups currently defined</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-head">
+                <div class="stat-label">Ownership Clarity</div>
+                <div class="stat-icon yellow"><i data-lucide="info"></i></div>
+              </div>
+              <div class="stat-value" id="ownershipCard">Low</div>
+              <div class="stat-meta">Quick qualitative read of accountability structure</div>
+            </div>
+          </section>
+
+          <div class="section-switch">
+            <button class="tab-btn active" data-tab="leadershipTab">Leadership Team</button>
+            <button class="tab-btn" data-tab="committeesTab">Committees</button>
+            <button class="tab-btn" data-tab="ownershipTab">Ownership & Review</button>
+            <button class="tab-btn" data-tab="previewTab">Live Preview</button>
+          </div>
+
+          <!-- LEADERSHIP TAB -->
+          <section class="tab-panel active" id="leadershipTab">
+            <section class="window">
+              <div class="window-header">
+                <div>
+                  <div class="window-title">Leadership Team Structure</div>
+                  <div class="window-note">Add key decision-makers and role clarity.</div>
+                </div>
+                <div class="btn-row">
+                  <button class="btn light" id="resetLeaderBtn">Reset Input</button>
+                  <button class="btn primary" id="addLeaderBtn">Add Leadership Role</button>
+                </div>
+              </div>
+
+              <div class="window-body">
+                <div class="form-grid">
+                  <div class="field">
+                    <label>Role Title</label>
+                    <input id="leaderRoleInput" type="text" placeholder="Example: Principal" />
+                  </div>
+
+                  <div class="field">
+                    <label>Person Name</label>
+                    <input id="leaderNameInput" type="text" placeholder="Enter name..." />
+                  </div>
+
+                  <div class="field">
+                    <label>Primary Responsibility Area</label>
+                    <input id="leaderAreaInput" type="text" placeholder="Example: Academic leadership" />
+                  </div>
+
+                  <div class="field">
+                    <label>Reporting To</label>
+                    <input id="leaderReportsToInput" type="text" placeholder="Example: Director / Management" />
+                  </div>
+
+                  <div class="field full">
+                    <label>Role Note</label>
+                    <textarea id="leaderNoteInput" placeholder="Add a short description of what this role handles..."></textarea>
+                  </div>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Role</th>
+                        <th>Name</th>
+                        <th>Primary Area</th>
+                        <th>Reports To</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="leadersTableBody">
+                      <tr>
+                        <td colspan="5" class="empty-state">No leadership roles added yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- COMMITTEES TAB -->
+          <section class="tab-panel" id="committeesTab">
+            <div class="grid-main">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Committees & Working Groups</div>
+                    <div class="window-note">Add committee ownership, function, and cadence.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="resetCommitteeBtn">Reset Input</button>
+                    <button class="btn primary" id="addCommitteeBtn">Add Committee</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field">
+                      <label>Committee Name</label>
+                      <input id="committeeNameInput" type="text" placeholder="Example: Academic Excellence Committee" />
+                    </div>
+
+                    <div class="field">
+                      <label>Committee Lead</label>
+                      <input id="committeeLeadInput" type="text" placeholder="Enter lead name..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Purpose / Focus Area</label>
+                      <input id="committeePurposeInput" type="text" placeholder="Example: Learning quality and assessment review" />
+                    </div>
+
+                    <div class="field">
+                      <label>Review Frequency</label>
+                      <select id="committeeFrequencyInput">
+                        <option value="">Select frequency</option>
+                        <option>Weekly</option>
+                        <option>Monthly</option>
+                        <option>Quarterly</option>
+                        <option>Half-Yearly</option>
+                      </select>
+                    </div>
+
+                    <div class="field">
+                      <label>Members Count</label>
+                      <input id="committeeMembersInput" type="number" placeholder="Enter member count..." />
+                    </div>
+
+                    <div class="field">
+                      <label>Status</label>
+                      <select id="committeeStatusInput">
+                        <option value="">Select status</option>
+                        <option>Active</option>
+                        <option>Needs Clarity</option>
+                        <option>To Be Formed</option>
+                      </select>
+                    </div>
+
+                    <div class="field full">
+                      <label>Committee Note</label>
+                      <textarea id="committeeNoteInput" placeholder="Add a short explanation of what this committee actually does..."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Committee</th>
+                          <th>Lead</th>
+                          <th>Purpose</th>
+                          <th>Frequency</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="committeesTableBody">
+                        <tr>
+                          <td colspan="6" class="empty-state">No committees added yet.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <aside class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Why committees matter</div>
+                    <div class="window-note">How this page helps later modules.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="info-card">
+                    <div class="info-title">Action plans need owners</div>
+                    <div class="info-text">When goals are created later, these committees can directly take responsibility for execution and review.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Reduces generic planning</div>
+                    <div class="info-text">Instead of saying Ã¢â‚¬Å“the school should do this,Ã¢â‚¬Â you can later say exactly which team or committee should do it.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Supports monitoring</div>
+                    <div class="info-text">Review frequency and committee status become useful inputs when monitoring cycles are set up.</div>
+                  </div>
+
+                  <div class="info-card" style="margin-bottom:0;">
+                    <div class="info-title">Improves accountability</div>
+                    <div class="info-text">A good structure here makes the rest of the portal feel much more realistic and operational.</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <!-- OWNERSHIP TAB -->
+          <section class="tab-panel" id="ownershipTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Ownership & Review Logic</div>
+                    <div class="window-note">Define how accountability works across the school.</div>
+                  </div>
+                  <div class="btn-row">
+                    <button class="btn light" id="resetOwnershipBtn">Reset</button>
+                    <button class="btn primary" id="saveOwnershipBtn">Save Ownership Setup</button>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="form-grid">
+                    <div class="field">
+                      <label>Main Accountability Owner</label>
+                      <input id="mainOwnerInput" type="text" placeholder="Example: Principal" />
+                    </div>
+
+                    <div class="field">
+                      <label>Review Frequency</label>
+                      <select id="reviewFrequencyInput">
+                        <option value="">Select frequency</option>
+                        <option>Weekly</option>
+                        <option>Monthly</option>
+                        <option>Quarterly</option>
+                        <option>Half-Yearly</option>
+                      </select>
+                    </div>
+
+                    <div class="field">
+                      <label>Escalation Level 1</label>
+                      <input id="escalation1Input" type="text" placeholder="Example: Vice Principal" />
+                    </div>
+
+                    <div class="field">
+                      <label>Escalation Level 2</label>
+                      <input id="escalation2Input" type="text" placeholder="Example: Director" />
+                    </div>
+
+                    <div class="field full">
+                      <label>Ownership Note</label>
+                      <textarea id="ownershipNoteInput" placeholder="Write how committee reviews, role handovers, and accountability work in the school..."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="status-bar">
+                    <div class="status-text" id="ownershipStatusText">No ownership structure saved yet.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Saved Ownership Snapshot</div>
+                    <div class="window-note">Quick view of the current governance logic.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">Main Accountability Owner</div>
+                    <div class="preview-value" id="previewMainOwner">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Review Cadence</div>
+                    <div class="preview-value" id="previewReviewFrequency">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Escalation Path</div>
+                    <div class="preview-value" id="previewEscalation">Not added yet.</div>
+                  </div>
+
+                  <div class="preview-card" style="margin-bottom:0;">
+                    <div class="preview-label">Ownership Note</div>
+                    <div class="preview-value" id="previewOwnershipNote">Not added yet.</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <!-- PREVIEW TAB -->
+          <section class="tab-panel" id="previewTab">
+            <div class="grid-2">
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Live Structure Summary</div>
+                    <div class="window-note">Current people and committee structure at a glance.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="preview-card">
+                    <div class="preview-label">Leadership Snapshot</div>
+                    <div class="preview-value" id="finalLeadershipPreview">No leadership roles saved yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Committee Snapshot</div>
+                    <div class="preview-value" id="finalCommitteePreview">No committees saved yet.</div>
+                  </div>
+
+                  <div class="preview-card">
+                    <div class="preview-label">Governance Snapshot</div>
+                    <div class="preview-value" id="finalGovernancePreview">No governance data saved yet.</div>
+                  </div>
+
+                  <div class="preview-card" style="margin-bottom:0;">
+                    <div class="preview-label">Operational Meaning</div>
+                    <div class="preview-value" id="finalOperationalMeaning">The school accountability structure is not yet clear.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="window">
+                <div class="window-header">
+                  <div>
+                    <div class="window-title">Readiness Interpretation</div>
+                    <div class="window-note">What this module is telling us right now.</div>
+                  </div>
+                </div>
+
+                <div class="window-body">
+                  <div class="info-card">
+                    <div class="info-title">Leadership clarity</div>
+                    <div class="info-text" id="leadershipInterpretation">The school still needs a clearer accountability structure.</div>
+                  </div>
+
+                  <div class="info-card">
+                    <div class="info-title">Why this matters next</div>
+                    <div class="info-text">Diagnosis, SWOT, and goals become much more actionable when roles and committees are already defined here.</div>
+                  </div>
+
+                  <div class="info-card" style="margin-bottom:0;">
+                    <div class="info-title">Next connected page</div>
+                    <div class="info-text">After this, move to Market Dynamics so the school's external context can be understood before deeper diagnosis.</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      teams: "school_teams_committees_data",
+      settings: "school_portal_settings",
+      activity: "school_portal_activity_log"
+    };
+
+    let teamsData = {
+      leadership: [],
+      committees: [],
+      mainOwner: "",
+      reviewFrequency: "",
+      escalationLevel1: "",
+      escalationLevel2: "",
+      ownershipNote: ""
+    };
+
+    let editingLeaderIndex = null;
+    let editingCommitteeIndex = null;
+
+    function readStorage(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch(err){
+        return fallback;
+      }
+    }
+
+    function saveStorage(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function showToast(message, type = "success"){
+      const wrap = document.getElementById("toastWrap");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      wrap.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(8px)";
+      }, 2200);
+
+      setTimeout(() => toast.remove(), 2800);
+    }
+
+    function addActivity(module, action, status = "Saved", statusClass = "green"){
+      const activity = readStorage(STORAGE_KEYS.activity, []);
+      activity.push({
+        time: new Date().toLocaleString(),
+        module,
+        action,
+        status,
+        statusClass
+      });
+      saveStorage(STORAGE_KEYS.activity, activity);
+    }
+
+    function applySettings(){
+      const settings = readStorage(STORAGE_KEYS.settings, {
+        schoolName: "ABC Public School",
+        academicYear: "2026–27"
+      });
+
+      document.getElementById("schoolNameTop").textContent = settings.schoolName || "ABC Public School";
+      document.getElementById("schoolYearTop").textContent = `Academic Year ${settings.academicYear || "2026–27"}`;
+
+      const initials = (settings.schoolName || "ABC Public School")
+        .split(" ")
+        .map(word => word[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+      document.getElementById("schoolBadge").textContent = initials || "SP";
+    }
+
+    function loadData(){
+      const stored = readStorage(STORAGE_KEYS.teams, null);
+      if(stored){
+        teamsData = {
+          ...teamsData,
+          ...stored,
+          leadership: Array.isArray(stored.leadership) ? stored.leadership : [],
+          committees: Array.isArray(stored.committees) ? stored.committees : []
+        };
+      }
+      hydrateForm();
+      renderAll();
+    }
+
+    function hydrateForm(){
+      document.getElementById("mainOwnerInput").value = teamsData.mainOwner || "";
+      document.getElementById("reviewFrequencyInput").value = teamsData.reviewFrequency || "";
+      document.getElementById("quickFrequency").value = teamsData.reviewFrequency || "Monthly";
+      document.getElementById("escalation1Input").value = teamsData.escalationLevel1 || "";
+      document.getElementById("escalation2Input").value = teamsData.escalationLevel2 || "";
+      document.getElementById("ownershipNoteInput").value = teamsData.ownershipNote || "";
+    }
+
+    function collectOwnershipFields(){
+      teamsData.mainOwner = document.getElementById("mainOwnerInput").value.trim();
+      teamsData.reviewFrequency = document.getElementById("reviewFrequencyInput").value;
+      teamsData.escalationLevel1 = document.getElementById("escalation1Input").value.trim();
+      teamsData.escalationLevel2 = document.getElementById("escalation2Input").value.trim();
+      teamsData.ownershipNote = document.getElementById("ownershipNoteInput").value.trim();
+      document.getElementById("quickFrequency").value = teamsData.reviewFrequency || "Monthly";
+    }
+
+    function saveModule(actionLabel = "Teams and committees saved"){
+      saveStorage(STORAGE_KEYS.teams, teamsData);
+      addActivity("Teams & Committees", actionLabel, "Saved", "green");
+      renderAll();
+    }
+
+    function calculateCompletion(){
+      let filled = 0;
+      if(teamsData.leadership.length > 0) filled += 1;
+      if(teamsData.leadership.length >= 3) filled += 1;
+      if(teamsData.committees.length > 0) filled += 1;
+      if(teamsData.committees.length >= 3) filled += 1;
+      if(teamsData.mainOwner) filled += 1;
+      if(teamsData.reviewFrequency) filled += 1;
+      if(teamsData.escalationLevel1) filled += 1;
+      if(teamsData.ownershipNote) filled += 1;
+
+      const total = 8;
+      return Math.round((filled / total) * 100);
+    }
+
+    function renderStats(){
+      const completion = calculateCompletion();
+      document.getElementById("completionPercent").textContent = `${completion}%`;
+      document.getElementById("completionBar").style.width = `${completion}%`;
+      document.getElementById("leadersCountCard").textContent = teamsData.leadership.length;
+      document.getElementById("committeesCountCard").textContent = teamsData.committees.length;
+
+      let ownership = "Low";
+      if(completion >= 85) ownership = "High";
+      else if(completion >= 55) ownership = "Medium";
+      document.getElementById("ownershipCard").textContent = ownership;
+
+      const ownershipText =
+        completion >= 85
+          ? "The school now has a fairly clear operational accountability structure."
+          : completion >= 55
+          ? "There is some ownership clarity, but more structure is still needed."
+          : "No ownership structure saved yet.";
+      document.getElementById("ownershipStatusText").textContent = ownershipText;
+
+      document.getElementById("leadershipInterpretation").textContent =
+        completion >= 85
+          ? "Leadership and committee structure look fairly ready for strategic planning and execution."
+          : completion >= 55
+          ? "A basic structure exists, but ownership and committees still need strengthening."
+          : "The school still needs a clearer accountability structure.";
+    }
+
+    function renderLeaders(){
+      const tbody = document.getElementById("leadersTableBody");
+      if(!teamsData.leadership.length){
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No leadership roles added yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      teamsData.leadership.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.role)}</td>
+          <td>${escapeHtml(item.name)}</td>
+          <td>${escapeHtml(item.area)}</td>
+          <td>${escapeHtml(item.reportsTo)}</td>
+          <td>
+            <div class="action-cell">
+              <button class="mini-btn" onclick="editLeader(${index})">Edit</button>
+              <button class="mini-btn delete" onclick="deleteLeader(${index})">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCommittees(){
+      const tbody = document.getElementById("committeesTableBody");
+      if(!teamsData.committees.length){
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No committees added yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      teamsData.committees.forEach((item, index) => {
+        const statusClass =
+          item.status === "Active" ? "green" :
+          item.status === "Needs Clarity" ? "orange" : "red";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(item.name)}</td>
+          <td>${escapeHtml(item.lead)}</td>
+          <td>${escapeHtml(item.purpose)}</td>
+          <td>${escapeHtml(item.frequency)}</td>
+          <td><span class="tag ${statusClass}">${escapeHtml(item.status)}</span></td>
+          <td>
+            <div class="action-cell">
+              <button class="mini-btn" onclick="editCommittee(${index})">Edit</button>
+              <button class="mini-btn delete" onclick="deleteCommittee(${index})">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderOwnershipPreview(){
+      document.getElementById("previewMainOwner").textContent = teamsData.mainOwner || "Not added yet.";
+      document.getElementById("previewReviewFrequency").textContent = teamsData.reviewFrequency || "Not added yet.";
+
+      const escalation = [teamsData.escalationLevel1, teamsData.escalationLevel2].filter(Boolean).join(" Ã¢â€ â€™ ");
+      document.getElementById("previewEscalation").textContent = escalation || "Not added yet.";
+      document.getElementById("previewOwnershipNote").textContent = teamsData.ownershipNote || "Not added yet.";
+    }
+
+    function renderFinalPreview(){
+      const leadership = teamsData.leadership.length
+        ? `${teamsData.leadership.length} leadership role(s) defined, including ${teamsData.leadership.slice(0,2).map(item => item.role).join(" and ")}.`
+        : "No leadership roles saved yet.";
+
+      const committees = teamsData.committees.length
+        ? `${teamsData.committees.length} committee/working group(s) defined.`
+        : "No committees saved yet.";
+
+      const governance = [
+        teamsData.mainOwner ? `Main Owner: ${teamsData.mainOwner}` : "",
+        teamsData.reviewFrequency ? `Review: ${teamsData.reviewFrequency}` : "",
+        teamsData.escalationLevel1 ? `Escalation: ${teamsData.escalationLevel1}` : ""
+      ].filter(Boolean).join(" | ");
+
+      const meaning =
+        calculateCompletion() >= 85
+          ? "The school has a reasonably clear chain of responsibility for future action planning."
+          : calculateCompletion() >= 55
+          ? "The school has a partly defined accountability structure but still needs stronger role clarity."
+          : "The school accountability structure is not yet clear.";
+
+      document.getElementById("finalLeadershipPreview").textContent = leadership;
+      document.getElementById("finalCommitteePreview").textContent = committees;
+      document.getElementById("finalGovernancePreview").textContent = governance || "No governance data saved yet.";
+      document.getElementById("finalOperationalMeaning").textContent = meaning;
+    }
+
+    function renderAll(){
+      renderStats();
+      renderLeaders();
+      renderCommittees();
+      renderOwnershipPreview();
+      renderFinalPreview();
+    }
+
+    function resetLeaderFields(){
+      document.getElementById("leaderRoleInput").value = "";
+      document.getElementById("leaderNameInput").value = "";
+      document.getElementById("leaderAreaInput").value = "";
+      document.getElementById("leaderReportsToInput").value = "";
+      document.getElementById("leaderNoteInput").value = "";
+      editingLeaderIndex = null;
+      document.getElementById("addLeaderBtn").textContent = "Add Leadership Role";
+    }
+
+    function resetCommitteeFields(){
+      document.getElementById("committeeNameInput").value = "";
+      document.getElementById("committeeLeadInput").value = "";
+      document.getElementById("committeePurposeInput").value = "";
+      document.getElementById("committeeFrequencyInput").value = "";
+      document.getElementById("committeeMembersInput").value = "";
+      document.getElementById("committeeStatusInput").value = "";
+      document.getElementById("committeeNoteInput").value = "";
+      editingCommitteeIndex = null;
+      document.getElementById("addCommitteeBtn").textContent = "Add Committee";
+    }
+
+    function resetOwnershipFields(){
+      document.getElementById("mainOwnerInput").value = "";
+      document.getElementById("reviewFrequencyInput").value = "";
+      document.getElementById("escalation1Input").value = "";
+      document.getElementById("escalation2Input").value = "";
+      document.getElementById("ownershipNoteInput").value = "";
+    }
+
+    function addOrUpdateLeader(){
+      const role = document.getElementById("leaderRoleInput").value.trim();
+      const name = document.getElementById("leaderNameInput").value.trim();
+      const area = document.getElementById("leaderAreaInput").value.trim();
+      const reportsTo = document.getElementById("leaderReportsToInput").value.trim();
+      const note = document.getElementById("leaderNoteInput").value.trim();
+
+      if(!role || !name || !area){
+        showToast("Role, Person Name, and Primary Responsibility Area are required.", "error");
+        return;
+      }
+
+      const payload = { role, name, area, reportsTo, note };
+
+      if(editingLeaderIndex !== null){
+        teamsData.leadership[editingLeaderIndex] = payload;
+        saveModule("Leadership role updated");
+        showToast("Leadership role updated.", "success");
+      } else {
+        teamsData.leadership.push(payload);
+        saveModule("Leadership role added");
+        showToast("Leadership role added.", "success");
+      }
+
+      resetLeaderFields();
+    }
+
+    function addOrUpdateCommittee(){
+      const name = document.getElementById("committeeNameInput").value.trim();
+      const lead = document.getElementById("committeeLeadInput").value.trim();
+      const purpose = document.getElementById("committeePurposeInput").value.trim();
+      const frequency = document.getElementById("committeeFrequencyInput").value;
+      const members = document.getElementById("committeeMembersInput").value.trim();
+      const status = document.getElementById("committeeStatusInput").value;
+      const note = document.getElementById("committeeNoteInput").value.trim();
+
+      if(!name || !lead || !purpose || !frequency || !status){
+        showToast("Committee Name, Lead, Purpose, Frequency, and Status are required.", "error");
+        return;
+      }
+
+      const payload = { name, lead, purpose, frequency, members, status, note };
+
+      if(editingCommitteeIndex !== null){
+        teamsData.committees[editingCommitteeIndex] = payload;
+        saveModule("Committee updated");
+        showToast("Committee updated.", "success");
+      } else {
+        teamsData.committees.push(payload);
+        saveModule("Committee added");
+        showToast("Committee added.", "success");
+      }
+
+      resetCommitteeFields();
+    }
+
+    function saveOwnershipSection(isDraft = false){
+      collectOwnershipFields();
+
+      if(!teamsData.mainOwner || !teamsData.reviewFrequency){
+        showToast("Main Accountability Owner and Review Frequency are required.", "error");
+        return;
+      }
+
+      saveModule(isDraft ? "Ownership draft saved" : "Ownership structure saved");
+      showToast(isDraft ? "Ownership draft saved." : "Ownership structure saved.", "success");
+    }
+
+    function fillSampleData(){
+      teamsData = {
+        leadership: [
+          {
+            role: "Principal",
+            name: "Dr. Meera Sharma",
+            area: "Overall academic and operational leadership",
+            reportsTo: "Director / Management",
+            note: "Leads school vision execution, culture, teacher performance, and student outcomes."
+          },
+          {
+            role: "Vice Principal",
+            name: "Arjun Khanna",
+            area: "School operations and discipline",
+            reportsTo: "Principal",
+            note: "Handles day-to-day coordination, discipline systems, and implementation support."
+          },
+          {
+            role: "Academic Coordinator",
+            name: "Ritika Saini",
+            area: "Curriculum planning and assessment",
+            reportsTo: "Principal",
+            note: "Supports teacher planning, learning quality, and academic reviews."
+          }
+        ],
+        committees: [
+          {
+            name: "Academic Excellence Committee",
+            lead: "Ritika Saini",
+            purpose: "Improve teaching quality, assessment clarity, and learning outcomes",
+            frequency: "Monthly",
+            members: "6",
+            status: "Active",
+            note: "Reviews lesson quality, assessment practices, and intervention needs."
+          },
+          {
+            name: "Student Wellbeing Committee",
+            lead: "Arjun Khanna",
+            purpose: "Monitor student wellbeing, behaviour, and pastoral systems",
+            frequency: "Monthly",
+            members: "5",
+            status: "Active",
+            note: "Tracks discipline trends, wellbeing concerns, and culture issues."
+          },
+          {
+            name: "Parent Engagement Committee",
+            lead: "Neha Verma",
+            purpose: "Strengthen parent communication and trust-building",
+            frequency: "Quarterly",
+            members: "4",
+            status: "Needs Clarity",
+            note: "Needs stronger cadence and ownership definition."
+          }
+        ],
+        mainOwner: "Principal",
+        reviewFrequency: "Monthly",
+        escalationLevel1: "Vice Principal",
+        escalationLevel2: "Director / Management",
+        ownershipNote: "All major school improvement reviews begin at committee level, are consolidated by leadership, and escalate to management where major policy or resource decisions are required."
+      };
+
+      hydrateForm();
+      saveModule("Sample team and committee data loaded");
+      showToast("Sample Teams & Committees content loaded.", "success");
+    }
+
+    function clearModuleData(){
+      const ok = confirm("This will clear all saved data in Teams & Committees. Continue?");
+      if(!ok) return;
+
+      teamsData = {
+        leadership: [],
+        committees: [],
+        mainOwner: "",
+        reviewFrequency: "",
+        escalationLevel1: "",
+        escalationLevel2: "",
+        ownershipNote: ""
+      };
+
+      resetLeaderFields();
+      resetCommitteeFields();
+      hydrateForm();
+      saveStorage(STORAGE_KEYS.teams, teamsData);
+      addActivity("Teams & Committees", "Module cleared", "Cleared", "red");
+      renderAll();
+      showToast("Teams & Committees module cleared.", "warn");
+    }
+
+    function setupTabs(){
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const tabPanels = document.querySelectorAll(".tab-panel");
+
+      tabButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.tab;
+
+          tabButtons.forEach(btn => btn.classList.remove("active"));
+          tabPanels.forEach(panel => panel.classList.remove("active"));
+
+          button.classList.add("active");
+          document.getElementById(target).classList.add("active");
+        });
+      });
+    }
+
+    function setupQuickActions(){
+      document.getElementById("quickFrequency").addEventListener("change", (e) => {
+        document.getElementById("reviewFrequencyInput").value = e.target.value;
+        teamsData.reviewFrequency = e.target.value;
+        saveModule("Review frequency updated");
+        showToast("Review frequency updated.", "success");
+      });
+
+      document.getElementById("moduleSearch").addEventListener("input", (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        const rows = [
+          ...document.querySelectorAll("#leadersTableBody tr"),
+          ...document.querySelectorAll("#committeesTableBody tr")
+        ];
+
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = !q || text.includes(q) ? "" : "none";
+        });
+      });
+    }
+
+    function setupLivePreview(){
+      ["mainOwnerInput","reviewFrequencyInput","escalation1Input","escalation2Input","ownershipNoteInput"].forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+          collectOwnershipFields();
+          renderAll();
+        });
+        document.getElementById(id).addEventListener("change", () => {
+          collectOwnershipFields();
+          renderAll();
+        });
+      });
+    }
+
+    function escapeHtml(value){
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function editLeader(index){
+      const item = teamsData.leadership[index];
+      document.getElementById("leaderRoleInput").value = item.role;
+      document.getElementById("leaderNameInput").value = item.name;
+      document.getElementById("leaderAreaInput").value = item.area;
+      document.getElementById("leaderReportsToInput").value = item.reportsTo;
+      document.getElementById("leaderNoteInput").value = item.note;
+      editingLeaderIndex = index;
+      document.getElementById("addLeaderBtn").textContent = "Update Leadership Role";
+      showToast("Leadership role loaded for editing.", "success");
+    }
+
+    function deleteLeader(index){
+      const ok = confirm("Delete this leadership role?");
+      if(!ok) return;
+      teamsData.leadership.splice(index, 1);
+      saveModule("Leadership role deleted");
+      resetLeaderFields();
+      showToast("Leadership role deleted.", "warn");
+    }
+
+    function editCommittee(index){
+      const item = teamsData.committees[index];
+      document.getElementById("committeeNameInput").value = item.name;
+      document.getElementById("committeeLeadInput").value = item.lead;
+      document.getElementById("committeePurposeInput").value = item.purpose;
+      document.getElementById("committeeFrequencyInput").value = item.frequency;
+      document.getElementById("committeeMembersInput").value = item.members;
+      document.getElementById("committeeStatusInput").value = item.status;
+      document.getElementById("committeeNoteInput").value = item.note;
+      editingCommitteeIndex = index;
+      document.getElementById("addCommitteeBtn").textContent = "Update Committee";
+      showToast("Committee loaded for editing.", "success");
+    }
+
+    function deleteCommittee(index){
+      const ok = confirm("Delete this committee?");
+      if(!ok) return;
+      teamsData.committees.splice(index, 1);
+      saveModule("Committee deleted");
+      resetCommitteeFields();
+      showToast("Committee deleted.", "warn");
+    }
+
+    window.editLeader = editLeader;
+    window.deleteLeader = deleteLeader;
+    window.editCommittee = editCommittee;
+    window.deleteCommittee = deleteCommittee;
+
+    document.getElementById("addLeaderBtn").addEventListener("click", addOrUpdateLeader);
+    document.getElementById("resetLeaderBtn").addEventListener("click", () => {
+      resetLeaderFields();
+      showToast("Leadership input reset.", "warn");
+    });
+
+    document.getElementById("addCommitteeBtn").addEventListener("click", addOrUpdateCommittee);
+    document.getElementById("resetCommitteeBtn").addEventListener("click", () => {
+      resetCommitteeFields();
+      showToast("Committee input reset.", "warn");
+    });
+
+    document.getElementById("saveOwnershipBtn").addEventListener("click", () => saveOwnershipSection(false));
+    document.getElementById("saveModuleTopBtn").addEventListener("click", () => saveOwnershipSection(false));
+    document.getElementById("saveDraftTopBtn").addEventListener("click", () => saveOwnershipSection(true));
+
+    document.getElementById("resetOwnershipBtn").addEventListener("click", () => {
+      resetOwnershipFields();
+      showToast("Ownership fields reset.", "warn");
+    });
+
+    document.getElementById("fillSampleBtn").addEventListener("click", fillSampleData);
+    document.getElementById("clearModuleBtn").addEventListener("click", clearModuleData);
+
+    applySettings();
+    setupTabs();
+    setupQuickActions();
+    setupLivePreview();
+    loadData();
+  
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+
