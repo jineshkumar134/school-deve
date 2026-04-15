@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard 2 - School Development Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#f47c20;
+      --primary-soft:#fff4eb;
+      --primary-border:#f7c9a1;
+      --secondary:#2d81c1;
+      --secondary-soft:#eef6fc;
+      --secondary-border:#cfe3f3;
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --panel-2:#fbfcfe;
+      --line:#e6ecf3;
+      --text:#233445;
+      --text-soft:#617587;
+      --muted:#8ea0b1;
+      --success:#2d9b68;
+      --success-soft:#eaf8f1;
+      --danger:#d95353;
+      --danger-soft:#fff0f0;
+      --warning:#d58d1f;
+      --warning-soft:#fff7e7;
+      --shadow-sm:0 8px 20px rgba(25,35,52,.05);
+      --shadow-md:0 16px 36px rgba(19,31,47,.07);
+      --radius-xl:26px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+      --sidebar-width:280px;
+      --topbar-height:78px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .app{ display:flex; min-height:100vh; }
+    
+    .sidebar{ width:var(--sidebar-width); background:var(--panel); border-right:1px solid var(--line); padding:18px 16px; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:100;}
+    .brand-card{ background:linear-gradient(180deg,#ffffff 0%, #fcfdff 100%); border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow-sm); margin-bottom:18px;}
+    .brand-title{ font-size:20px; font-weight:600; margin-bottom:6px; }
+    .brand-subtitle{ font-size:12px; color:var(--text-soft); margin-bottom:12px; }
+    .brand-chip{ display:inline-block; font-size:10px; font-weight:700; padding:4px 10px; background:var(--primary-soft); color:var(--primary); border-radius:999px; text-transform:uppercase; letter-spacing:0.5px; }
+
+    .nav-group{ margin-bottom:24px; }
+    .nav-title{ font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; padding-left:12px; }
+    .nav-list{ display:flex; flex-direction:column; gap:4px; }
+    .nav-item{ display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:14px; color:var(--text-soft); transition:.2s; cursor:pointer;}
+    .nav-item:hover{ background:var(--secondary-soft); color:var(--secondary); }
+    .nav-item.active{ background:var(--primary-soft); border:1px solid var(--primary-border); color:var(--primary); }
+    .nav-no{ width:34px; height:34px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); background:#fff; font-size:12px; font-weight:600; }
+    .nav-label{ font-weight:500; font-size:13px; }
+
+    .main{ flex:1; min-width:0; display:flex; flex-direction:column; }
+    .topbar{ position:sticky; top:0; z-index:10; height:var(--topbar-height); background:rgba(255,255,255,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); display:flex; align-items:center; padding:0 30px; }
+    .topbar-inner{ width:100%; display:flex; justify-content:space-between; align-items:center; }
+    .school-pill{ display:flex; align-items:center; gap:12px; }
+    .school-badge{ width:40px; height:40px; border-radius:12px; background:var(--secondary); color:#fff; display:grid; place-items:center; font-weight:700; }
+    
+    .page-wrap{ padding:30px; }
+
+    /* Dashboard 2 Specific Styles */
+    .d2-header{
+      margin-bottom:24px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:var(--shadow-sm);
+    }
+    .d2-header h1{ font-size:28px; font-weight:600; margin-bottom:8px;}
+    .d2-header p{ color:var(--text-soft); font-size:14px; max-width:800px; }
+    
+    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:30px; }
+    .card{ background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden; }
+    .metric{ font-size:32px; font-weight:700; margin-bottom:4px; }
+    .icon-wrap{ width:48px; height:48px; border-radius:14px; display:grid; place-items:center; background:var(--bg); }
+    
+    .section-title{ display:flex; align-items:center; gap:10px; font-size:22px; margin-bottom:16px; font-weight:600; }
+    .box{ background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:var(--shadow-sm); }
+    .progress{ height:8px; background:var(--bg); border-radius:20px; margin-top:8px; overflow:hidden; }
+    .bar{ height:100%; background:var(--secondary); border-radius:20px; }
+    
+    .tag{ font-size:12px; padding:5px 12px; border-radius:999px; font-weight:600; }
+    .green{background:var(--success-soft);color:var(--success)}
+    .orange{background:var(--primary-soft);color:var(--primary)}
+    .red{background:var(--danger-soft);color:var(--danger)}
+
+    /* Mobile Responsive */
+    @media (max-width: 980px) {
+      .sidebar { display: none !important; position: fixed; inset: 0; width: 100% !important; z-index: 1000; padding-top: 80px; }
+      .sidebar.active { display: block !important; }
+      .mobile-menu-btn { display: flex !important; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: white; cursor: pointer; }
+      .sidebar-close { display: flex !important; position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel-2); align-items: center; justify-content: center; cursor: pointer; }
+    }
+    @media (min-width: 981px) {
+      .mobile-menu-btn, .sidebar-close { display: none !important; }
+    }
+  
+    /* Mobile Responsive Fixes */
+    @media (max-width: 980px) {
+      .sidebar {
+        display: none !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100vh;
+        z-index: 1000;
+        background: var(--panel) !important;
+        padding-top: 80px !important;
+        overflow-y: auto;
+      }
+      .sidebar.active {
+        display: block !important;
+      }
+      .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: white;
+        cursor: pointer;
+        order: -1; /* Place at the start */
+      }
+      .sidebar-close {
+        display: block !important;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 981px) {
+      .mobile-menu-btn, .sidebar-close { display: none !important; }
+    }
+    
+    </style>
+  <style>.lucide { vertical-align: middle; margin-right: 4px; display: inline-block; }
+    /* Mobile Responsive Fixes */
+    @media (max-width: 980px) {
+      .sidebar {
+        display: none !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100vh;
+        z-index: 1000;
+        background: var(--panel) !important;
+        padding-top: 80px !important;
+        overflow-y: auto;
+      }
+      .sidebar.active {
+        display: block !important;
+      }
+      .mobile-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: white;
+        cursor: pointer;
+        order: -1; /* Place at the start */
+      }
+      .sidebar-close {
+        display: block !important;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 981px) {
+      .mobile-menu-btn, .sidebar-close { display: none !important; }
+    }
+    
+    </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button id="sidebarCloseBtn" class="sidebar-close"><i data-lucide="x"></i></button>
+      <div class="brand-card">
+        <div class="brand-title">School Portal</div>
+        <div class="brand-subtitle">Strategic planning suite</div>
+        <div class="brand-chip">Module 01: Dashboard</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="dashboard-2.html" class="nav-item active">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Dashboard 2</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item ">
+            <div class="nav-no">14</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <button id="mobileMenuBtn" class="mobile-menu-btn"><i data-lucide="menu"></i></button>
+          <div class="school-pill">
+            <div class="school-badge">SP</div>
+            <div>
+              <strong>ABC Public School</strong>
+              <span>Academic Year 2026–27</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <div class="d2-header">
+           <h1>School Improvement Dashboard</h1>
+           <p>Know where the school stands, what matters most, and what needs action right now.</p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between;">
+              <div>
+                <h3 style="font-size:14px; color:var(--secondary); margin-bottom:8px;">Development Score</h3>
+                <div class="metric">72%</div>
+                <p style="font-size:12px; color:var(--text-soft);">Overall school progress</p>
+              </div>
+              <div class="icon-wrap"><i data-lucide="target" color="var(--primary)"></i></div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex; justify-content:space-between;">
+              <div>
+                <h3 style="font-size:14px; color:var(--secondary); margin-bottom:8px;">Active Goals</h3>
+                <div class="metric">8</div>
+                <p style="font-size:12px; color:var(--text-soft);">Priorities running</p>
+              </div>
+              <div class="icon-wrap"><i data-lucide="flag" color="var(--primary)"></i></div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex; justify-content:space-between;">
+              <div>
+                <h3 style="font-size:14px; color:var(--secondary); margin-bottom:8px;">Actions</h3>
+                <div class="metric">14</div>
+                <p style="font-size:12px; color:var(--text-soft);">Tasks in execution</p>
+              </div>
+              <div class="icon-wrap"><i data-lucide="list-checks" color="var(--primary)"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title"><i data-lucide="activity"></i> <span>Current School Health</span></div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:18px;">
+            <div class="box">
+              <h4>Academic Readiness</h4>
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:10px;"><span>Syllabus</span><span>81%</span></div>
+              <div class="progress"><div class="bar" style="width:81%"></div></div>
+            </div>
+            <div class="box">
+              <h4>Teacher Capability</h4>
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:10px;"><span>Training</span><span>72%</span></div>
+              <div class="progress"><div class="bar" style="width:72%; background:var(--primary);"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+    // Mobile Navigation Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    const sidebar = document.querySelector('.sidebar');
+    if(mobileMenuBtn && sidebar) mobileMenuBtn.onclick = () => sidebar.classList.add('active');
+    if(sidebarCloseBtn && sidebar) sidebarCloseBtn.onclick = () => sidebar.classList.remove('active');
+  </script>
+</body>
+</html>

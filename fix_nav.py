@@ -3,22 +3,24 @@ import re
 
 modules = {
     'dashboard.html': '01',
-    'institutional-identity.html': '02',
-    'school-information.html': '03',
-    'teams-committees.html': '04',
-    'market-dynamics.html': '05',
-    'diagnosis.html': '06',
-    'swot.html': '07',
-    'goals.html': '08',
-    'action-plans.html': '09',
-    'monitoring.html': '10',
-    'reports-summary.html': '11',
-    'complete-school-view.html': '12',
-    'global-preview.html': '13'
+    'dashboard-2.html': '02',
+    'institutional-identity.html': '03',
+    'school-information.html': '04',
+    'teams-committees.html': '05',
+    'market-dynamics.html': '06',
+    'diagnosis.html': '07',
+    'swot.html': '08',
+    'goals.html': '09',
+    'action-plans.html': '10',
+    'monitoring.html': '11',
+    'reports-summary.html': '12',
+    'complete-school-view.html': '13',
+    'global-preview.html': '14'
 }
 
 labels = {
     'dashboard.html': 'Dashboard',
+    'dashboard-2.html': 'Dashboard 2',
     'institutional-identity.html': 'Institutional Identity',
     'school-information.html': 'School Information',
     'teams-committees.html': 'Teams & Committees',
@@ -61,7 +63,9 @@ for filename in os.listdir(path):
     # Create the standard navigation HTML
     nav_html = '<div class="nav-list">\n'
     nav_order = [
-        'dashboard.html', 'institutional-identity.html', 'school-information.html',
+        'dashboard.html',
+    'dashboard-2.html',
+    'institutional-identity.html', 'school-information.html',
         'teams-committees.html', 'market-dynamics.html', 'diagnosis.html',
         'swot.html', 'goals.html', 'action-plans.html',
         'monitoring.html', 'reports-summary.html', 'complete-school-view.html',

@@ -216,7 +216,68 @@
         <div class="brand-subtitle">Connected Planning System</div>
         <div class="brand-chip"><i data-lucide="printer" size="14"></i> Report Center</div>
       </div>
-      <div id="navContainer"></div>
+
+      <div class="nav-group">
+        <div class="nav-title">Main Navigation</div>
+        <div class="nav-list">
+          <a href="dashboard.html" class="nav-item ">
+            <div class="nav-no">01</div>
+            <div class="nav-label">Dashboard</div>
+          </a>
+          <a href="dashboard-2.html" class="nav-item ">
+            <div class="nav-no">02</div>
+            <div class="nav-label">Dashboard 2</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">03</div>
+            <div class="nav-label">Institutional Identity</div>
+          </a>
+          <a href="school-information.html" class="nav-item ">
+            <div class="nav-no">04</div>
+            <div class="nav-label">School Information</div>
+          </a>
+          <a href="teams-committees.html" class="nav-item ">
+            <div class="nav-no">05</div>
+            <div class="nav-label">Teams & Committees</div>
+          </a>
+          <a href="market-dynamics.html" class="nav-item ">
+            <div class="nav-no">06</div>
+            <div class="nav-label">Market Dynamics</div>
+          </a>
+          <a href="diagnosis.html" class="nav-item ">
+            <div class="nav-no">07</div>
+            <div class="nav-label">Diagnosis</div>
+          </a>
+          <a href="swot.html" class="nav-item ">
+            <div class="nav-no">08</div>
+            <div class="nav-label">SWOT Analysis</div>
+          </a>
+          <a href="goals.html" class="nav-item ">
+            <div class="nav-no">09</div>
+            <div class="nav-label">Strategic Goals</div>
+          </a>
+          <a href="action-plans.html" class="nav-item ">
+            <div class="nav-no">10</div>
+            <div class="nav-label">Action Plans</div>
+          </a>
+          <a href="monitoring.html" class="nav-item ">
+            <div class="nav-no">11</div>
+            <div class="nav-label">Monitoring</div>
+          </a>
+          <a href="reports-summary.html" class="nav-item ">
+            <div class="nav-no">12</div>
+            <div class="nav-label">Reports & Summary</div>
+          </a>
+          <a href="complete-school-view.html" class="nav-item ">
+            <div class="nav-no">13</div>
+            <div class="nav-label">Complete School View</div>
+          </a>
+          <a href="global-preview.html" class="nav-item active">
+            <div class="nav-no">14</div>
+            <div class="nav-label">Global Preview & Print</div>
+          </a>
+        </div>
+      </div>
     </aside>
 
     <div class="main">
@@ -241,7 +302,7 @@
 
       <div class="page-wrap">
           <div class="page-header no-print" style="margin-bottom:30px;">
-            <div class="eyebrow">Module 12: Unified Output</div>
+            <div class="eyebrow">Module 12: Global Preview & Print</div>
             <h1 class="page-title" style="font-size:32px; font-weight:700;">Global Preview & Print</h1>
             <p class="page-subtitle" style="color:var(--text-soft); max-width:700px; margin-bottom:20px;">
               This module aggregates data from all previously saved sections. 
@@ -295,6 +356,7 @@
     };
 
     const sections = [
+      { id: 'dashboard2', label: 'Dashboard 2', key: 'dashboard2', icon: 'layout-dashboard' },
       { id: 'identity', label: 'Institutional Identity', key: 'identity', icon: 'flag' },
       { id: 'info', label: 'School Information', key: 'schoolInfo', icon: 'info' },
       { id: 'teams', label: 'Teams & Committees', key: 'leadership', icon: 'users' },
@@ -411,7 +473,8 @@
       if(!data) {
         body = `<div style="padding:20px; text-align:center; background:#fcfdfe; border-radius:12px; border:1px dashed var(--line); color:var(--muted); font-style:italic;">No data recorded for ${label}.</div>`;
       } else {
-        if(id === 'identity') body = renderIdentity(data);
+        if(id === 'dashboard2') body = renderDashboard2();
+        else if(id === 'identity') body = renderIdentity(data);
         else if(id === 'swot') body = renderSWOT(data);
         else if(id === 'goals') body = renderGoals(data);
         else if(id === 'actions') body = renderActions(data);
@@ -609,6 +672,45 @@
         <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:15px;">
            <strong style="font-size:11px; color:var(--muted);">Address / Location</strong>
            <p style="margin-top:5px;">${data.address || 'Not specified'}</p>
+        </div>
+      `;
+    }
+
+    function renderDashboard2(){
+      return `
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px;">
+          <div style="padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--bg);">
+             <div style="font-size:11px; color:var(--secondary); font-weight:700; text-transform:uppercase;">Score</div>
+             <div style="font-size:24px; font-weight:700;">72%</div>
+          </div>
+          <div style="padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--bg);">
+             <div style="font-size:11px; color:var(--secondary); font-weight:700; text-transform:uppercase;">Goals</div>
+             <div style="font-size:24px; font-weight:700;">8</div>
+          </div>
+          <div style="padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--bg);">
+             <div style="font-size:11px; color:var(--secondary); font-weight:700; text-transform:uppercase;">Actions</div>
+             <div style="font-size:24px; font-weight:700;">14</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+          <div>
+            <h4 style="font-size:12px; margin-bottom:10px;">School Health Indices</h4>
+            <div style="margin-bottom:8px;">
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px;"><span>Academic Readiness</span><span>81%</span></div>
+              <div style="height:5px; background:var(--line); border-radius:5px; overflow:hidden;"><div style="height:100%; background:var(--secondary); width:81%;"></div></div>
+            </div>
+            <div style="margin-bottom:8px;">
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px;"><span>Teacher Capability</span><span>72%</span></div>
+              <div style="height:5px; background:var(--line); border-radius:5px; overflow:hidden;"><div style="height:100%; background:var(--primary); width:72%;"></div></div>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:12px; margin-bottom:10px;">SWOT Overview</h4>
+            <div style="display:grid; grid-template-columns: 1fr; gap:5px; font-size:11px;">
+               <div style="padding:4px 8px; background:var(--success-soft); border-radius:4px;"><b>S:</b> Strong board results</div>
+               <div style="padding:4px 8px; background:var(--danger-soft); border-radius:4px;"><b>W:</b> Low tech adoption</div>
+            </div>
+          </div>
         </div>
       `;
     }

@@ -884,52 +884,56 @@
             <div class="nav-no">01</div>
             <div class="nav-label">Dashboard</div>
           </a>
-          <a href="institutional-identity.html" class="nav-item ">
+          <a href="dashboard-2.html" class="nav-item ">
             <div class="nav-no">02</div>
+            <div class="nav-label">Dashboard 2</div>
+          </a>
+          <a href="institutional-identity.html" class="nav-item ">
+            <div class="nav-no">03</div>
             <div class="nav-label">Institutional Identity</div>
           </a>
           <a href="school-information.html" class="nav-item ">
-            <div class="nav-no">03</div>
+            <div class="nav-no">04</div>
             <div class="nav-label">School Information</div>
           </a>
           <a href="teams-committees.html" class="nav-item ">
-            <div class="nav-no">04</div>
+            <div class="nav-no">05</div>
             <div class="nav-label">Teams & Committees</div>
           </a>
           <a href="market-dynamics.html" class="nav-item ">
-            <div class="nav-no">05</div>
+            <div class="nav-no">06</div>
             <div class="nav-label">Market Dynamics</div>
           </a>
           <a href="diagnosis.html" class="nav-item ">
-            <div class="nav-no">06</div>
+            <div class="nav-no">07</div>
             <div class="nav-label">Diagnosis</div>
           </a>
           <a href="swot.html" class="nav-item ">
-            <div class="nav-no">07</div>
+            <div class="nav-no">08</div>
             <div class="nav-label">SWOT Analysis</div>
           </a>
           <a href="goals.html" class="nav-item ">
-            <div class="nav-no">08</div>
+            <div class="nav-no">09</div>
             <div class="nav-label">Strategic Goals</div>
           </a>
           <a href="action-plans.html" class="nav-item ">
-            <div class="nav-no">09</div>
+            <div class="nav-no">10</div>
             <div class="nav-label">Action Plans</div>
           </a>
           <a href="monitoring.html" class="nav-item ">
-            <div class="nav-no">10</div>
+            <div class="nav-no">11</div>
             <div class="nav-label">Monitoring</div>
           </a>
           <a href="reports-summary.html" class="nav-item ">
-            <div class="nav-no">11</div>
+            <div class="nav-no">12</div>
             <div class="nav-label">Reports & Summary</div>
           </a>
           <a href="complete-school-view.html" class="nav-item active">
-            <div class="nav-no">12</div>
+            <div class="nav-no">13</div>
             <div class="nav-label">Complete School View</div>
           </a>
           <a href="global-preview.html" class="nav-item ">
-            <div class="nav-no">13</div>
+            <div class="nav-no">14</div>
             <div class="nav-label">Global Preview & Print</div>
           </a>
         </div>
@@ -981,6 +985,59 @@
               <a href="reports-summary.html" class="btn secondary">Back to Report Summary</a>
             </div>
           </div>
+
+          <!-- DASHBOARD 2 INTEGRATION -->
+          <section class="section" style="margin-top:20px; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; background:white; margin-bottom:30px; box-shadow:var(--shadow-sm);">
+            <div class="section-title" style="font-size:24px; color:var(--primary); margin-bottom:10px;">
+              <i data-lucide="layout-dashboard"></i> Dashboard 2: Executive Snapshot
+            </div>
+            <p class="section-sub" style="margin-bottom:24px;">Key performance indicators and school health indices compiled for leadership review.</p>
+            
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:18px; margin-bottom:30px;">
+              <div class="card" style="border:1.5px solid var(--line); border-radius:18px; padding:18px; background:var(--bg);">
+                <h3 style="font-size:14px; color:var(--secondary); margin-bottom:8px;">Development Score</h3>
+                <div style="font-size:32px; font-weight:700;" id="d2_devScore">0%</div>
+                <p style="font-size:12px; color:var(--text-soft);">Overall improvement metric</p>
+              </div>
+              <div class="card" style="border:1.5px solid var(--line); border-radius:18px; padding:18px; background:var(--bg);">
+                <h3 style="font-size:14px; color:var(--secondary); margin-bottom:8px;">Active Goals</h3>
+                <div style="font-size:32px; font-weight:700;" id="d2_goals">0</div>
+                <p style="font-size:12px; color:var(--text-soft);">Strategic targets identified</p>
+              </div>
+              <div class="card" style="border:1.5px solid var(--line); border-radius:18px; padding:18px; background:var(--bg);">
+                <h3 style="font-size:14px; color:var(--secondary); margin-bottom:8px;">Actions In Progress</h3>
+                <div style="font-size:32px; font-weight:700;" id="d2_actions">0</div>
+                <p style="font-size:12px; color:var(--text-soft);">Ongoing implementation tasks</p>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:24px;">
+              <div style="border:1px solid var(--line); border-radius:18px; padding:20px; background:var(--panel-2);">
+                <h4 style="margin-bottom:15px; display:flex; align-items:center; gap:8px;"><i data-lucide="activity" size="18"></i> School Health Indices</h4>
+                <div style="display:grid; grid-template-columns: 1fr; gap:12px;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;"><span>Academic Readiness</span><span style="font-weight:700;">81%</span></div>
+                    <div style="height:8px; background:white; border-radius:10px; overflow:hidden;"><div style="height:100%; background:var(--secondary); width:81%;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;"><span>Teacher Capability</span><span style="font-weight:700;">72%</span></div>
+                    <div style="height:8px; background:white; border-radius:10px; overflow:hidden;"><div style="height:100%; background:var(--primary); width:72%;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;"><span>Student Engagement</span><span style="font-weight:700;">74%</span></div>
+                    <div style="height:8px; background:white; border-radius:10px; overflow:hidden;"><div style="height:100%; background:var(--success); width:74%;"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div style="border:1px solid var(--line); border-radius:18px; padding:20px; background:var(--panel-2);">
+                <h4 style="margin-bottom:15px; display:flex; align-items:center; gap:8px;"><i data-lucide="zap" size="18"></i> SWOT Quick-Look</h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;" id="d2_swot">
+                  <!-- SWOT data will be injected here -->
+                </div>
+              </div>
+            </div>
+          </section>
+          <hr style="margin-bottom:40px; border:0; border-top:1px dashed var(--line);">
 
           <section class="stats-grid">
             <div class="stat-card">
@@ -1492,10 +1549,26 @@
       document.getElementById("overallCompletionCard").textContent = overall + "%";
       document.getElementById("overallProgressBar").style.width = overall + "%";
       
+      // DASHBOARD 2 DYNAMIC POPULATION
+      document.getElementById("d2_devScore").textContent = overall + "%";
+
       const goalsData = readStorage(STORAGE_KEYS.goals, { goals: [] }).goals;
       const actionsData = readStorage(STORAGE_KEYS.actions, { actions: [] }).actions;
       document.getElementById("goalsActionsCard").textContent = goalsData.length + actionsData.length;
       
+      document.getElementById("d2_goals").textContent = goalsData.length;
+      document.getElementById("d2_actions").textContent = actionsData.length;
+
+      const swotData = readStorage(STORAGE_KEYS.swot, { points: [] }).points;
+      const swotWrap = document.getElementById("d2_swot");
+      if(swotData.length > 0) {
+        swotWrap.innerHTML = swotData.slice(0, 4).map(p => `
+          <div style="font-size:12px; padding:8px; background:var(--secondary-soft); border-radius:8px;"><strong>[${p.type[0]}]</strong> ${p.text}</div>
+        `).join("");
+      } else {
+        swotWrap.innerHTML = '<div style="font-size:11px; color:var(--muted);">No SWOT items available.</div>';
+      }
+
       const monitorData = readStorage(STORAGE_KEYS.monitoring, { reviews: [] }).reviews;
       document.getElementById("monitoringCard").textContent = monitorData.length;
 
