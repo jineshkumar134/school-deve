@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Placeholder - School Development Portal</title>
-  <style>
-    body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f5f7fb; color: #617587; }
-    .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
-    h1 { color: #233445; margin-bottom: 10px; }
-    a { color: #f47c20; text-decoration: none; font-weight: bold; }
-  
-    
-    }
-    
-    
-    
-      .topbar-main-row { display: contents; } /* Act like they aren't there on desktop */
+import os
+import re
 
-    
+def sanitize_and_fix(filename):
+    with open(filename, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Define the fresh CSS
+    responsive_css = """
     /* --- COMPREHENSIVE MOBILE RESPONSIVE FIXES --- */
     @media (max-width: 1200px) {
       .stats-grid, .grid-main, .grid-2, .hero-grid, .module-grid, .grid {
@@ -117,28 +106,30 @@
     @media (min-width: 981px) {
       .mobile-menu-btn, .sidebar-close { display: none !important; }
     }
-    
-  </style>
-  <script src="https://unpkg.com/lucide@latest">
-    
-    
-    @media (min-width: 981px) {
-      .mobile-menu-btn, .sidebar-close { display: none !important; }
-    }
-    
-    </style>
-</head>
-<body>
-  <div class="card">
-    <h1>Module Under Development</h1>
-    <p>This page is part of the prototype and will be implemented soon.</p>
-    <br>
-    <a href="dashboard.html">Ã¢â€ Â Back to Dashboard</a>
-  </div>
-<script>
-    
+    """
 
-    
+    # 1. Clean up CSS inside <style>
+    style_pattern = r'<style>(.*?)</style>'
+    def style_replacer(match):
+        style_content = match.group(1)
+        # Remove everything from the first mobile comment or media query
+        clean_style = re.split(r'/\* Mobile Responsive \*/|/\* --- COMPREHENSIVE|@media \(max-width: 980px\)|@media \(max-width: 1200px\)', style_content)[0]
+        # Remove any lingering stray fragments at the end
+        clean_style = clean_style.strip()
+        # Ensure it doesn't end with a broken brace
+        while clean_style.endswith('}'):
+            # Check if there's a matching opening brace for the LAST closing brace
+            if clean_style.count('{') < clean_style.count('}'):
+                clean_style = clean_style.rsplit('}', 1)[0].strip()
+            else:
+                break
+        
+        return f'<style>\n    {clean_style}\n\n    {responsive_css}\n  </style>'
+
+    content = re.sub(style_pattern, style_replacer, content, flags=re.DOTALL)
+
+    # 2. Add THE CLEAN JS BLOCK
+    toggle_js_clean = """
     // Mobile Navigation Toggle
     (function() {
       const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -168,9 +159,35 @@
         }
       });
     })();
-    
-  </script>
-</body>
-</html>
+    """
 
+    # Clean up scripts
+    script_pattern = r'<script>(.*?)</script>'
+    def script_replacer(match):
+        script_content = match.group(1)
+        # Remove old toggle logic
+        clean_script = re.split(r'// Mobile Navigation Toggle', script_content)[0]
+        clean_script = clean_script.strip()
+        
+        # Look for lucide call
+        if 'lucide.createIcons();' in script_content:
+             # Put it after our clean logic
+             return f'<script>\n    {clean_script}\n\n    {toggle_js_clean}\n\n    lucide.createIcons();\n  </script>'
+        else:
+             return f'<script>\n    {clean_script}\n\n    {toggle_js_clean}\n  </script>'
 
+    # If lucide is external, we might not have a script tag yet
+    if '<script>' not in content:
+        content = content.replace('</body>', f'<script>\n    {toggle_js_clean}\n  </script>\n</body>')
+    else:
+        content = re.sub(script_pattern, script_replacer, content, flags=re.DOTALL)
+
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+# Run for all HTML files
+path = 'c:/Users/USER/OneDrive/Desktop/school-development-portal'
+for f in sorted(os.listdir(path)):
+    if f.endswith('.html'):
+        print(f"Sanitizing {f}")
+        sanitize_and_fix(os.path.join(path, f))

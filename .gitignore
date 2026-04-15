@@ -1,5 +1,22 @@
+# Dependencies
 node_modules/
+
+# Environment secrets
 .env
+.env.local
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
 *.log
-package-lock.json
+npm-debug.log*
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Scripts (Optional: Ignore if only for local development)
+# fix_*.py
+# repair_*.py
