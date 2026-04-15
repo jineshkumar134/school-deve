@@ -114,6 +114,7 @@
       .topbar-main-row { display: contents; } /* Act like they aren't there on desktop */
 
     
+    
     /* --- COMPREHENSIVE MOBILE RESPONSIVE FIXES --- */
     @media (max-width: 1200px) {
       .stats-grid, .grid-main, .grid-2, .hero-grid, .module-grid, .grid {
@@ -171,6 +172,12 @@
         align-items: stretch !important;
         gap: 10px !important;
       }
+      .topbar-main-row {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
       .top-left, .top-right {
         display: flex !important;
         flex-direction: row !important;
@@ -178,7 +185,7 @@
         gap: 8px !important;
         width: 100% !important;
       }
-      .mobile-menu-btn {
+      .mobile-menu-btn, .mobile-preview-btn {
         display: flex !important;
         align-items: center;
         justify-content: center;
@@ -186,13 +193,14 @@
         border-radius: 10px;
         border: 1px solid var(--line);
         background: white;
+        color: var(--text);
       }
       .school-pill {
         flex: 1; min-width: 0;
         padding: 6px 10px !important;
       }
       .school-pill strong {
-        font-size: 12px !important;
+        font-size: 11px !important;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
       .school-pill span { display: none !important; }
@@ -211,7 +219,9 @@
       .d2-header h1 { font-size: 22px !important; }
     }
     @media (min-width: 981px) {
-      .mobile-menu-btn, .sidebar-close { display: none !important; }
+      .mobile-menu-btn, .sidebar-close, .mobile-preview-btn { display: none !important; }
+    }
+    
     }
     
   </style>
@@ -225,6 +235,7 @@
       .topbar-main-row { display: contents; } /* Act like they aren't there on desktop */
 
     
+    
     /* --- COMPREHENSIVE MOBILE RESPONSIVE FIXES --- */
     @media (max-width: 1200px) {
       .stats-grid, .grid-main, .grid-2, .hero-grid, .module-grid, .grid {
@@ -282,6 +293,12 @@
         align-items: stretch !important;
         gap: 10px !important;
       }
+      .topbar-main-row {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
       .top-left, .top-right {
         display: flex !important;
         flex-direction: row !important;
@@ -289,7 +306,7 @@
         gap: 8px !important;
         width: 100% !important;
       }
-      .mobile-menu-btn {
+      .mobile-menu-btn, .mobile-preview-btn {
         display: flex !important;
         align-items: center;
         justify-content: center;
@@ -297,13 +314,14 @@
         border-radius: 10px;
         border: 1px solid var(--line);
         background: white;
+        color: var(--text);
       }
       .school-pill {
         flex: 1; min-width: 0;
         padding: 6px 10px !important;
       }
       .school-pill strong {
-        font-size: 12px !important;
+        font-size: 11px !important;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
       .school-pill span { display: none !important; }
@@ -322,7 +340,9 @@
       .d2-header h1 { font-size: 22px !important; }
     }
     @media (min-width: 981px) {
-      .mobile-menu-btn, .sidebar-close { display: none !important; }
+      .mobile-menu-btn, .sidebar-close, .mobile-preview-btn { display: none !important; }
+    }
+    
     }
     
   </style>
@@ -403,6 +423,7 @@
       <header class="topbar no-print">
         <div class="topbar-inner">
           <button id="mobileMenuBtn" class="mobile-menu-btn"><i data-lucide="menu"></i></button>
+          <a href="global-preview.html" class="mobile-preview-btn" title="Global Preview"><i data-lucide="eye"></i></a>
           <div class="top-left">
             <div class="school-pill">
               <div class="school-badge">RP</div>
@@ -410,7 +431,8 @@
                 <strong id="schoolNameTop">ABC Public School</strong>
                 <span>Report Preview Mode</span>
               </div>
-            </div>
+            
+          </div>
           </div>
           <div class="top-right">
             <button class="btn secondary" onclick="location.href='dashboard.html'"><i data-lucide="layout-dashboard"></i> Back</button>
@@ -435,7 +457,8 @@
                   <button class="btn secondary" style="padding:0 12px; background:#f5f5f5;" onclick="setAll(false)">None</button>
                 </div>
               </div>
-            </div>
+            
+          </div>
           </div>
 
         <section class="no-print" style="margin-bottom:40px;">
